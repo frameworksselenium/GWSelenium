@@ -41,7 +41,6 @@ public class CreateAccount {
 				PCThreadCache.getInstance().setProperty(PCConstants.CACHE_ACCOUNT_NUMBER, accountNumber);
 				PCThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
 				PCThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
-				
 				logger.info("System displayed Account Summary Page with Account Number: " + accountNumber);
 				HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display Account Summary Page with Account Number", "System displayed Account Summary Page with Account Number: '" + accountNumber + "'", "PASS");
 				if (HTML.properties.getProperty("EXECUTIONAPP").contains("ODS")) {

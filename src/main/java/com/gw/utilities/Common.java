@@ -905,22 +905,15 @@ public class Common {
      */
     public Boolean ClassComponent(String Sheetname, Elements o) {
         logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
-        // System.out.println("ClassComponent Started = " +
-        // Thread.currentThread().getId() +" Driver = " +
-        // DriverManager.getInstance().getWebDriver());
         XlsxReader sXL;
         boolean tcAvailability = true;
         String sheetname = Sheetname;
         PCThreadCache.getInstance().setProperty(PCConstants.componentSheet, Sheetname);
-        // sXL = new XlsxReader( HTML.properties.getProperty("DataSheetName"));
         sXL = XlsxReader.getInstance();// new XlsxReader(
-        // PCThreadCache.getInstance().getProperty("DataSheetName"));
         Boolean status = true;
         try {
             int rowcount = sXL.getRowCount(sheetname);
             for (int i = 2; i <= rowcount; i++) {
-                // if(sXL.getCellData(sheetname, "ID",
-                // i).equals(PCThreadCache.getInstance().getProperty("TCID")))
                 if (sXL.getCellData(sheetname, "ID", i).equals(PCThreadCache.getInstance().getProperty("TCID"))) {
                     tcAvailability = false;
                     int colcount = sXL.getColumnCount(sheetname);
@@ -969,9 +962,6 @@ public class Common {
                                         paramString[1] = String.class;
                                         Class cls = Class.forName(ClassName);
                                         Object obj = cls.newInstance();
-                                        // Method method =
-                                        // cls.getDeclaredMethod(methodName, new
-                                        // Class[]{String.class,String.class});
                                         Method method = cls.getDeclaredMethod(methodName, paramString);
                                         status = (Boolean) method.invoke(obj, new String(ColName), new String(value));
                                     } else {
@@ -1404,52 +1394,25 @@ public class Common {
         return getText;
     }
 
-
-    /**
-     * @param strRunMode
-     * @param strTestCaseName
-     * @param DataSheetName
-     * @param Region
-     * @throws Exception
-     * @function This function use to start the driver script
-     */
-    // E2E Framework integration start - modified return type from void to
-    // boolean
-    public boolean RunTest(String strRunMode, String strTestCaseName, String DataSheetName, String Region) throws Exception
-
-    // E2E Framework integration end
-    {
+    public boolean RunTest(String strRunMode, String strTestCaseName, String DataSheetName, String Region) throws Exception {
         acn = 0;
         lst = new HashMap<String, String>();
         lst.put("1", strTestCaseName);
         actualandexpected = 0;
         logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), strTestCaseName);
         BufferedWriter writer = getFile();
-        //System.out.println("writer in getFile is ::" + writer);
-        // E2E Framework integration end
         {
-
-            //logger.debug("Thread ID = " + Thread.currentThread().getId() + " common = " + CommonManager.getInstance().getCommon() + " driver = " + ManagerDriver.getInstance().getWebDriver());
-            // PCThreadCache.getInstance().resetProperties();
             Date d = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-            //System.out.println("Start Time--------------------------------------------" + d);
-            // PropertyConfigurator.configure("log4j.properties");
-            // HTML.fnSummaryInitialization("Execution Summary Report");
-            // logger.info("-----------------STARTED RUNNING TESTNG
-            // METHOD-----------------");
             boolean isTestCasePass = false;
             boolean strYES = true;
             Boolean status = true;
-            // DataSheetName = "Data";
             String strColumnName = null;
             String strCondition = null;
             String testCaseType = null;
             if (!Region.isEmpty()) {
                 HTML.properties.setProperty("Region", Region);
             }
-            // HTML.properties.setProperty("DataSheetName",DataSheetName);
-            // PCThreadCache.getInstance().setProperty("DataSheetName",DataSheetName);
             PCThreadCache.getInstance().setProperty("testCaseExecutionStartTime", sdf.format(d));
             if (strRunMode.contains("RunModeYes")) {
                 strColumnName = "Execution";
@@ -1459,7 +1422,6 @@ public class Common {
                 strCondition = strTestCaseName;
             }
             sXL = XlsxReader.getInstance(); // new
-            // XlsxReader(DataSheetName);
             String sheetname = "TestCase";
             int rowcount = sXL.getRowCount(sheetname);
             for (int i = 2; i <= rowcount; i++) {
@@ -1471,8 +1433,6 @@ public class Common {
                     TestSetID = sXL.getCellData(sheetname, "TestSetID", i);
                     testCaseType = sXL.getCellData(sheetname, "TestCaseType", i);
                     testcasecount = sXL.getCellData(sheetname, "TC Count", i);
-                    // UpdateID = sXL.getCellData(sheetname, "UpdateID", i);
-                    // PCThreadCache.getInstance().setProperty("UpdateID",UpdateID);
                     PCThreadCache.getInstance().setProperty("TCID", TCID);
                     PCThreadCache.getInstance().setProperty("Row", String.valueOf(i));
                     PCThreadCache.getInstance().setProperty("TestCaseID", TestCaseID);
@@ -1483,17 +1443,6 @@ public class Common {
                     PCThreadCache.getInstance().setProperty(testcasename + TCID, testcasecount);
                     HTML.fnInitilization(testcasename);
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " -----------------STARTED RUNNING TEST CASE " + testcasename + " EXECUTION----------------- Thread = " + Thread.currentThread().getId());
-                    // Commented for graph report
-                    /*
-                     * if(testCaseType != null && testCaseType.length() >0 &&
-                     * "Regression".equalsIgnoreCase(testCaseType) && HTML.properties
-                     * .getProperty("DataBaseUpdate").equalsIgnoreCase("YES")){
-                     * ReportUtil.initBeginExecuction(); ReportUtil.updateDataFeed("IN_PROGRESS"); }
-                     */
-                    // System.out.println("testcasetype before inprogress is :::"+testCaseType);
-                    // System.out.println("testCaseType.length() before inprogress is
-                    // :::"+testCaseType);
-                    //logger.info("Regression :::: " + testCaseType + " ::::   " + HTML.properties.getProperty("DataBaseUpdate"));
                     if (testCaseType != null && testCaseType.length() > 0 && "Regression".equalsIgnoreCase(testCaseType) && HTML.properties.getProperty("DataBaseUpdate").equalsIgnoreCase("YES")) {
                         //logger.info("Regression :::: going to update IN_PROGRESS ");
                         //ReportUtil.initBeginExecuction();
@@ -1509,35 +1458,9 @@ public class Common {
                                 //System.out.println("colname contains component");
                                 TCRow = i;
                                 methodName = sXL.getCellData(sheetname, j, i);
-                                // HTML.properties.setProperty("methodName",methodName);
                                 PCThreadCache.getInstance().setProperty("methodName", methodName);
-                                // //logger.info("methodName ======"+methodName
-                                // +
-                                // Thread.currentThread().getId());
                                 if (!methodName.isEmpty()) {
-                                    // System.out.println("IT is in isEmpty:::");
-                                    // no paramater
-                                    /*
-                                     * Class noparams[] = {}; //load the AppTest at runtime Class cls =
-                                     * Class.forName("com.gw.screen." + methodName); Object obj = cls.newInstance();
-                                     * HTML.fnInsertResult(testcasename, methodName,
-                                     * "Component should start execution" ,"Started Executing " + methodName +
-                                     * " Component", "PASS", common); //call the printIt method Method method =
-                                     * cls.getDeclaredMethod("SCR" + methodName, noparams);
-                                     * logger.info("Thread ID = " + Thread.currentThread().getId() +
-                                     * "---------------Started Executing " + methodName +
-                                     * " function---------------"); Class[] paramString = new Class[1]; Class
-                                     * noparams[] = {}; paramString[0] = String.class; Class cls =
-                                     * Class.forName("com.gw.screen." + methodName); Object obj = cls.newInstance();
-                                     * //Method method = cls.getDeclaredMethod("SCR" + methodName, Common.class);
-                                     * Method method = cls.getDeclaredMethod("SCR" + methodName,noparams); //status
-                                     * = (Boolean)method.invoke(obj, CommonManager.getInstance().getCommon());
-                                     * status = (Boolean)method.invoke(obj); //status = (Boolean)method.invoke(obj,
-                                     * common);
-                                     */
                                     if (methodName.contains("_")) {
-                                        // System.out.println("IT is in _");
-
                                         String[] methodName2 = methodName.split("_");
                                         String sMultipleComponentTCID = TCID.concat("_" + methodName2[1]);
                                         // PCThreadCache.getInstance().setProperty("methodName",methodName2[0]);
@@ -1550,18 +1473,10 @@ public class Common {
                                         paramString[0] = String.class;
                                         Class cls = Class.forName("com.gw.screen." + methodName2[0]);
                                         Object obj = cls.newInstance();
-                                        // Method method =
-                                        // cls.getDeclaredMethod("SCR" +
-                                        // methodName,
-                                        // Common.class);
                                         Method method = cls.getDeclaredMethod("SCR" + methodName2[0], noparams);
-                                        // status = (Boolean)method.invoke(obj,
-                                        // CommonManager.getInstance().getCommon());
                                         status = (Boolean) method.invoke(obj);
                                         PCThreadCache.getInstance().setProperty("TCID", TCID);
                                     } else {
-                                        // System.out
-                                        // .println("IT is in else**********");
                                         logger.info("Thread ID = " + Thread.currentThread().getId() + "---------------Started Executing " + methodName + " function---------------");
                                         HTML.fnInsertResult(testcasename, methodName, "Component execution should start", "Started Executing " + methodName + " Component", "PASS");
                                         Class[] paramString = new Class[1];
@@ -1569,25 +1484,13 @@ public class Common {
                                         paramString[0] = String.class;
                                         Class cls = Class.forName("com.gw.screen." + methodName);
                                         Object obj = cls.newInstance();
-                                        // Method method =
-                                        // cls.getDeclaredMethod("SCR" +
-                                        // methodName,
-                                        // Common.class);
                                         Method method = cls.getDeclaredMethod("SCR" + methodName, noparams);
-                                        // status = (Boolean)method.invoke(obj,
-                                        // CommonManager.getInstance().getCommon());
                                         status = (Boolean) method.invoke(obj);
                                     }
                                     if (status) {
-                                        // System.out
-                                        // .println("STatus is "+status);
                                         logger.info("Thread ID = " + Thread.currentThread().getId() + " ---------------Completed Executing " + methodName + " function---------------");
-                                        // logger.info("methodName 333333333333======"+methodName
-                                        // + Thread.currentThread().getId());
                                         HTML.fnInsertResult(testcasename, methodName, "Component execution should end", "Completed Executing " + methodName + " Component", "PASS");
                                     } else {
-                                        // System.out
-                                        // .println("IT is in else status condition");
                                         status = handleUnknownAlert();
                                         ScriptLevelStatus = false;
                                         break;
@@ -1602,14 +1505,12 @@ public class Common {
                         }
                     }
                     if (ScriptLevelStatus) {
-                        //System.out.println("ScriptLevelStatus is :::" + ScriptLevelStatus);
                         logger.info("Thread ID = " + Thread.currentThread().getId() + " -----------------ENDED RUNNING TEST CASE " + testcasename + " EXECUTION-----------------");
                         logger.info("Thread ID = " + Thread.currentThread().getId() + " 'TestCaseID:' " + TCID + " 'Component:' " + methodName + "");
                         HTML.fnSummaryInsertTestCase();
                         CommonManager.getInstance().getCommon().Terminate();
                         isTestCasePass = true;
                     } else {
-                        // System.out.println("iT IS IN SCRIPTLEVEL STATUS ELSE PART");
                         logger.info("Thread ID = " + Thread.currentThread().getId() + " ---------------Error in executing " + methodName + " function---------------");
                         logger.info("Thread ID = " + Thread.currentThread().getId() + " 'TestCaseID:' " + TCID + " 'Component:' " + methodName + "");
                         HTML.fnInsertResult(testcasename, methodName, "Component should run properly", "Error in executing: '" + methodName + "'", "FAIL");
@@ -1624,20 +1525,6 @@ public class Common {
             if (strYES) {
                 logger.info("No test case selected as 'YES' in Data sheet");
             }
-            // Graph report code
-            /*
-             * if(testCaseType != null && testCaseType.length() >0 &&
-             * "Regression".equalsIgnoreCase(testCaseType) && HTML.properties.getProperty
-             * ("DataBaseUpdate").equalsIgnoreCase("YES")){ if(isTestCasePass){
-             * ReportUtil.updateDataFeed("PASS"); ReportUtil.finalizeExec("Pass"); } else{
-             * ReportUtil.finalizeExec("Fail"); ReportUtil.updateDataFeed("FAIL"); } }
-             */
-            // System.out.println("testCaseType s before update status:::"+testCaseType);
-            // System.out.println("testCaseType.length() s before update
-            // status:::"+testCaseType.length());
-            // System.out.println("testCaseType.length() s before update
-            // status:::"+testCaseType.length());
-
             if (testCaseType != null && testCaseType.length() > 0 && "Regression".equalsIgnoreCase(testCaseType) && HTML.properties.getProperty("DataBaseUpdate").equalsIgnoreCase("YES")) {
                 // logger.info("Regression :::: going to update" +
                 // isTestCasePass);

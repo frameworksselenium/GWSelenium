@@ -250,15 +250,6 @@ public class IconReader {
 
 	}
 
-	/**
-	 * Purpose- To get the column count of specified sheet and the column count ends
-	 * if it has not found any value
-	 * 
-	 * @param sheetName-
-	 *            Sheet name,row padding,column padding should be provided
-	 * @return- Returns value of column count
-	 * @throws Exception
-	 */
 	public int getColumnCountUntilEmptyCell(String sheetName, int rowPadding, int columnPadding) throws Exception {
 		int number = 0;
 		XSSFSheet Sheet;
@@ -280,23 +271,6 @@ public class IconReader {
 
 	}
 
-	/**
-	 * Purpose- Returns the value from Excel based on Sheetname, column name, row
-	 * value, row and column padding (i.e., number of rows and columns left to draw
-	 * the table)
-	 * 
-	 * @param sheetName
-	 *            - Sheet name should be provided
-	 * @param colName-
-	 *            Column Name should be provided
-	 * @param rowNum-
-	 *            Row value should be provided
-	 * @param row
-	 *            padding - number of rows left
-	 * @param column
-	 *            padding - number of columns left
-	 * @return
-	 */
 	public String getCellData(String sheetName, String colName, int rowNum, int rowPadding, int columnPadding) {
 		try {
 			XSSFSheet Sheet;
@@ -374,18 +348,6 @@ public class IconReader {
 		}
 	}
 
-	/**
-	 * Purpose- Returns the value from Excel based on Sheetname, column name, row
-	 * value
-	 * 
-	 * @param sheetName
-	 *            - Sheet name should be provided
-	 * @param colName-
-	 *            Column Name should be provided
-	 * @param rowNum-
-	 *            Row value should be provided
-	 * @return
-	 */
 	public String getCellData(String sheetName, String colName, int rowNum) {
 		try {
 			XSSFSheet Sheet;
@@ -455,18 +417,6 @@ public class IconReader {
 		}
 	}
 
-	/**
-	 * Purpose- Returns the value from Excel based on Sheetname, column number, row
-	 * number
-	 * 
-	 * @param sheetName
-	 *            - Sheet name should be provided
-	 * @param colNum-
-	 *            Column number should be provided
-	 * @param rowNum-
-	 *            Row number should be provided
-	 * @return
-	 */
 	public String getCellData(String sheetName, int colNum, int rowNum) {
 		try {
 			XSSFSheet Sheet;
@@ -524,18 +474,6 @@ public class IconReader {
 		}
 	}
 
-	/**
-	 * Purpose- Returns the value from Excel based on Sheetname, column name, row
-	 * value
-	 * 
-	 * @param sheetName
-	 *            - Sheet name should be provided
-	 * @param colName-
-	 *            Column Name should be provided
-	 * @param rowNum-
-	 *            Row value should be provided
-	 * @return
-	 */
 	public String getCellDataValue(String sheetName, String colName, int rowNum, int columnNum) {
 		try {
 			XSSFSheet Sheet;
@@ -643,15 +581,6 @@ public class IconReader {
 		return status;
 	}
 
-	/**
-	 * @functionThis method is used to update data into excel sheet. All the values
-	 *               in updateColumnNameValues parameter will be updated into excel
-	 *               sheet. Not all rows will be updated, only the rows matching the
-	 *               whereConstraint parameter will be updated.
-	 * @param sheetName
-	 * @param updateColumnNameValues
-	 * @param whereConstraint
-	 */
 	public synchronized boolean executeUpdateQuery(String sheetName, HashMap<String, Object> updateColumnNameValues, HashMap<String, Object> whereConstraint) {
 		logger.info("Entering UpdateQuery = " + sheetName + " Thread ID =" + Thread.currentThread().getId());
 		boolean status = false;
@@ -736,18 +665,6 @@ public class IconReader {
 		return status;
 	}
 
-	/**
-	 * Purpose- This method is used to select set of rows and all columns from excel
-	 * sheet based on the whereConstraint
-	 * 
-	 * @param sheetName
-	 *            - Sheet name should be provided
-	 * @param whereConstraint
-	 *            - it will contain columnName and Values. If a row matches all the
-	 *            values present in this parameter then that row will be added to
-	 *            the resultData.
-	 * @return
-	 */
 	public ArrayList<HashMap<String, Object>> executeSelectQuery(String sheetName, HashMap<String, Object> whereConstraint) {
 		ArrayList<HashMap<String, Object>> resultData = new ArrayList<HashMap<String, Object>>();
 		try {
@@ -815,18 +732,6 @@ public class IconReader {
 		return resultData;
 	}
 
-	/**
-	 * Purpose- Returns the column index from Excel based on Sheetname, column name,
-	 * row value
-	 * 
-	 * @param sheetName
-	 *            - Sheet name should be provided
-	 * @param colName-
-	 *            Column Name should be provided
-	 * @param rowNum-
-	 *            Row value should be provided
-	 * @return
-	 */
 	public int getCellIndex(String sheetName, String colName, int rowNum) {
 		int col_Num = -1;
 		try {

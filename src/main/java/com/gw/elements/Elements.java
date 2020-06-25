@@ -1,7 +1,6 @@
 package com.gw.elements;
 
 import java.util.HashMap;
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import com.gw.driver.LoggerClass;
 import com.gw.utilities.PCThreadCache;
@@ -9,18 +8,15 @@ import com.gw.utilities.PCThreadCache;
 public class Elements {
 	public static String sheetname = "Elements";
 	public static HashMap<String, By> hm = new HashMap<String, By>();
-	//static Logger logger = Logger.getLogger(sheetname);
 	private org.apache.log4j.Logger logger;
 
 	public Elements() 
 	{
 	}
 
-	static 
+	static
 	{
-
 		// Common Objects Across all the Screens
-
 		hm.put("eleCommonSearch", By.xpath("//*[contains(@id,'SearchLinksInputSet:Search')]"));
 		hm.put("eljCommonSearch", By.xpath("//*[contains(@id,'SearchLinksInputSet:Search')]"));
 		hm.put("eleCommonEdit", By.xpath("//*[contains(@id,'Edit-btnInnerEl')]"));
