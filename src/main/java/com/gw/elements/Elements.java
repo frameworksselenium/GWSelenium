@@ -1,10 +1,8 @@
 package com.gw.elements;
 
 import java.util.HashMap;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-
 import com.gw.driver.LoggerClass;
 import com.gw.utilities.PCThreadCache;
 

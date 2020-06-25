@@ -35,9 +35,6 @@ public class Login {
 				dir.mkdir();
 			}
 		}
-		if (HTML.properties.getProperty("EXECUTIONAPP").contains("ODS")) {
-			status = common.CSVFile();
-		}
 		status = common.ClassComponent(sheetname, Common.o);
 		if (!status) {
 			return status;
