@@ -1,0 +1,6 @@
+/target/
+/Reports/
+/test-output/
+*/.idea
+*.iml
+.idea
