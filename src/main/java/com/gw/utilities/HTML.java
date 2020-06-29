@@ -123,8 +123,8 @@ public class HTML {
         objFile.close();
     }
     public static void fnInitilization(String BprocessName) throws IOException, AWTException {
-        PCThreadCache.getInstance().setProperty("FileName", "");
-        PCThreadCache.getInstance().setProperty("FolderName1", reportsFolder + "\\" + BprocessName);
+        ThreadCache.getInstance().setProperty("FileName", "");
+        ThreadCache.getInstance().setProperty("FolderName1", reportsFolder + "\\" + BprocessName);
         fnOpenHtmlFile(BprocessName);
         fnInsertSection();
         fnInsertTestCaseName("");
@@ -146,13 +146,13 @@ public class HTML {
         Date d = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
         String DateToStr = format.format(d);
-        String gsTempFile = PCThreadCache.getInstance().getProperty("FileName");
+        String gsTempFile = ThreadCache.getInstance().getProperty("FileName");
         Path objPath = Paths.get(gsTempFile);
         if (gsTempFile == "") {
             gsTempFile = reportsFolder + "\\" + sSection + DateToStr + "_" + Thread.currentThread().getId() + ".htm";
-            PCThreadCache.getInstance().setProperty("FileName", gsTempFile);
+            ThreadCache.getInstance().setProperty("FileName", gsTempFile);
             relativePath = sSection + DateToStr + "_" + Thread.currentThread().getId() + ".htm";
-            PCThreadCache.getInstance().setProperty("relativePath", relativePath);
+            ThreadCache.getInstance().setProperty("relativePath", relativePath);
         }
         if (Files.exists(objPath)) {
             FileWriter objFile = new FileWriter(gsTempFile, true);
@@ -169,7 +169,7 @@ public class HTML {
 
     public static void fnInsertSection() throws IOException {
         Date d = new Date();
-        String gsTempFile = PCThreadCache.getInstance().getProperty("FileName");
+        String gsTempFile = ThreadCache.getInstance().getProperty("FileName");
         Path objPath = Paths.get(gsTempFile);
         if (Files.exists(objPath)) {
             FileWriter objFile = new FileWriter(gsTempFile, true);
@@ -205,7 +205,7 @@ public class HTML {
             Date d = new Date();
             SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
             String DateToStr = format.format(d);
-            String gsTempFile = PCThreadCache.getInstance().getProperty("FileName");
+            String gsTempFile = ThreadCache.getInstance().getProperty("FileName");
             String strSSPath = null;
             Path objPath = Paths.get(gsTempFile);
             if (Files.exists(objPath)) {
@@ -217,7 +217,7 @@ public class HTML {
                         g_iCapture_Count = "Screen" + DateToStr;
                         I_sFile = reportsFolder + "\\Screen_" + DateToStr + "_" + Thread.currentThread().getId() + ".png";
                         strSSPath = "Screen_" + DateToStr + "_" + Thread.currentThread().getId() + ".png";
-                        PCThreadCache.getInstance().setProperty(PCConstants.FailureSSPath, strSSPath);
+                        ThreadCache.getInstance().setProperty(PCConstants.FailureSSPath, strSSPath);
                         // if(driver != null)
                         /*
                          * if(ManagerDriver.getInstance().getWebDriver() != null) { File
@@ -271,8 +271,8 @@ public class HTML {
                     g_Flag = 1;
                     g_SummaryFlag = 1;
                     // added to fix overall summary status start
-                    //PCThreadCache.getInstance().setProperty(PCConstants.CACHE_TEST_CASE_STATUS, "FAIL");
-                    PCThreadCache.getInstance().setProperty(PCThreadCache.getInstance().getProperty("TCID"), "FAIL");
+                    //ThreadCache.getInstance().setProperty(PCConstants.CACHE_TEST_CASE_STATUS, "FAIL");
+                    ThreadCache.getInstance().setProperty(ThreadCache.getInstance().getProperty("TCID"), "FAIL");
                     g_iFail_Count = g_iFail_Count + 1;
                     if (properties.getProperty("CaptureScreenShotforFail").equalsIgnoreCase("YES")) {
                         String I_sFile = "";
@@ -282,7 +282,7 @@ public class HTML {
                         strSSPath = "Screen_" + DateToStr + "_" + Thread.currentThread().getId() + ".png";
                         String strALMUploadSSPath = reportsFolder + "\\" + strSSPath;
                         screenshotpath = strALMUploadSSPath;
-                        PCThreadCache.getInstance().setProperty(PCConstants.FailureSSPath, strALMUploadSSPath);
+                        ThreadCache.getInstance().setProperty(PCConstants.FailureSSPath, strALMUploadSSPath);
                         try {
                             if (ManagerDriver.getInstance().getWebDriver() != null) {
                                 File scrFile = ((TakesScreenshot) ManagerDriver.getInstance().getWebDriver()).getScreenshotAs(OutputType.FILE);
@@ -310,9 +310,9 @@ public class HTML {
                     File directory = new File(".");
                     String rpath = directory.getCanonicalPath() + "\\target\\Reports\\HTMLReports\\Log";
 
-                    String logs = rpath + "/" + PCThreadCache.getInstance().getProperty("TCID") + ".log";
-                    String tccount = PCThreadCache.getInstance().getProperty(sTestCaseName + PCThreadCache.getInstance().getProperty("TCID"));
-                    sXL.failuresReader("Component should run properly", sActual, PCThreadCache.getInstance().getProperty("relativePath"), screenshotpath, logs, sExpected, tccount);
+                    String logs = rpath + "/" + ThreadCache.getInstance().getProperty("TCID") + ".log";
+                    String tccount = ThreadCache.getInstance().getProperty(sTestCaseName + ThreadCache.getInstance().getProperty("TCID"));
+                    sXL.failuresReader("Component should run properly", sActual, ThreadCache.getInstance().getProperty("relativePath"), screenshotpath, logs, sExpected, tccount);
 
                 } else if (sResult.toUpperCase() == "WARNING") {
                     if (properties.getProperty("CaptureScreenShotforWarning").equalsIgnoreCase("YES")) {
@@ -354,12 +354,12 @@ public class HTML {
 
         //String rpath = HTML.properties.getProperty("LogPath");
         Common Common = CommonManager.getInstance().getCommon();
-        String tCaseID = PCThreadCache.getInstance().getProperty("TestCaseID");
-        String tSetID = PCThreadCache.getInstance().getProperty("TestSetID");
+        String tCaseID = ThreadCache.getInstance().getProperty("TestCaseID");
+        String tSetID = ThreadCache.getInstance().getProperty("TestSetID");
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         Date g_tSummaryTCEnd_Time;
         Date g_tSummaryTCStart_Time = null;
-        String testCaseExecStartTime = PCThreadCache.getInstance().getProperty("testCaseExecutionStartTime");
+        String testCaseExecStartTime = ThreadCache.getInstance().getProperty("testCaseExecutionStartTime");
         try {
             g_tSummaryTCStart_Time = sdf.parse(testCaseExecStartTime);
 
@@ -377,7 +377,7 @@ public class HTML {
         if (ParallelExecDriver.count == 0) {
             g_SummaryTotal_TC = g_SummaryTotal_TC + 1;
         }
-        String testCaseLevelStatus = PCThreadCache.getInstance().getProperty(PCThreadCache.getInstance().getProperty("TCID"));
+        String testCaseLevelStatus = ThreadCache.getInstance().getProperty(ThreadCache.getInstance().getProperty("TCID"));
         String strStatus = "";
         String almStatus = "1";
         if (!(ParallelExecDriver.count == 0)) {
@@ -412,9 +412,9 @@ public class HTML {
         updateColumnNameValues.clear();
         whereConstraint.clear();
         updateColumnNameValues.put("Status", strStatus);
-        whereConstraint.put("ID", PCThreadCache.getInstance().getProperty("TCID"));
+        whereConstraint.put("ID", ThreadCache.getInstance().getProperty("TCID"));
         XlsxReader sXL = XlsxReader.getInstance();
-        PCThreadCache.getInstance().setProperty("Status", strStatus);
+        ThreadCache.getInstance().setProperty("Status", strStatus);
         String intDateDiff = "";
         long diff = g_tSummaryTCEnd_Time.getTime() - g_tSummaryTCStart_Time.getTime();
         long starttotalsecs = ((g_tSummaryTCStart_Time.getMinutes() + (g_tSummaryTCStart_Time.getHours()) * 60) * 60) + g_tSummaryTCStart_Time.getSeconds();
@@ -441,31 +441,31 @@ public class HTML {
             FileWriter objFile = new FileWriter(gsTempFile, true);
             if (strStatus.toUpperCase() == "PASSED") {
                 if (ParallelExecDriver.count != 0) {
-                    ParallelExecDriver.failureGroup.remove(PCThreadCache.getInstance().getProperty("TCID"));
+                    ParallelExecDriver.failureGroup.remove(ThreadCache.getInstance().getProperty("TCID"));
                 }
-                objFile.write("<TR COLS=6><TD BGCOLOR=#EEEEEE WIDTH=15%><FONT FACE=VERDANA COLOR=BLACK SIZE=2>" + PCThreadCache.getInstance().getProperty("TCID") + "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=45%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><A HREF='" + PCThreadCache.getInstance().getProperty("relativePath") + "'>" + PCThreadCache.getInstance().getProperty("testcasename") + "</A></FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=20%><FONT FACE=VERDANA COLOR=BLACK SIZE=2>"
-                        + PCThreadCache.getInstance().getProperty("testcasename") + "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2>" + intDateDiff + "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=WINGDINGS 2' SIZE=5 COLOR=GREEN>P</FONT><FONT FACE=VERDANA SIZE=2 COLOR=GREEN><B>" + strStatus + "</B></FONT></TD></TR>");
+                objFile.write("<TR COLS=6><TD BGCOLOR=#EEEEEE WIDTH=15%><FONT FACE=VERDANA COLOR=BLACK SIZE=2>" + ThreadCache.getInstance().getProperty("TCID") + "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=45%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><A HREF='" + ThreadCache.getInstance().getProperty("relativePath") + "'>" + ThreadCache.getInstance().getProperty("testcasename") + "</A></FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=20%><FONT FACE=VERDANA COLOR=BLACK SIZE=2>"
+                        + ThreadCache.getInstance().getProperty("testcasename") + "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2>" + intDateDiff + "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=WINGDINGS 2' SIZE=5 COLOR=GREEN>P</FONT><FONT FACE=VERDANA SIZE=2 COLOR=GREEN><B>" + strStatus + "</B></FONT></TD></TR>");
             } else if (strStatus.toUpperCase() == "FAILED") {
                 String re = "no";
-                if (ParallelExecDriver.failureGroup.contains(PCThreadCache.getInstance().getProperty("TCID"))) {
+                if (ParallelExecDriver.failureGroup.contains(ThreadCache.getInstance().getProperty("TCID"))) {
                     re = "yes";
                 }
                 BufferedWriter writer = Common.getFile();
 				if ((re.equals("no")) && (ParallelExecDriver.count == 0)) {
-                    ParallelExecDriver.failureGroup.add(PCThreadCache.getInstance().getProperty("TCID"));
+                    ParallelExecDriver.failureGroup.add(ThreadCache.getInstance().getProperty("TCID"));
                 }
                 log.info("It in in files.exists strStatus failed:::");
-                objFile.write("<TR COLS=6><TD BGCOLOR=#EEEEEE WIDTH=15%><FONT FACE=VERDANA COLOR=BLACK SIZE=2>" + PCThreadCache.getInstance().getProperty("TCID") + "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=45%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><A HREF='" + PCThreadCache.getInstance().getProperty("relativePath") + "'>" + PCThreadCache.getInstance().getProperty("testcasename") + "</A></FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=20%><FONT FACE=VERDANA COLOR=BLACK SIZE=2>"
-                        + PCThreadCache.getInstance().getProperty("testcasename") + "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2>" + intDateDiff + "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=WINGDINGS 2' SIZE=5 COLOR=RED>O</FONT><FONT FACE=VERDANA SIZE=2 COLOR=RED><B>" + strStatus + "</B></FONT></TD></TR>");
+                objFile.write("<TR COLS=6><TD BGCOLOR=#EEEEEE WIDTH=15%><FONT FACE=VERDANA COLOR=BLACK SIZE=2>" + ThreadCache.getInstance().getProperty("TCID") + "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=45%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><A HREF='" + ThreadCache.getInstance().getProperty("relativePath") + "'>" + ThreadCache.getInstance().getProperty("testcasename") + "</A></FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=20%><FONT FACE=VERDANA COLOR=BLACK SIZE=2>"
+                        + ThreadCache.getInstance().getProperty("testcasename") + "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2>" + intDateDiff + "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=WINGDINGS 2' SIZE=5 COLOR=RED>O</FONT><FONT FACE=VERDANA SIZE=2 COLOR=RED><B>" + strStatus + "</B></FONT></TD></TR>");
             }
             objFile.close();
             String ALMUpdate = properties.getProperty("ALMUpdate");
             String Screenshot = properties.getProperty("Screenshot");
             if (ALMUpdate.contains("YES") && Screenshot.contains("NO")) {
-                Common.RunScript(tCaseID, tSetID, almStatus, PCThreadCache.getInstance().getProperty("FileName") + "*****" + PCThreadCache.getInstance().getProperty(PCConstants.FailureSSPath) + "", PCThreadCache.getInstance().getProperty("testcasename"), properties.getProperty("ALMUserName"), properties.getProperty("ALMPassword"), properties.getProperty("sQCURL"), properties.getProperty("sDomain"), properties.getProperty("sProject"), properties.getProperty("ALMDraftRun"));
+                Common.RunScript(tCaseID, tSetID, almStatus, ThreadCache.getInstance().getProperty("FileName") + "*****" + ThreadCache.getInstance().getProperty(PCConstants.FailureSSPath) + "", ThreadCache.getInstance().getProperty("testcasename"), properties.getProperty("ALMUserName"), properties.getProperty("ALMPassword"), properties.getProperty("sQCURL"), properties.getProperty("sDomain"), properties.getProperty("sProject"), properties.getProperty("ALMDraftRun"));
             }
             if (ALMUpdate.contains("YES") && Screenshot.contains("YES")) {
-                Common.RunScript(tCaseID, tSetID, almStatus, PCThreadCache.getInstance().getProperty("FileName") + "*****" + PCThreadCache.getInstance().getProperty(PCConstants.ALMScreenshotPath) + ".zip", PCThreadCache.getInstance().getProperty("testcasename"), properties.getProperty("ALMUserName"), properties.getProperty("ALMPassword"), properties.getProperty("sQCURL"), properties.getProperty("sDomain"), properties.getProperty("sProject"), properties.getProperty("ALMDraftRun"));
+                Common.RunScript(tCaseID, tSetID, almStatus, ThreadCache.getInstance().getProperty("FileName") + "*****" + ThreadCache.getInstance().getProperty(PCConstants.ALMScreenshotPath) + ".zip", ThreadCache.getInstance().getProperty("testcasename"), properties.getProperty("ALMUserName"), properties.getProperty("ALMPassword"), properties.getProperty("sQCURL"), properties.getProperty("sDomain"), properties.getProperty("sProject"), properties.getProperty("ALMDraftRun"));
             }
             g_SummaryFlag = 0;
         }

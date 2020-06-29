@@ -5,18 +5,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import com.gw.constants.PCConstants;
 import com.gw.utilities.Common;
 import com.gw.utilities.CommonManager;
 import com.gw.utilities.HTML;
 import com.gw.utilities.LocalDriverFactory;
 import com.gw.utilities.ManagerDriver;
-import com.gw.utilities.ManagerPhantomJS;
-import com.gw.utilities.PhantomJSDriverFactory;
 import com.gw.utilities.RemoteDriverFactory;
-import com.gw.utilities.ThreadCache;
-import com.gw.utilities.ThreadCacheManager;
+//import com.gw.utilities.ThreadCache;
+//import com.gw.utilities.ThreadCacheManager;
 
 public class ParallelExecutor implements Runnable {
 
@@ -51,10 +48,6 @@ public class ParallelExecutor implements Runnable {
 		boolean isTestCasePass = false;
 		WebDriver driver = null;
 		String execMode = HTML.properties.getProperty("EXECUTIONMODE");
-		if (HTML.properties.getProperty("TypeOfAutomation").equalsIgnoreCase("HEADLESS")) {
-			PhantomJSDriverService service = PhantomJSDriverFactory.getInstance().createPhantomJSDriver();
-			ManagerPhantomJS.getInstance().setPhantomJSDriverService(service);
-		}
 		if (execMode.equalsIgnoreCase(PCConstants.executionModeLocal)) {
 			driver = LocalDriverFactory.getInstance().createNewDriver();
 		} else {
@@ -64,8 +57,8 @@ public class ParallelExecutor implements Runnable {
 		CommonManager.getInstance().setCommon(common);
 		ManagerDriver.getInstance().setWebDriver(driver);
 		
-		ThreadCacheManager tm = new ThreadCacheManager();
-        ThreadCache.getInstance().setThreadCacheManager(tm);
+		//ThreadCacheManager tm = new ThreadCacheManager();
+        //ThreadCache.getInstance().setThreadCacheManager(tm);
 		try {
 			isTestCasePass = common.RunTest("RunModeNo", strTestCaseName, workbook, region);
 		} catch (Exception e) {

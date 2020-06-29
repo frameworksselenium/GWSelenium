@@ -53,17 +53,17 @@ public class RemoteDriverFactory {
 			if (browser.toUpperCase().contains("IE")) {
 				cap = DesiredCapabilities.internetExplorer();
 			}
-			try {
-				driver = new RemoteWebDriver(new URL(ManagerPhantomJS.getInstance().getPhantomJSDriverService().getUrl().toString()), cap);
+			//try {
+				//driver = new RemoteWebDriver(new URL(ManagerPhantomJS.getInstance().getPhantomJSDriverService().getUrl().toString()), cap);
 				/*try {
 					hostname = getHostName(driver.getSessionId());
 					log.info("Thread ID = " + Thread.currentThread().getId() + " and Machine IP Address = " + hostname + "");
 				} catch (UnknownHostException e) {
 					e.printStackTrace();
 				}*/
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
+			//} catch (MalformedURLException e) {
+			//	e.printStackTrace();
+			//}
 			log.info("Headless '" + browser.toUpperCase() + "' DesiredCapabilities initiated");
 			log.info("Headless '" + browser.toUpperCase() + "' driver started");
 		}

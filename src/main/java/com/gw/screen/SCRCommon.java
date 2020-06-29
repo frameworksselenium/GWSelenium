@@ -36,7 +36,6 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.interactions.internal.Coordinates;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -47,9 +46,8 @@ import com.gw.utilities.Common;
 import com.gw.utilities.CommonManager;
 import com.gw.utilities.FlatFile;
 import com.gw.utilities.HTML;
-import com.gw.utilities.IconReader;
 import com.gw.utilities.ManagerDriver;
-import com.gw.utilities.PCThreadCache;
+import com.gw.utilities.ThreadCache;
 import com.gw.utilities.XlsxReader;
 import org.w3c.dom.Document;
 
@@ -57,7 +55,7 @@ public class SCRCommon {
 
     public static String sheetname = "SCRCommon";
     private static org.apache.log4j.Logger logger;
-    private org.apache.log4j.Logger loggers = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+    private org.apache.log4j.Logger loggers = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
     public WebDriver driver = ManagerDriver.getInstance().getWebDriver();
     Common common = CommonManager.getInstance().getCommon();
     public static FlatFile E2EWrite;
@@ -82,7 +80,7 @@ public class SCRCommon {
     }
 
     public static Boolean VerifyDropDownFalse(String eleObjID, String expValues) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
 
         // TODO Auto-generated method stub
         boolean status = false;
@@ -99,7 +97,7 @@ public class SCRCommon {
             for (int k = 0; k < gwListBox.size(); k++) {
                 if (sExpListValue[j].equals(gwListBox.get(k).getText())) {
                     logger.info("Expected UI dropdown value - " + sExpListValue[j] + " is available in List");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are available in UI List", "Expected Dropdown Value - " + sExpListValue[j] + " available in UI list", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are available in UI List", "Expected Dropdown Value - " + sExpListValue[j] + " available in UI list", "FAIL");
                     blnMatchFound = true;
                     break;
                 }
@@ -107,7 +105,7 @@ public class SCRCommon {
             status = CommonManager.getInstance().getCommon().SafeAction(By.id(eleObjID), "ele", "eleDropdown");
             if (!blnMatchFound) {
                 logger.info("Expected UI dropdown value - " + sExpListValue[j] + " is not available in List");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are not available in UI List", "Expected Dropdown Value - " + sExpListValue[j] + " not available in UI list", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are not available in UI List", "Expected Dropdown Value - " + sExpListValue[j] + " not available in UI list", "PASS");
                 status = CommonManager.getInstance().getCommon().SafeAction(By.id(eleObjID), "ele", "eleDropdown");
             }
         }
@@ -116,7 +114,7 @@ public class SCRCommon {
     }
 
     public static boolean DataWebTable(By id, int sRow, int sCol, String strReadString, String ActionClick, String sTagName) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         Common common = CommonManager.getInstance().getCommon();
         boolean SearchString = false;
         boolean Status = false;
@@ -145,10 +143,10 @@ public class SCRCommon {
         }
         if (SearchString) {
             logger.info("Search String available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and search string is  '" + strReadString + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and search string is  '" + strReadString + "'", "PASS");
         } else {
             logger.info("Search String not available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System not searched string in table and search string is  '" + strReadString + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System not searched string in table and search string is  '" + strReadString + "'", "FAIL");
             Status = false;
         }
         return Status;
@@ -159,14 +157,14 @@ public class SCRCommon {
         CommonManager.getInstance().getCommon();
         HashMap<String, Object> updateColumnNameValues = new HashMap<String, Object>();
         HashMap<String, Object> whereConstraint = new HashMap<String, Object>();
-        String accountNumber = PCThreadCache.getInstance().getProperty(PCConstants.CACHE_ACCOUNT_NUMBER);
-        String tcID = PCThreadCache.getInstance().getProperty("TCID");
-        String policyNumber = PCThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_NUMBER);
-        String policyNumberSearch = PCThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_NUMBER_SEARCH);
-        String submissionNumber = PCThreadCache.getInstance().getProperty(PCConstants.CACHE_SUBMISSION_NUMBER);
-        String PolicyeffDate = PCThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_EFF_DATE);
-        String PolicyexpDate = PCThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_EXP_DATE);
-        String strTCID = PCThreadCache.getInstance().getProperty("TCID");
+        String accountNumber = ThreadCache.getInstance().getProperty(PCConstants.CACHE_ACCOUNT_NUMBER);
+        String tcID = ThreadCache.getInstance().getProperty("TCID");
+        String policyNumber = ThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_NUMBER);
+        String policyNumberSearch = ThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_NUMBER_SEARCH);
+        String submissionNumber = ThreadCache.getInstance().getProperty(PCConstants.CACHE_SUBMISSION_NUMBER);
+        String PolicyeffDate = ThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_EFF_DATE);
+        String PolicyexpDate = ThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_EXP_DATE);
+        String strTCID = ThreadCache.getInstance().getProperty("TCID");
         System.out.println(Runtime.getRuntime().freeMemory());
         boolean status = false;
         String[] sfunValue = sValue.split(":::");
@@ -179,7 +177,7 @@ public class SCRCommon {
             String value = sXL.getCellData(sfunValue[0], 0, i);
             // String sheetName = sXL.getCellData("TestData", 1, i);
             if (!value.isEmpty()) {
-                // if(PCThreadCache.getInstance().getProperty("TCID").equals(value))
+                // if(ThreadCache.getInstance().getProperty("TCID").equals(value))
                 if (strTCID.equals(value)) {
                     switch (sfunValue[1].toUpperCase()) {
                         case "ACCOUNTNUMBER":
@@ -192,16 +190,16 @@ public class SCRCommon {
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.edtaccountNumber, accountNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
+                            ThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
                             //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHACCOUNT, updateColumnNameValues, whereConstraint);
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update "+sfunValue[2]+" Set AccountNumber = '"+accountNumber+"' where
-                            // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update SearchAccount Set edtaccountNumber = '"+accountNumber+"' where
-                            // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             status = true;
                             break;
                         case "POLICYNUMBER":
@@ -209,46 +207,46 @@ public class SCRCommon {
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.AccountNumber, accountNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
+                            ThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
                             //status = sXL.executeUpdateQuery(sfunValue[2], updateColumnNameValues, whereConstraint);
 
                             updateColumnNameValues.clear();
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.edtaccountNumber, accountNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
+                            ThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
                             //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHACCOUNT, updateColumnNameValues, whereConstraint);
 
                             updateColumnNameValues.clear();
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.edtPolicyNumber, policyNumberSearch);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
+                            ThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
                             //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHPOLICY, updateColumnNameValues, whereConstraint);
 
                             updateColumnNameValues.clear();
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.PolicyNumber, policyNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
+                            ThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
                             //status = sXL.executeUpdateQuery(sfunValue[2], updateColumnNameValues, whereConstraint);
 
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update "+sfunValue[2]+" Set AccountNumber = '"+accountNumber+"' where
-                            // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update SearchAccount Set edtaccountNumber = '"+accountNumber+"' where
-                            // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update SearchPolicy Set edtPolicyNumber = '"+Payment.PolicyNumberSearch+"'
-                            // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update "+sfunValue[2]+" Set PolicyNumber = '"+Payment.PolicyNumber+"' where
-                            // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             status = true;
                             break;
                         case "SUBMISSIONNUMBER":
@@ -256,58 +254,58 @@ public class SCRCommon {
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.AccountNumber, accountNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
+                            ThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
                             //status = sXL.executeUpdateQuery(sfunValue[2], updateColumnNameValues, whereConstraint);
 
                             updateColumnNameValues.clear();
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.edtaccountNumber, accountNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
+                            ThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
                             //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHACCOUNT, updateColumnNameValues, whereConstraint);
 
                             updateColumnNameValues.clear();
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.edtPolicyNumber, policyNumberSearch);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
+                            ThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
                             //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHPOLICY, updateColumnNameValues, whereConstraint);
 
                             updateColumnNameValues.clear();
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.PolicyNumber, policyNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
+                            ThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
                             //status = sXL.executeUpdateQuery(sfunValue[2], updateColumnNameValues, whereConstraint);
 
                             updateColumnNameValues.clear();
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.SubmissionNumber, submissionNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("SubmissionNumber", submissionNumber);
+                            ThreadCache.getInstance().setProperty("SubmissionNumber", submissionNumber);
                             //status = sXL.executeUpdateQuery(sfunValue[2], updateColumnNameValues, whereConstraint);
 
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update "+sfunValue[2]+" Set AccountNumber = '"+accountNumber+"' where
-                            // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update SearchAccount Set edtaccountNumber = '"+accountNumber+"' where
-                            // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update SearchPolicy Set edtPolicyNumber = '"+Payment.PolicyNumberSearch+"'
-                            // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update "+sfunValue[2]+" Set PolicyNumber = '"+Payment.PolicyNumber+"' where
-                            // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update "+sfunValue[2]+" Set SubmissionNumber =
                             // '"+Payment.SubmissionNumber+"' where
-                            // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             status = true;
                             break;
                         case "POLICYNUMBERONLY":
@@ -315,24 +313,24 @@ public class SCRCommon {
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.PolicyNumber, policyNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
+                            ThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
                             //status = sXL.executeUpdateQuery(sfunValue[2], updateColumnNameValues, whereConstraint);
 
                             updateColumnNameValues.clear();
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.edtPolicyNumber, policyNumberSearch);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
+                            ThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
                             //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHPOLICY, updateColumnNameValues, whereConstraint);
 
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update "+sfunValue[2]+" Set PolicyNumber = '"+Payment.PolicyNumber+"' where
-                            // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update SearchPolicy Set edtPolicyNumber = '"+Payment.PolicyNumberSearch+"'
-                            // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             status = true;
                             break;
                         case "CLAPOLICYNUMBERONLY":
@@ -340,24 +338,24 @@ public class SCRCommon {
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.CLAPolicyNumber, policyNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("CLAPolicyNumber", policyNumber);
+                            ThreadCache.getInstance().setProperty("CLAPolicyNumber", policyNumber);
                             //status = sXL.executeUpdateQuery(sfunValue[2], updateColumnNameValues, whereConstraint);
 
                             updateColumnNameValues.clear();
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.edtPolicyNumber, policyNumberSearch);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
+                            ThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
                             //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHPOLICY, updateColumnNameValues, whereConstraint);
 
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update "+sfunValue[2]+" Set CLAPolicyNumber = '"+Payment.PolicyNumber+"'
-                            // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update SearchPolicy Set edtPolicyNumber = '"+Payment.PolicyNumberSearch+"'
-                            // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             status = true;
                             break;
                         case "ACCOUNTCLAPOLICYNUMBER":
@@ -365,46 +363,46 @@ public class SCRCommon {
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.AccountNumber, accountNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
+                            ThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
                             //status = sXL.executeUpdateQuery(sfunValue[2], updateColumnNameValues, whereConstraint);
 
                             updateColumnNameValues.clear();
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.CLAPolicyNumber, policyNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("CLAPolicyNumber", policyNumber);
+                            ThreadCache.getInstance().setProperty("CLAPolicyNumber", policyNumber);
                             //status = sXL.executeUpdateQuery(sfunValue[2], updateColumnNameValues, whereConstraint);
 
                             updateColumnNameValues.clear();
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.edtPolicyNumber, policyNumberSearch);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
+                            ThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
                             //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHPOLICY, updateColumnNameValues, whereConstraint);
 
                             updateColumnNameValues.clear();
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.edtaccountNumber, accountNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
+                            ThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
                             //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHACCOUNT, updateColumnNameValues, whereConstraint);
 
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update "+sfunValue[2]+" Set AccountNumber = '"+accountNumber+"' where
-                            // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update "+sfunValue[2]+" Set CLAPolicyNumber = '"+Payment.PolicyNumber+"'
-                            // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update SearchPolicy Set edtPolicyNumber = '"+Payment.PolicyNumberSearch+"'
-                            // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update SearchAccount Set edtaccountNumber = '"+accountNumber+"' where
-                            // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             status = true;
                             break;
 
@@ -413,24 +411,24 @@ public class SCRCommon {
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.CLAPolicyEffDate, PolicyeffDate);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("CLAPolicyEffDate", PolicyeffDate);
+                            ThreadCache.getInstance().setProperty("CLAPolicyEffDate", PolicyeffDate);
                             //status = sXL.executeUpdateQuery(sfunValue[2], updateColumnNameValues, whereConstraint);
 
                             updateColumnNameValues.clear();
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.CLAPolicyExpDate, PolicyexpDate);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("CLAPolicyExpDate", PolicyexpDate);
+                            ThreadCache.getInstance().setProperty("CLAPolicyExpDate", PolicyexpDate);
                             //status = sXL.executeUpdateQuery(sfunValue[2], updateColumnNameValues, whereConstraint);
 
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update "+sfunValue[2]+" Set PolicyNumber = '"+Payment.PolicyNumber+"' where
-                            // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             // status =
                             // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                             // "Update SearchPolicy Set edtPolicyNumber = '"+Payment.PolicyNumberSearch+"'
-                            // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                            // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                             status = true;
                             break;
                         case "POLICYMOVE":
@@ -438,21 +436,21 @@ public class SCRCommon {
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.AccountNumber, accountNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
+                            ThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
                             //status = sXL.executeUpdateQuery(PCConstants.SHEET_POLICYMOVE, updateColumnNameValues, whereConstraint);
 
                             updateColumnNameValues.clear();
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.PolicyNumber, policyNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
+                            ThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
                             //status = sXL.executeUpdateQuery(PCConstants.SHEET_POLICYMOVE, updateColumnNameValues, whereConstraint);
 
                             updateColumnNameValues.clear();
                             whereConstraint.clear();
                             updateColumnNameValues.put(PCConstants.PolicyNumber, policyNumber);
                             whereConstraint.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
+                            ThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
                             //status = sXL.executeUpdateQuery(PCConstants.SHEET_ACCOUNTHISTORY, updateColumnNameValues, whereConstraint);
                             status = true;
                             break;
@@ -467,17 +465,17 @@ public class SCRCommon {
     }
 
     public static boolean testData(String sValue) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         System.out.println("SCRCommon.testDataFill log start = " + Runtime.getRuntime().totalMemory());
         HashMap<String, Object> updateColumnNameValues = new HashMap<String, Object>();
         HashMap<String, Object> whereConstraint = new HashMap<String, Object>();
-        String accountNumber = PCThreadCache.getInstance().getProperty(PCConstants.CACHE_ACCOUNT_NUMBER);
-        String tcID = PCThreadCache.getInstance().getProperty("TCID");
-        String policyNumber = PCThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_NUMBER);
-        String policyNumberSearch = PCThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_NUMBER_SEARCH);
-        String submissionNumber = PCThreadCache.getInstance().getProperty(PCConstants.CACHE_SUBMISSION_NUMBER);
-        String PolicyeffDate = PCThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_EFF_DATE);
-        String PolicyexpDate = PCThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_EXP_DATE);
+        String accountNumber = ThreadCache.getInstance().getProperty(PCConstants.CACHE_ACCOUNT_NUMBER);
+        String tcID = ThreadCache.getInstance().getProperty("TCID");
+        String policyNumber = ThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_NUMBER);
+        String policyNumberSearch = ThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_NUMBER_SEARCH);
+        String submissionNumber = ThreadCache.getInstance().getProperty(PCConstants.CACHE_SUBMISSION_NUMBER);
+        String PolicyeffDate = ThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_EFF_DATE);
+        String PolicyexpDate = ThreadCache.getInstance().getProperty(PCConstants.CACHE_POLICY_EXP_DATE);
         System.out.println(Runtime.getRuntime().freeMemory());
         boolean status = false;
         String[] sfunValue = sValue.split(":::");
@@ -493,16 +491,16 @@ public class SCRCommon {
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.edtaccountNumber, accountNumber);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
+                ThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
                 //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHACCOUNT, updateColumnNameValues, whereConstraint);
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update "+sfunValue[2]+" Set AccountNumber = '"+accountNumber+"' where
-                // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update SearchAccount Set edtaccountNumber = '"+accountNumber+"' where
-                // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 status = true;
                 break;
             case "POLICYNUMBER":
@@ -510,46 +508,46 @@ public class SCRCommon {
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.AccountNumber, accountNumber);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
+                ThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
                 //status = sXL.executeUpdateQuery(sfunValue[1], updateColumnNameValues, whereConstraint);
 
                 updateColumnNameValues.clear();
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.edtaccountNumber, accountNumber);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
+                ThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
                 //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHACCOUNT, updateColumnNameValues, whereConstraint);
 
                 updateColumnNameValues.clear();
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.edtPolicyNumber, policyNumberSearch);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
+                ThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
                 //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHPOLICY, updateColumnNameValues, whereConstraint);
 
                 updateColumnNameValues.clear();
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.PolicyNumber, policyNumber);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
+                ThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
                 //status = sXL.executeUpdateQuery(sfunValue[1], updateColumnNameValues, whereConstraint);
 
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update "+sfunValue[2]+" Set AccountNumber = '"+accountNumber+"' where
-                // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update SearchAccount Set edtaccountNumber = '"+accountNumber+"' where
-                // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update SearchPolicy Set edtPolicyNumber = '"+Payment.PolicyNumberSearch+"'
-                // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update "+sfunValue[2]+" Set PolicyNumber = '"+Payment.PolicyNumber+"' where
-                // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 status = true;
                 break;
 
@@ -558,58 +556,58 @@ public class SCRCommon {
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.AccountNumber, accountNumber);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
+                ThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
                 //status = sXL.executeUpdateQuery(sfunValue[1], updateColumnNameValues, whereConstraint);
 
                 updateColumnNameValues.clear();
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.edtaccountNumber, accountNumber);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
+                ThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
                 //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHACCOUNT, updateColumnNameValues, whereConstraint);
 
                 updateColumnNameValues.clear();
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.edtPolicyNumber, policyNumberSearch);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
+                ThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
                 //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHPOLICY, updateColumnNameValues, whereConstraint);
 
                 updateColumnNameValues.clear();
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.PolicyNumber, policyNumber);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
+                ThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
                 //status = sXL.executeUpdateQuery(sfunValue[1], updateColumnNameValues, whereConstraint);
 
                 updateColumnNameValues.clear();
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.SubmissionNumber, submissionNumber);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("SubmissionNumber", submissionNumber);
+                ThreadCache.getInstance().setProperty("SubmissionNumber", submissionNumber);
                 //status = sXL.executeUpdateQuery(sfunValue[1], updateColumnNameValues, whereConstraint);
 
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update "+sfunValue[2]+" Set AccountNumber = '"+accountNumber+"' where
-                // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update SearchAccount Set edtaccountNumber = '"+accountNumber+"' where
-                // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update SearchPolicy Set edtPolicyNumber = '"+Payment.PolicyNumberSearch+"'
-                // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update "+sfunValue[2]+" Set PolicyNumber = '"+Payment.PolicyNumber+"' where
-                // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update "+sfunValue[2]+" Set SubmissionNumber =
                 // '"+Payment.SubmissionNumber+"' where
-                // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 status = true;
                 break;
             case "POLICYNUMBERONLY":
@@ -617,24 +615,24 @@ public class SCRCommon {
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.PolicyNumber, policyNumber);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
+                ThreadCache.getInstance().setProperty("PolicyNumber", policyNumber);
                 //status = sXL.executeUpdateQuery(sfunValue[1], updateColumnNameValues, whereConstraint);
 
                 updateColumnNameValues.clear();
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.edtPolicyNumber, policyNumberSearch);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
+                ThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
                 //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHPOLICY, updateColumnNameValues, whereConstraint);
 
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update "+sfunValue[2]+" Set PolicyNumber = '"+Payment.PolicyNumber+"' where
-                // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update SearchPolicy Set edtPolicyNumber = '"+Payment.PolicyNumberSearch+"'
-                // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 status = true;
                 break;
             case "CLAPOLICYNUMBERONLY":
@@ -642,24 +640,24 @@ public class SCRCommon {
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.CLAPolicyNumber, policyNumber);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("CLAPolicyNumber", policyNumber);
+                ThreadCache.getInstance().setProperty("CLAPolicyNumber", policyNumber);
                 //status = sXL.executeUpdateQuery(sfunValue[1], updateColumnNameValues, whereConstraint);
 
                 updateColumnNameValues.clear();
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.edtPolicyNumber, policyNumberSearch);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
+                ThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
                 //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHPOLICY, updateColumnNameValues, whereConstraint);
 
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update "+sfunValue[2]+" Set CLAPolicyNumber = '"+Payment.PolicyNumber+"'
-                // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update SearchPolicy Set edtPolicyNumber = '"+Payment.PolicyNumberSearch+"'
-                // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 status = true;
                 break;
             case "ACCOUNTCLAPOLICYNUMBER":
@@ -667,46 +665,46 @@ public class SCRCommon {
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.AccountNumber, accountNumber);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
+                ThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
                 //status = sXL.executeUpdateQuery(sfunValue[1], updateColumnNameValues, whereConstraint);
 
                 updateColumnNameValues.clear();
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.CLAPolicyNumber, policyNumber);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("CLAPolicyNumber", policyNumber);
+                ThreadCache.getInstance().setProperty("CLAPolicyNumber", policyNumber);
                 //status = sXL.executeUpdateQuery(sfunValue[1], updateColumnNameValues, whereConstraint);
 
                 updateColumnNameValues.clear();
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.edtPolicyNumber, policyNumberSearch);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
+                ThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
                 //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHPOLICY, updateColumnNameValues, whereConstraint);
 
                 updateColumnNameValues.clear();
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.edtaccountNumber, accountNumber);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
+                ThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
                 //status = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHACCOUNT, updateColumnNameValues, whereConstraint);
 
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update "+sfunValue[2]+" Set AccountNumber = '"+accountNumber+"' where
-                // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update "+sfunValue[2]+" Set CLAPolicyNumber = '"+Payment.PolicyNumber+"'
-                // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update SearchPolicy Set edtPolicyNumber = '"+Payment.PolicyNumberSearch+"'
-                // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update SearchAccount Set edtaccountNumber = '"+accountNumber+"' where
-                // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 status = true;
                 break;
 
@@ -715,24 +713,24 @@ public class SCRCommon {
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.CLAPolicyEffDate, PolicyeffDate);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("CLAPolicyEffDate", PolicyeffDate);
+                ThreadCache.getInstance().setProperty("CLAPolicyEffDate", PolicyeffDate);
                 //status = sXL.executeUpdateQuery(sfunValue[1], updateColumnNameValues, whereConstraint);
 
                 updateColumnNameValues.clear();
                 whereConstraint.clear();
                 updateColumnNameValues.put(PCConstants.CLAPolicyExpDate, PolicyexpDate);
                 whereConstraint.put(PCConstants.ID, tcID);
-                PCThreadCache.getInstance().setProperty("CLAPolicyExpDate", PolicyexpDate);
+                ThreadCache.getInstance().setProperty("CLAPolicyExpDate", PolicyexpDate);
                 //status = sXL.executeUpdateQuery(sfunValue[1], updateColumnNameValues, whereConstraint);
 
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update "+sfunValue[2]+" Set PolicyNumber = '"+Payment.PolicyNumber+"' where
-                // ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 // status =
                 // common.UpdateQuery(HTML.properties.getProperty("DataSheetName"),
                 // "Update SearchPolicy Set edtPolicyNumber = '"+Payment.PolicyNumberSearch+"'
-                // where ID='"+PCThreadCache.getInstance().getProperty("TCID")+"'");
+                // where ID='"+ThreadCache.getInstance().getProperty("TCID")+"'");
                 status = true;
                 break;
         }
@@ -759,7 +757,7 @@ public class SCRCommon {
 
 
     public static String ReturnThirtydaysAfterDate() {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         String status = null;
         try {
             Calendar Date = Calendar.getInstance();
@@ -775,7 +773,7 @@ public class SCRCommon {
     }
 
     public static boolean ReturnCurrentDate(String sFuncValue) {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         Common common = CommonManager.getInstance().getCommon();
         boolean status = false;
         String edt = "edt" + sFuncValue;
@@ -792,7 +790,7 @@ public class SCRCommon {
     }
 
     public static boolean ReturnOneYearFutureDate(String sFuncValue) {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         boolean status = false;
         Common common = CommonManager.getInstance().getCommon();
         String edt = "edt" + sFuncValue;
@@ -809,7 +807,7 @@ public class SCRCommon {
     }
 
     public static int TableRowCount(By locator) {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         Common common = CommonManager.getInstance().getCommon();
         WebElement table = common.returnObject(locator);
         List<WebElement> rows_table = table.findElements(By.tagName("tr"));
@@ -818,7 +816,7 @@ public class SCRCommon {
     }
 
     public static String ReturnOneYearFromDate() {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         String status = null;
         try {
             Calendar Date = Calendar.getInstance();
@@ -833,32 +831,32 @@ public class SCRCommon {
     }
 
     public static boolean CommonWait(String sFuncValue) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         boolean status = true;
         Common common = CommonManager.getInstance().getCommon();
         String[] sValue = sFuncValue.split(":::");
         common.WaitForPageToBeReady();
         status = common.WaitUntilClickable(Common.o.getObject("" + sValue[0] + ""), Integer.valueOf(HTML.properties.getProperty("VERYLONGWAIT")));
         if (status == false) {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Object " + sValue[0] + " is not ready to click", "Object " + sValue[0] + " should ready to click", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Object " + sValue[0] + " is not ready to click", "Object " + sValue[0] + " should ready to click", "FAIL");
         }
         return status;
     }
 
     public static Boolean ODSWait(int odswait1) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         Thread.sleep(odswait1);
         return true;
     }
 
     public static Boolean MDMWait() throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         Thread.sleep(Integer.valueOf(HTML.properties.getProperty("MDMWAIT")));
         return true;
     }
 
     public static boolean VerifyBannerMsg(String strValue) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         Common common = CommonManager.getInstance().getCommon();
         String strObjName = "";
         String[] arrValue = strValue.split(":::");
@@ -886,14 +884,14 @@ public class SCRCommon {
         if (status == true) {
 
             if (strErrorMsg.toUpperCase().equalsIgnoreCase(arrValue[1])) {
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify whether banner message is displayed as expected", "Expected banner message '" + arrValue[1] + "'  is matching with Actual : '" + strErrorMsg + "'", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify whether banner message is displayed as expected", "Expected banner message '" + arrValue[1] + "'  is matching with Actual : '" + strErrorMsg + "'", "PASS");
                 status = true;
             } else {
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify whether banner message is displayed as expected", "Expected banner message '" + arrValue[1] + "' is not matching with Actual : '" + strErrorMsg + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify whether banner message is displayed as expected", "Expected banner message '" + arrValue[1] + "' is not matching with Actual : '" + strErrorMsg + "'", "FAIL");
                 status = false;
             }
         } else {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify whether banner message is displayed or not", "Banner message is not displayed : '" + strErrorMsg + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify whether banner message is displayed or not", "Banner message is not displayed : '" + strErrorMsg + "'", "FAIL");
             status = false;
         }
 
@@ -901,7 +899,7 @@ public class SCRCommon {
     }
 
     public static boolean VerifyErrorMessages(String sValue) throws IOException {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         boolean Status = true;
         String expectedText = null;
         String[] sfunVal = sValue.split(":::::");
@@ -916,13 +914,13 @@ public class SCRCommon {
                 if (errorText.contentEquals(expectedText)) {
                     matchStatus = true;
                     logger.info("Expected error text is matching with actual text '" + expectedText + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "Expected error text is matching with actual text '" + expectedText + "'", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "Expected error text is matching with actual text '" + expectedText + "'", "PASS");
                     break;
                 }
             }
             if (matchStatus == false) {
                 logger.info("Expected error text is not matching with actual text '" + expectedText + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "Expected error text is not matching with actual text '" + expectedText + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "Expected error text is not matching with actual text '" + expectedText + "'", "FAIL");
                 // Status = false;
             }
         }
@@ -939,7 +937,7 @@ public class SCRCommon {
         // String expectedText=null;
         if (common.ElementSize(Common.o.getObject("eleValidationMsg")) == 0) {
             logger.info("No Error/Warning messages in screen to validate");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen", "PASS");
             // status=true;
 
         } else {
@@ -970,51 +968,51 @@ public class SCRCommon {
                 logger.info("Visibility of error message " + expectedText + " :" + matchStatus);
             }
             if (c == expMsg.length) {
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected Error Messags should be displayed '" + "'", "Expected Error message(s) displayed", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected Error Messags should be displayed '" + "'", "Expected Error message(s) displayed", "PASS");
                 status = true;
             } else
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected Error Messags should be displayed '" + "'", "Expected Error message(s) not displayed", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected Error Messags should be displayed '" + "'", "Expected Error message(s) not displayed", "FAIL");
         }
         return true;
     }
 
     public static Boolean PageVerify(String strPageName) throws Exception {
-        System.out.println("PCThreadCache.getInstance().getProperty() is :::" + PCThreadCache.getInstance().getProperty("TCID"));
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        System.out.println("ThreadCache.getInstance().getProperty() is :::" + ThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         Common common = CommonManager.getInstance().getCommon();
         String ele = "ele" + strPageName;
         Boolean status = false;
         if (common.WaitUntilClickable(Common.o.getObject(ele), Integer.valueOf(HTML.properties.getProperty("LONGESTWAIT")))) {
             logger.info("System displayed '" + strPageName + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + strPageName + "'", "System displayed '" + strPageName + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + strPageName + "'", "System displayed '" + strPageName + "'", "PASS");
             status = true;
         } else {
             logger.info("System not displayed '" + strPageName + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + strPageName + "'", "System not displayed '" + strPageName + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + strPageName + "'", "System not displayed '" + strPageName + "'", "FAIL");
             status = false;
         }
         return status;
     }
 
     public static Boolean PageVerifyNotPresent(String strPageName) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         Common common = CommonManager.getInstance().getCommon();
         String ele = "ele" + strPageName;
         Boolean status = false;
         if (common.WaitUntilClickable(Common.o.getObject(ele), Integer.valueOf(HTML.properties.getProperty("LONGESTWAIT")))) {
             logger.info("System displayed '" + strPageName + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should not display '" + strPageName + "'", "System displayed '" + strPageName + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should not display '" + strPageName + "'", "System displayed '" + strPageName + "'", "FAIL");
             status = false;
         } else {
             logger.info("System not displayed '" + strPageName + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should not display '" + strPageName + "'", "System not displayed '" + strPageName + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should not display '" + strPageName + "'", "System not displayed '" + strPageName + "'", "PASS");
             status = true;
         }
         return status;
     }
 
     public static Boolean VerifyElements(String strPageName) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         Common common = CommonManager.getInstance().getCommon();
         boolean Status = true;
         String[] sfunVal = strPageName.split(":::::");
@@ -1029,11 +1027,11 @@ public class SCRCommon {
                         // Integer.valueOf(HTML.properties.getProperty("VERYLONGWAIT"))))
                         // {
                         logger.info("System displayed '" + strPageName + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + strPageName + "'", "System displayed '" + strPageName + "'", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + strPageName + "'", "System displayed '" + strPageName + "'", "PASS");
                         // Status = true;
                     } else {
                         logger.info("System not displayed '" + strPageName + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + strPageName + "'", "System not displayed '" + strPageName + "'", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + strPageName + "'", "System not displayed '" + strPageName + "'", "FAIL");
                         // Status = false;
                     }
                     break;
@@ -1041,11 +1039,11 @@ public class SCRCommon {
                     boolean popUpExist1 = common.ElementSize(Common.o.getObject(ele)) == 0;
                     if (popUpExist1 != true) {
                         logger.info("System not displayed '" + strPageName + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should not display '" + strPageName + "'", "System displayed '" + strPageName + "'", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should not display '" + strPageName + "'", "System displayed '" + strPageName + "'", "FAIL");
                         // Status = true;
                     } else {
                         logger.info("System displayed '" + strPageName + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should not display '" + strPageName + "'", "System not displayed '" + strPageName + "'", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should not display '" + strPageName + "'", "System not displayed '" + strPageName + "'", "PASS");
                         // Status = false;
                     }
             }
@@ -1054,7 +1052,7 @@ public class SCRCommon {
     }
 
     public static Boolean VerifyElement(String strPageName) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         Common common = CommonManager.getInstance().getCommon();
         boolean Status = true;
         String[] sfunVal = strPageName.split(":::::");
@@ -1069,11 +1067,11 @@ public class SCRCommon {
                         // Integer.valueOf(HTML.properties.getProperty("VERYLONGWAIT"))))
                         // {
                         logger.info("System displayed '" + strPageName + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + strPageName + "'", "System displayed '" + strPageName + "'", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + strPageName + "'", "System displayed '" + strPageName + "'", "PASS");
                         // Status = true;
                     } else {
                         logger.info("System not displayed '" + strPageName + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + strPageName + "'", "System not displayed '" + strPageName + "'", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + strPageName + "'", "System not displayed '" + strPageName + "'", "FAIL");
                         // Status = false;
                     }
                     break;
@@ -1081,11 +1079,11 @@ public class SCRCommon {
                     boolean popUpExist1 = common.ElementSize(Common.o.getObject(sfunValue[1])) != 0;
                     if (popUpExist1 == true) {
                         logger.info("System not displayed '" + strPageName + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should not display '" + strPageName + "'", "System displayed '" + strPageName + "'", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should not display '" + strPageName + "'", "System displayed '" + strPageName + "'", "FAIL");
                         // Status = true;
                     } else {
                         logger.info("System displayed '" + strPageName + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should not display '" + strPageName + "'", "System not displayed '" + strPageName + "'", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should not display '" + strPageName + "'", "System not displayed '" + strPageName + "'", "PASS");
                         // Status = false;
                     }
             }
@@ -1152,19 +1150,19 @@ public class SCRCommon {
                 }
                 if (SearchString) {
                     logger.info("Search String available in the table. '" + strReadString + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "PASS");
                     if (ActionObject) {
                         logger.info("Search and click on object in the table cell and object name is '" + actionObjetName + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "PASS");
                         Status = true;
                     } else {
                         logger.info("Search and click on object in the table cell and object name is '" + actionObjetName + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "FAIL");
                         Status = false;
                     }
                 } else {
                     logger.info("Search String not available in the table. '" + strReadString + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "FAIL");
                     Status = false;
                 }
                 break;
@@ -1203,19 +1201,19 @@ public class SCRCommon {
                     }
                     if (SearchString) {
                         logger.info("Search String available in the table. '" + strReadString + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "PASS");
                         if (ActionObject) {
                             logger.info("Search and click on object in the table cell and object name is '" + actionObjetName + "'");
-                            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "PASS");
+                            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "PASS");
                             Status = true;
                         } else {
                             logger.info("Search and click on object in the table cell and object name is '" + actionObjetName + "'");
-                            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "FAIL");
+                            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "FAIL");
                             Status = false;
                         }
                     } else {
                         logger.info("Search String not available in the table. '" + strReadString + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "FAIL");
                         Status = false;
                     }
                 }
@@ -1232,16 +1230,16 @@ public class SCRCommon {
     }
 
     public static boolean VerifyPolicyStatus(String sValue) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         boolean status = false;
         Common common = CommonManager.getInstance().getCommon();
         // Thread.sleep(8000);
         String strPolicyStatus = common.ReadElement(Common.o.getObject("eleCLAPolicyStatus"), Integer.valueOf(HTML.properties.getProperty("LONGWAIT")));
         if (strPolicyStatus.equalsIgnoreCase(sValue)) {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify the policy status", "Application policy status is matching with expected status: '" + strPolicyStatus + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify the policy status", "Application policy status is matching with expected status: '" + strPolicyStatus + "'", "PASS");
             status = true;
         } else {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify the policy status", "Application policy status is not matching with expected status: '" + strPolicyStatus + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify the policy status", "Application policy status is not matching with expected status: '" + strPolicyStatus + "'", "FAIL");
             status = false;
         }
         return status;
@@ -1266,10 +1264,10 @@ public class SCRCommon {
             }
             if (sApplnValue.equals(sValue[1])) {
                 status = true;
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display expected standardized message", "System displayed" + sApplnValue + "message as expected", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display expected standardized message", "System displayed" + sApplnValue + "message as expected", "PASS");
             } else {
                 status = false;
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display expected standardized message", "System did not display" + sApplnValue + "message as expected", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display expected standardized message", "System did not display" + sApplnValue + "message as expected", "FAIL");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1303,7 +1301,7 @@ public class SCRCommon {
     }
 
     public static Boolean VerifyElementText(String strPageName) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         logger.info("Verifying element text...");
         boolean Status = true;
         Common common = CommonManager.getInstance().getCommon();
@@ -1324,12 +1322,12 @@ public class SCRCommon {
 
             {
                 logger.info("System displayed '" + sfunValue[1] + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + sfunValue[1] + "'", "System displayed '" + txt + "'", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + sfunValue[1] + "'", "System displayed '" + txt + "'", "PASS");
 
                 // Status = true;
             } else {
                 logger.info("System not displayed '" + txt.toUpperCase() + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + sfunValue[1] + "'",
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + sfunValue[1] + "'",
 
                         "System  displayed '" + txt + "'", "FAIL");
 
@@ -1358,18 +1356,18 @@ public class SCRCommon {
                     if (errorText.toUpperCase().contains(expectedText.toUpperCase()) || (expectedText.toUpperCase().contains(errorText.toUpperCase()))) {
                         matchStatus = true;
                         logger.info("Expected text '" + expectedText + "' is matching/ contains with actual text '" + errorText + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected text '" + expectedText + "' should matching with actual text '" + errorText + "'", "Expected text '" + expectedText + "' is matching with actual text '" + errorText + "'", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected text '" + expectedText + "' should matching with actual text '" + errorText + "'", "Expected text '" + expectedText + "' is matching with actual text '" + errorText + "'", "PASS");
                         break;
                     }
                 }
                 if (!matchStatus) {
                     logger.info("Expected text '" + expectedText + "' is not matching with actual text '" + errorText + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected text '" + expectedText + "' should matching with actual text '" + errorText + "'", "Expected text '" + expectedText + "' is not matching with actual text '" + errorText + "'", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected text '" + expectedText + "' should matching with actual text '" + errorText + "'", "Expected text '" + expectedText + "' is not matching with actual text '" + errorText + "'", "FAIL");
                     // Status = false;
                 }
             }
         } else {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + sfunVal[0] + " element should be found", "" + sfunVal[0] + " not found", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + sfunVal[0] + " element should be found", "" + sfunVal[0] + " not found", "FAIL");
         }
         return Status;
     }
@@ -1392,11 +1390,11 @@ public class SCRCommon {
             }
             if (txt.equalsIgnoreCase(sfunValue[1])) {
                 logger.info("System displayed '" + sfunValue[1] + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + sfunValue[1] + "'", "System displayed '" + sfunValue[1] + "'", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + sfunValue[1] + "'", "System displayed '" + sfunValue[1] + "'", "PASS");
                 // Status = true;
             } else {
                 logger.info("System not displayed '" + sfunValue[1] + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + sfunValue[1] + "'", "System not displayed '" + sfunValue[1] + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + sfunValue[1] + "'", "System not displayed '" + sfunValue[1] + "'", "FAIL");
                 // Status = false;
             }
         }
@@ -1419,11 +1417,11 @@ public class SCRCommon {
             }
             if (txt.equalsIgnoreCase(sfunValue[1])) {
                 logger.info("System displayed '" + sfunValue[1] + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + sfunValue[1] + "'", "System displayed '" + sfunValue[1] + "'", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + sfunValue[1] + "'", "System displayed '" + sfunValue[1] + "'", "PASS");
                 // Status = true;
             } else {
                 logger.info("System not displayed '" + txt + "intsead of" + sfunValue[1] + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + sfunValue[1] + "'", "System not displayed '" + sfunValue[1] + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + sfunValue[1] + "'", "System not displayed '" + sfunValue[1] + "'", "FAIL");
                 // Status = false;
             }
         }
@@ -1440,11 +1438,11 @@ public class SCRCommon {
 
         if (txt.trim().length() > 0) {
             logger.info("Field is displayed '" + strField + "' with value " + txt);
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + strField + "' with pre polulated value ", "System displayed '" + strField + "' with pre polulated value", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + strField + "' with pre polulated value ", "System displayed '" + strField + "' with pre polulated value", "PASS");
             // Status = true;
         } else {
             logger.info("Field is NOT displayed '" + strField + "' with value");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + strField + "' with pre polulated value ", "System is NOT displayed '" + strField + "' with pre polulated value", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + strField + "' with pre polulated value ", "System is NOT displayed '" + strField + "' with pre polulated value", "FAIL");
             // Status = false;
         }
         return Status;
@@ -1465,11 +1463,11 @@ public class SCRCommon {
             }
             if (Status) {
                 logger.info("'" + element + "' " + "Element should not available");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Element should not available '" + element + "'", "'" + element + "' " + "Element not available", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Element should not available '" + element + "'", "'" + element + "' " + "Element not available", "PASS");
                 // Status = true;
             } else {
                 logger.info("Element should not available '" + element + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "'" + element + "' " + "Element should not available", "'" + element + "' " + "Element available", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "'" + element + "' " + "Element should not available", "'" + element + "' " + "Element available", "FAIL");
                 // Status = false;
             }
 
@@ -1545,19 +1543,19 @@ public class SCRCommon {
                 }
                 if (SearchString) {
                     logger.info("Search String available in the table. '" + strReadString + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "PASS");
                     if (ActionObject) {
                         logger.info("Search and click on object in the table cell and object name is '" + actionObjetName + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "PASS");
                         Status = true;
                     } else {
                         logger.info("Search and click on object in the table cell and object name is '" + actionObjetName + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "FAIL");
                         Status = false;
                     }
                 } else {
                     logger.info("Search String not available in the table. '" + strReadString + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "FAIL");
                     Status = false;
                 }
                 break;
@@ -1596,19 +1594,19 @@ public class SCRCommon {
                     }
                     if (SearchString) {
                         logger.info("Search String available in the table. '" + strReadString + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "PASS");
                         if (ActionObject) {
                             logger.info("Search and click on object in the table cell and object name is '" + actionObjetName + "'");
-                            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "PASS");
+                            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "PASS");
                             Status = true;
                         } else {
                             logger.info("Search and click on object in the table cell and object name is '" + actionObjetName + "'");
-                            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "FAIL");
+                            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "FAIL");
                             Status = false;
                         }
                     } else {
                         logger.info("Search String not available in the table. '" + strReadString + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "FAIL");
                         Status = false;
                     }
                 }
@@ -1633,21 +1631,21 @@ public class SCRCommon {
             String date = dateFormat.format(d);
             String ssFolder = HTML.properties.getProperty("ResultsFolderPath");
             // File dir = new
-            // File("C:\\Selenium\\Workspace\\PC\\Reports\\HTMLReports\\"+PCThreadCache.getInstance().getProperty("testcasename")+"_"+
+            // File("C:\\Selenium\\Workspace\\PC\\Reports\\HTMLReports\\"+ThreadCache.getInstance().getProperty("testcasename")+"_"+
             // date);
             // File dir = new
-            // File("C:\\Selenium\\WorkSpace\\PC\\Reports\\HTMLReports\\"+PCThreadCache.getInstance().getProperty("testcasename")+"_"+
+            // File("C:\\Selenium\\WorkSpace\\PC\\Reports\\HTMLReports\\"+ThreadCache.getInstance().getProperty("testcasename")+"_"+
             // date);
             /*
              * File dir = new File(
-             * "C:\\Selenium\\WorkSpace\\PC\\Reports\\HTMLReports\\"+PCThreadCache.getInstance().getProperty("testcasename")+"_"+ date +"
+             * "C:\\Selenium\\WorkSpace\\PC\\Reports\\HTMLReports\\"+ThreadCache.getInstance().getProperty("testcasename")+"_"+ date +"
              * _" + Thread.currentThread().getId()); if (!dir.exists()) { dir.mkdir(); }
              */
 
             do {
-                reportFile = new File(PCThreadCache.getInstance().getProperty(PCConstants.ZipFolderPath) + "\\" + strSSName + "_" + date + "_" + d.getHours() + d.getMinutes() + d.getSeconds() + ".png");
-                String Path = PCThreadCache.getInstance().getProperty(PCConstants.ZipFolderPath);
-                PCThreadCache.getInstance().setProperty(PCConstants.ALMScreenshotPath, Path);
+                reportFile = new File(ThreadCache.getInstance().getProperty(PCConstants.ZipFolderPath) + "\\" + strSSName + "_" + date + "_" + d.getHours() + d.getMinutes() + d.getSeconds() + ".png");
+                String Path = ThreadCache.getInstance().getProperty(PCConstants.ZipFolderPath);
+                ThreadCache.getInstance().setProperty(PCConstants.ALMScreenshotPath, Path);
                 Status = true;
             } while (reportFile.exists());
             File screenshot = ((TakesScreenshot) ManagerDriver.getInstance().getWebDriver()).getScreenshotAs(OutputType.FILE);
@@ -1665,22 +1663,22 @@ public class SCRCommon {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy");
         String date = dateFormat.format(d);
         // File dir = new
-        // File("C:\\Selenium\\WorkSpace\\PC\\Reports\\HTMLReports\\"+PCThreadCache.getInstance().getProperty("testcasename")+"_"+
+        // File("C:\\Selenium\\WorkSpace\\PC\\Reports\\HTMLReports\\"+ThreadCache.getInstance().getProperty("testcasename")+"_"+
         // date);
-        File dir = new File("C:\\Selenium\\Workspace6\\PC_New\\Reports\\HTMLReports\\" + PCThreadCache.getInstance().getProperty("testcasename") + "_" + date + "_" + Thread.currentThread().getId());
+        File dir = new File("C:\\Selenium\\Workspace6\\PC_New\\Reports\\HTMLReports\\" + ThreadCache.getInstance().getProperty("testcasename") + "_" + date + "_" + Thread.currentThread().getId());
         // String FolderName =
-        // "C:\\Selenium\\WorkSpace\\PC\\Reports\\HTMLReports\\"+PCThreadCache.getInstance().getProperty("testcasename")+"_"+
+        // "C:\\Selenium\\WorkSpace\\PC\\Reports\\HTMLReports\\"+ThreadCache.getInstance().getProperty("testcasename")+"_"+
         // date;
         if (!dir.exists()) {
             dir.mkdir();
         }
         do {
             // reportFile = new File(directory.getCanonicalPath()
-            // +"\\Reports\\HTMLReports\\"+PCThreadCache.getInstance().getProperty("testcasename")+"_"+
+            // +"\\Reports\\HTMLReports\\"+ThreadCache.getInstance().getProperty("testcasename")+"_"+
             // date+"_"+ d.getHours() +d.getMinutes()+d.getSeconds()+ ".png");
-            reportFile = new File(dir.getCanonicalPath() + "\\" + PCThreadCache.getInstance().getProperty("testcasename") + "_" + date + "_" + d.getHours() + d.getMinutes() + d.getSeconds() + ".png");
+            reportFile = new File(dir.getCanonicalPath() + "\\" + ThreadCache.getInstance().getProperty("testcasename") + "_" + date + "_" + d.getHours() + d.getMinutes() + d.getSeconds() + ".png");
             String Path = dir.getCanonicalPath();
-            PCThreadCache.getInstance().setProperty(PCConstants.ALMScreenshotPath, Path);
+            ThreadCache.getInstance().setProperty(PCConstants.ALMScreenshotPath, Path);
             Status = true;
         } while (reportFile.exists());
         File screenshot = ((TakesScreenshot) ManagerDriver.getInstance().getWebDriver()).getScreenshotAs(OutputType.FILE);
@@ -1693,7 +1691,7 @@ public class SCRCommon {
 
         // zipFolder(SCRCommon.Path, SCRCommon.Path+".zip");
         if (HTML.properties.getProperty("TestCaseScreenShot").contains("YES")) {
-            zipFolder(PCThreadCache.getInstance().getProperty(PCConstants.ALMScreenshotPath), PCThreadCache.getInstance().getProperty(PCConstants.ALMScreenshotPath) + ".zip");
+            zipFolder(ThreadCache.getInstance().getProperty(PCConstants.ALMScreenshotPath), ThreadCache.getInstance().getProperty(PCConstants.ALMScreenshotPath) + ".zip");
         }
         return true;
 
@@ -1777,10 +1775,10 @@ public class SCRCommon {
             }
             if (status) {
                 logger.info("" + strParams1[0] + " TestArea has been Filled");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " TestArea should filled", "" + strParams1[0] + " TestArea is filled", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " TestArea should filled", "" + strParams1[0] + " TestArea is filled", "PASS");
             } else {
                 logger.info("" + strParams1[0] + " TestArea has not been Filled");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " TestArea should filled", "" + strParams1[0] + " TestArea is not filled", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " TestArea should filled", "" + strParams1[0] + " TestArea is not filled", "FAIL");
                 status = false;
             }
         }
@@ -1820,10 +1818,10 @@ public class SCRCommon {
             // }
             if (status) {
                 logger.info("" + strParams1[0] + " TestArea has been Filled");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " TestArea should filled", "" + strParams1[0] + " TestArea is filled", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " TestArea should filled", "" + strParams1[0] + " TestArea is filled", "PASS");
             } else {
                 logger.info("" + strParams1[0] + " TestArea has not been Filled");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " TestArea should filled", "" + strParams1[0] + " TestArea is not filled", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " TestArea should filled", "" + strParams1[0] + " TestArea is not filled", "FAIL");
                 status = false;
             }
         }
@@ -1863,10 +1861,10 @@ public class SCRCommon {
             // }
             if (status) {
                 logger.info("" + strParams1[0] + " TestArea has been Filled");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " TestArea should filled", "" + strParams1[0] + " TestArea is filled", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " TestArea should filled", "" + strParams1[0] + " TestArea is filled", "PASS");
             } else {
                 logger.info("" + strParams1[0] + " TestArea has not been Filled");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " TestArea should filled", "" + strParams1[0] + " TestArea is not filled", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " TestArea should filled", "" + strParams1[0] + " TestArea is not filled", "FAIL");
                 status = false;
             }
         }
@@ -1906,10 +1904,10 @@ public class SCRCommon {
             // }
             if (status) {
                 logger.info("" + strParams1[0] + " Flyer has been Filled");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " should filled", "" + strParams1[0] + " is filled", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " should filled", "" + strParams1[0] + " is filled", "PASS");
             } else {
                 logger.info("" + strParams1[0] + " Flyer has not been Filled");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " should filled", "" + strParams1[0] + " is not filled", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strParams1[0] + " should filled", "" + strParams1[0] + " is not filled", "FAIL");
                 status = false;
             }
         }
@@ -1947,10 +1945,10 @@ public class SCRCommon {
             }
             if (status) {
                 logger.info("" + str + " Check Box has been Selected");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + str + " should filled", "" + str + " is Selected", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + str + " should filled", "" + str + " is Selected", "PASS");
             } else {
                 logger.info("" + str + " Check Box has not been Selected");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + str + " should filled", "" + str + " is not Selected", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + str + " should filled", "" + str + " is not Selected", "FAIL");
                 status = false;
             }
         }
@@ -1985,18 +1983,18 @@ public class SCRCommon {
             }
             if (status) {
                 logger.info("" + str + " Check Box has been Selected and Verified the Element");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + str + " should filled", "" + str + " is Selected", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + str + " should filled", "" + str + " is Selected", "PASS");
                 if (sVerifyElementAssert) {
                     logger.info("" + strParams[1] + " Verified the Element");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strParams[1] + " should filled", "" + strParams[1] + " is Selected", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strParams[1] + " should filled", "" + strParams[1] + " is Selected", "PASS");
                 } else {
                     logger.info("" + str + " Element does not exist");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strParams[1] + " should filled", "" + strParams[1] + " is not Selected", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strParams[1] + " should filled", "" + strParams[1] + " is not Selected", "FAIL");
                     status = false;
                 }
             } else {
                 logger.info("" + str + " Check Box has not been Selected");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + str + " should filled", "" + str + " is not Selected", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + str + " should filled", "" + str + " is not Selected", "FAIL");
                 status = false;
             }
         }
@@ -2083,12 +2081,12 @@ public class SCRCommon {
             }
             if (blnMenu) {
                 loggers.info("Search String available in the Menu. '" + strMenu[i] + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in Menu and Search string is '" + strMenu[i] + "'", "System searched string in Menu and search string is  '" + strMenu[i] + "'", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in Menu and Search string is '" + strMenu[i] + "'", "System searched string in Menu and search string is  '" + strMenu[i] + "'", "PASS");
                 blnMenu = false;
                 status = true;
             } else {
                 loggers.info("Search String not available in the Menu. '" + strMenu[i] + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in Menu and Search string is '" + strMenu[i] + "'", "System not searched string in Menu and search string is  '" + strMenu[i] + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in Menu and Search string is '" + strMenu[i] + "'", "System not searched string in Menu and search string is  '" + strMenu[i] + "'", "FAIL");
                 status = false;
             }
         }
@@ -2097,7 +2095,7 @@ public class SCRCommon {
     }
 
     public static Boolean QPBCommon(String strParam) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         Common common = CommonManager.getInstance().getCommon();
         Boolean status = false;
         String sClassName = null;
@@ -2393,16 +2391,16 @@ public class SCRCommon {
                 if (sFields[3].contains("YES")) {
                     if (sFields[2].contains("CHK") || sFields[2].contains("CHKJ")) {
                         logger.info("System clicked " + sFields[1] + " Check Box");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click '" + sFields[1] + "' Check box", "System clicked '" + sFields[1] + "' check box", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click '" + sFields[1] + "' Check box", "System clicked '" + sFields[1] + "' check box", "PASS");
                     } else if (sFields[2].contains("EDT") || sFields[2].contains("EDTJ")) {
                         logger.info("System entered '" + sFields[4] + "' value for " + sFields[1] + " Edit box");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should enter value '" + sFields[4] + "' for '" + sFields[1] + "' Edit Box", "System entered value for '" + sFields[4] + "' '" + sFields[1] + "' Edit Box", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should enter value '" + sFields[4] + "' for '" + sFields[1] + "' Edit Box", "System entered value for '" + sFields[4] + "' '" + sFields[1] + "' Edit Box", "PASS");
                     } else if (sFields[2].contains("TXT")) {
                         logger.info("System entered '" + sFields[4] + "' value for " + sFields[1] + " TexArea Box");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should enter value '" + sFields[4] + "' for '" + sFields[1] + "' TextArea Box", "System entered value for '" + sFields[4] + "' '" + sFields[1] + "' TextArea Box", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should enter value '" + sFields[4] + "' for '" + sFields[1] + "' TextArea Box", "System entered value for '" + sFields[4] + "' '" + sFields[1] + "' TextArea Box", "PASS");
                     } else {
                         logger.info("System entered '" + sFields[4] + "' value for " + sFields[1] + " List Box");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should enter value '" + sFields[4] + "' for '" + sFields[1] + "' List Box", "System entered value for '" + sFields[4] + "' '" + sFields[1] + "' List Box", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should enter value '" + sFields[4] + "' for '" + sFields[1] + "' List Box", "System entered value for '" + sFields[4] + "' '" + sFields[1] + "' List Box", "PASS");
                     }
 
                 } else {
@@ -2412,19 +2410,19 @@ public class SCRCommon {
                 if (sFields[3].contains("YES")) {
                     if (sFields[2].contains("CHK") || sFields[2].contains("CHKJ")) {
                         logger.info("" + sFields[1] + " check box is not clicked ");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click '" + sFields[1] + "' check box", "System not clicked '" + sFields[1] + "' check box", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click '" + sFields[1] + "' check box", "System not clicked '" + sFields[1] + "' check box", "FAIL");
                         status = false;
                     } else if (sFields[2].contains("EDT") || sFields[2].contains("EDTJ")) {
                         logger.info("System not entered '" + sFields[4] + "' value for " + sFields[1] + " Edit box");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should enter value '" + sFields[4] + "' for '" + sFields[1] + "' Edit Box", "System not entered value for '" + sFields[4] + "' '" + sFields[1] + "' Edit Box", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should enter value '" + sFields[4] + "' for '" + sFields[1] + "' Edit Box", "System not entered value for '" + sFields[4] + "' '" + sFields[1] + "' Edit Box", "FAIL");
                         status = false;
                     } else if (sFields[2].contains("TXA")) {
                         logger.info("System not entered '" + sFields[4] + "' value for " + sFields[1] + " TexArea Box");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should enter value '" + sFields[4] + "' for '" + sFields[1] + "' TextArea Box", "System not entered value for '" + sFields[4] + "' '" + sFields[1] + "' TextArea Box", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should enter value '" + sFields[4] + "' for '" + sFields[1] + "' TextArea Box", "System not entered value for '" + sFields[4] + "' '" + sFields[1] + "' TextArea Box", "FAIL");
                         status = false;
                     } else {
                         logger.info("System not entered '" + sFields[4] + "' value for " + sFields[1] + " List Box");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should enter value '" + sFields[4] + "' for '" + sFields[1] + "' List Box", "System not entered value for '" + sFields[4] + "' '" + sFields[1] + "' List Box", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should enter value '" + sFields[4] + "' for '" + sFields[1] + "' List Box", "System not entered value for '" + sFields[4] + "' '" + sFields[1] + "' List Box", "FAIL");
                         status = false;
                     }
                 } else {
@@ -2437,7 +2435,7 @@ public class SCRCommon {
     }
 
     public static boolean JavaScriptWait1(WebElement element, JavascriptExecutor js) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         boolean status = false;
         for (int i = 1; i <= Integer.parseInt(HTML.properties.getProperty("VERYLONGWAIT")); i++) {
             logger.info("Document Ajax State = " + js.executeScript("return Ext.Ajax.isLoading();").toString());
@@ -2471,7 +2469,7 @@ public class SCRCommon {
     }
 
     public static boolean JavaScriptWait(WebElement element, JavascriptExecutor js) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         boolean status = false;
         Common common = CommonManager.getInstance().getCommon();
         // Actions clickTriangle= new Actions(driver);
@@ -2536,7 +2534,7 @@ public class SCRCommon {
     }
 
     public static boolean JavaScript(JavascriptExecutor js) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         boolean status = false;
         for (int i = 1; i <= Integer.parseInt(HTML.properties.getProperty("VERYLONGWAIT")); i++) {
             logger.info("Document Ajax State = " + js.executeScript("return Ext.Ajax.isLoading();").toString());
@@ -2556,7 +2554,7 @@ public class SCRCommon {
     }
 
     public static boolean waitForJQueryProcessing(int timeOutInSeconds) {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         boolean jQcondition = false;
         try {
             new WebDriverWait(ManagerDriver.getInstance().getWebDriver(), timeOutInSeconds) {
@@ -2578,7 +2576,7 @@ public class SCRCommon {
 
 
     public static Boolean VerifyCalendarControlExistence(String ObjDatepicker) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         Common common = CommonManager.getInstance().getCommon();
         boolean status = false;
         String sObject = "ele" + ObjDatepicker + "";
@@ -2595,7 +2593,7 @@ public class SCRCommon {
                 status = common.ElementDisplayed(By.id(sLabelId));
                 if (status && i == 1) {
                     logger.info("Calendar control is displayed in UI - " + sLabelId);
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Calendar Control should be displayed in UI", "Calendar control dispalyed", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Calendar Control should be displayed in UI", "Calendar control dispalyed", "PASS");
                     status = common.SafeAction(Common.o.getObject("eleTodayDtepickerBtn"), "ele", "ele");
                     // String
                     // ActValue=Common.ReadElementGetAttribute(Common.o.getObject("edtMailDate"),"value");
@@ -2603,12 +2601,12 @@ public class SCRCommon {
                     status = common.CompareStringResult("Mail Date  - Canadian Policy", SCRCommon.ReturnCurrentDate(), ActValue);
                 } else {
                     logger.info("NO Calendar control is displayed in UI");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Calendar Control should be displayed in UI", "No calendar control dispalyed", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Calendar Control should be displayed in UI", "No calendar control dispalyed", "FAIL");
 
                 }
             } else {
                 logger.info("No element matches with Datepicker criteria in UI");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Calendar Control should be displayed in UI", "No elements foudn with Datepicker properties", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Calendar Control should be displayed in UI", "No elements foudn with Datepicker properties", "FAIL");
             }
         }
         return status;
@@ -2635,7 +2633,7 @@ public class SCRCommon {
                 status = common.ElementDisplayed(By.id(sLabelId));
                 if (status && i == 1) {
                     logger.info("Calendar control is displayed in UI - " + sLabelId);
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Calendar Control should be displayed in UI", "Calendar control dispalyed", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Calendar Control should be displayed in UI", "Calendar control dispalyed", "PASS");
                     // status=common.SafeAction(Common.o.getObject("eleTodayDtepickerBtn"),"ele","ele");
                     // String
                     // ActValue=Common.ReadElementGetAttribute(Common.o.getObject("edtMailDate"),"value");
@@ -2647,11 +2645,11 @@ public class SCRCommon {
                     // SCRCommon.ReturnCurrentDate(), ActValue);
                 } else {
                     logger.info("NO Calendar control is displayed in UI");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Calendar Control should be displayed in UI", "No calendar control dispalyed", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Calendar Control should be displayed in UI", "No calendar control dispalyed", "FAIL");
                 }
             } else {
                 logger.info("No element matches with Datepicker criteria in UI");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Calendar Control should be displayed in UI", "No elements foudn with Datepicker properties", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Calendar Control should be displayed in UI", "No elements foudn with Datepicker properties", "FAIL");
             }
         }
         return status;
@@ -2687,19 +2685,19 @@ public class SCRCommon {
         }
         if (SearchString) {
             loggers.info("Search String available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "PASS");
             if (ActionObject) {
                 loggers.info("Search and click on object in the table cell and object name is '" + actionObjetName + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "PASS");
                 Status = true;
             } else {
                 loggers.info("Search and click on object in the table cell and object name is '" + actionObjetName + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "FAIL");
                 Status = false;
             }
         } else {
             loggers.info("Search String not available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "FAIL");
             Status = false;
         }
         return Status;
@@ -2720,16 +2718,16 @@ public class SCRCommon {
             if (sValue[2].toUpperCase().equalsIgnoreCase("SPAN") || sValue[2].toUpperCase().equalsIgnoreCase("DIV")) {
                 status = common.ActionOnTable(Common.o.getObject(sValue[0]), 5, 5, sValue[1], sValue[2].toLowerCase());
                 if (status) {
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display without hyperlink", "'" + sValue[1] + "' displayed without hyperlink", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display without hyperlink", "'" + sValue[1] + "' displayed without hyperlink", "PASS");
                 } else {
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display without hyperlink", "'" + sValue[1] + "' NOT displayed without hyperlink", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display without hyperlink", "'" + sValue[1] + "' NOT displayed without hyperlink", "FAIL");
                 }
             } else if (sValue[2].toUpperCase().equalsIgnoreCase("LINK")) {
                 status = common.ActionOnTable(Common.o.getObject(sValue[0]), 5, 5, sValue[1], "a");
                 if (status) {
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display with hyperlink", "'" + sValue[1] + "' displayed with hyperlink", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display with hyperlink", "'" + sValue[1] + "' displayed with hyperlink", "PASS");
                 } else {
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display with hyperlink", "'" + sValue[1] + "' NOT displayed with hyperlink", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display with hyperlink", "'" + sValue[1] + "' NOT displayed with hyperlink", "FAIL");
                 }
             } else {
                 status = false;
@@ -2742,7 +2740,7 @@ public class SCRCommon {
     }
 
     public static String ReturnDate_frmDate(int dateValue, String strStartDate) {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         String sDate = null;
         try {
             Date date1 = new SimpleDateFormat("MM/dd/yyyy").parse(strStartDate);
@@ -2756,7 +2754,7 @@ public class SCRCommon {
     }
 
     public static boolean VerifyWarning_ErrorMessages(String sValue) throws IOException {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         boolean status = true;
         String expectedText = null;
         String refClassName = null;
@@ -2773,7 +2771,7 @@ public class SCRCommon {
         }
         if (CellElements.size() == 0) {
             logger.info("No Error/Warning messages in screen to validate");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "No Error/Warning messgae in the screen to validate", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "No Error/Warning messgae in the screen to validate", "FAIL");
 
         }
         for (int i = 0; i <= CellElements.size() - 1; i++) {
@@ -2795,14 +2793,14 @@ public class SCRCommon {
                 if (actText.equals(expText)) {
                     matchStatus = true;
                     logger.info("Expected Warning Message  is matching with actual message '" + expectedText + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "Expected error text is matching with actual text '" + expectedText + "'", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "Expected error text is matching with actual text '" + expectedText + "'", "PASS");
                     break;
                 }
             }
 
             if (matchStatus == false) {
                 logger.info("Expected Warning Message is not matching with actual message '" + expectedText + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "Expected error text is not matching with actual text '" + expectedText + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "Expected error text is not matching with actual text '" + expectedText + "'", "FAIL");
                 // Status = false;
             }
         }
@@ -2824,16 +2822,16 @@ public class SCRCommon {
             if (sValue[2].toUpperCase().equalsIgnoreCase("SPAN") || sValue[2].toUpperCase().equalsIgnoreCase("DIV")) {
                 status = common.ActionOnTable(Common.o.getObject(sValue[0]), 5, 5, sValue[1], sValue[2].toLowerCase());
                 if (status) {
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display without hyperlink", "'" + sValue[1] + "' displayed without hyperlink", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display without hyperlink", "'" + sValue[1] + "' displayed without hyperlink", "PASS");
                 } else {
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display without hyperlink", "'" + sValue[1] + "' NOT displayed without hyperlink", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display without hyperlink", "'" + sValue[1] + "' NOT displayed without hyperlink", "FAIL");
                 }
             } else if (sValue[2].toUpperCase().equalsIgnoreCase("LINK")) {
                 status = common.ActionOnTable(Common.o.getObject(sValue[0]), 5, 5, sValue[1], "a");
                 if (status) {
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display with hyperlink", "'" + sValue[1] + "' displayed with hyperlink", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display with hyperlink", "'" + sValue[1] + "' displayed with hyperlink", "PASS");
                 } else {
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display with hyperlink", "'" + sValue[1] + "' NOT displayed with hyperlink", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Billing method '" + sValue[1] + "' should display with hyperlink", "'" + sValue[1] + "' NOT displayed with hyperlink", "FAIL");
                 }
             } else {
                 status = false;
@@ -2920,7 +2918,7 @@ public class SCRCommon {
                         break;
                 }
             } else {
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verifying Element '" + vElement + "'", "Element not displayed on the screen.", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verifying Element '" + vElement + "'", "Element not displayed on the screen.", "FAIL");
             }
             if (!status) {
                 status = true;
@@ -2938,167 +2936,13 @@ public class SCRCommon {
         ele = ele.substring(3);
         if (strAct.toUpperCase().contentEquals(strExp.toUpperCase())) {
             loggers.info("Value for the element '" + ele + "' matches with expected value '" + strExp);
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify value for element '" + ele + "'. Expected value (from ICON): '" + strExp + "'", "'" + ele + "' - Actual value in PC '" + strAct + "' matches with the expected value", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify value for element '" + ele + "'. Expected value (from ICON): '" + strExp + "'", "'" + ele + "' - Actual value in PC '" + strAct + "' matches with the expected value", "PASS");
             status = true;
         } else {
             loggers.info("Value for the element '" + ele + "' matches with expected value '" + strExp);
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify value for element '" + ele + "'. Expected value (from ICON): '" + strExp + "'", "'" + ele + "' - Actual value in PC '" + strAct + "' is not matching with expected value", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify value for element '" + ele + "'. Expected value (from ICON): '" + strExp + "'", "'" + ele + "' - Actual value in PC '" + strAct + "' is not matching with expected value", "FAIL");
         }
 
-        return status;
-    }
-
-    public Boolean importIconValue() {
-        boolean status = false;
-        XlsxReader sXL = XlsxReader.getInstance();
-        IconReader iCN = IconReader.getInstance();
-        HashMap<String, Object> whereConstraintSelect = new HashMap<String, Object>();
-        HashMap<String, Object> updateColumnNameValues = new HashMap<String, Object>();
-        ArrayList<HashMap<String, Object>> resultListRows = new ArrayList<HashMap<String, Object>>();
-        ArrayList<HashMap<String, Object>> resultListRows1 = new ArrayList<HashMap<String, Object>>();
-        ArrayList<HashMap<String, Object>> resultListRows2 = new ArrayList<HashMap<String, Object>>();
-        HashMap<String, Object> whereConstraintUpdate = new HashMap<String, Object>();
-        String tcID = PCThreadCache.getInstance().getProperty("TCID");
-        String sValueToReadPCDB = null;
-        String sPCMappingValue = null;
-        String sPCIconValue = null;
-        try {
-            whereConstraintSelect.clear();
-            whereConstraintSelect.put(PCConstants.ID, tcID);
-            resultListRows = sXL.executeSelectQuery(PCConstants.SHEET_Read, whereConstraintSelect);
-            for (HashMap<String, Object> processRow : resultListRows) {
-                sValueToReadPCDB = (String) processRow.get(PCConstants.ValueToReadPCDB);
-                // System.out.println("ValueToReadPCDB "+sValueToReadPCDB);
-                whereConstraintSelect.clear();
-                whereConstraintSelect.put(PCConstants.PC, sValueToReadPCDB);
-                resultListRows1 = iCN.executeSelectQuery(PCConstants.SHEET_Name_Mapping, whereConstraintSelect);
-                if (!(resultListRows.size() == 0)) {
-                    for (HashMap<String, Object> processRow1 : resultListRows1) {
-                        sPCMappingValue = (String) processRow1.get(PCConstants.E2E_Fields);
-                        // System.out.println("E2E_Fields "+sPCMappingValue);
-                        break;
-                    }
-
-                    whereConstraintSelect.clear();
-                    whereConstraintSelect.put(PCConstants.E2E_Scenario_Name, tcID);
-                    whereConstraintSelect.put(PCConstants.FieldName, sPCMappingValue);
-                    resultListRows2 = iCN.executeSelectQuery(PCConstants.SHEET_E2E_Testdata, whereConstraintSelect);
-                    if (!(resultListRows.size() == 0)) {
-                        for (HashMap<String, Object> processRow2 : resultListRows2) {
-                            sPCIconValue = (String) processRow2.get(PCConstants.FieldValues);
-                            // System.out.println("FieldValues "+sPCIconValue);
-                            String sColumnValue = "val" + sValueToReadPCDB + "";
-                            updateColumnNameValues.clear();
-                            whereConstraintUpdate.clear();
-                            updateColumnNameValues.put(sColumnValue, sPCIconValue);
-                            whereConstraintUpdate.put(PCConstants.ID, tcID);
-                            PCThreadCache.getInstance().setProperty(sColumnValue, sPCIconValue);
-                            //status = sXL.executeUpdateQuery(PCConstants.SHEET_ICONValidation, updateColumnNameValues, whereConstraintUpdate);
-                            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + sPCIconValue + " Value should update in the ICONValidation Sheet", "" + sPCIconValue + " Value updated in the ICONValidation Sheet", "PASS");
-                            if (!status) {
-                                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + sPCIconValue + " Value should update in the ICONValidation Sheet", "" + sPCIconValue + " Value is not updated in the ICONValidation Sheet", "FAIL");
-                            }
-                            break;
-                        }
-
-                    } else {
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + sPCMappingValue + " Value should present in the E2E_Testdata Sheet", "" + sPCMappingValue + " is not present in the E2E_Testdata Sheet", "FAIL");
-                    }
-                } else {
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + sValueToReadPCDB + " should present in the Name_Mapping Sheet", "" + sValueToReadPCDB + " is not present in the Name_Mapping Sheet", "FAIL");
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return status;
-    }
-
-    public Boolean importICONODSValue() {
-        Boolean status = true;
-        if (HTML.properties.getProperty("EXECUTIONAPP").contains("ODS")) {
-            loggers.info("Starting to import the ICON Values to Flat File");
-            IconReader iCN = IconReader.getInstance();
-            FlatFile write = FlatFile.getInstance();
-            HashMap<String, Object> whereConstraint = new HashMap<String, Object>();
-            ArrayList<HashMap<String, Object>> resultListRows = new ArrayList<HashMap<String, Object>>();
-            ArrayList<HashMap<String, Object>> resultListRows1 = new ArrayList<HashMap<String, Object>>();
-            whereConstraint.clear();
-            whereConstraint.put(PCConstants.ID, PCThreadCache.getInstance().getProperty("TCID"));
-            resultListRows = iCN.executeSelectQuery(PCConstants.SHEET_Trans, whereConstraint);
-            for (HashMap<String, Object> processRow : resultListRows) {
-                String sFieldName = (String) processRow.get("Field_Name");
-                String sFieldValue = (String) processRow.get("Field_Value");
-                whereConstraint.clear();
-                whereConstraint.put("Field_Name", sFieldName);
-                resultListRows1 = iCN.executeSelectQuery("Mapping", whereConstraint);
-                for (HashMap<String, Object> processRow1 : resultListRows1) {
-                    String sODSFieldName = (String) processRow1.get("ODS");
-                    status = write.write(PCThreadCache.getInstance().getProperty("TCID"), "IconValidation", sODSFieldName, sFieldValue, "Input", FlatFileName());
-                }
-            }
-            loggers.info("Completed the ICON Values Import");
-        }
-        return status;
-    }
-
-    /**
-     * function - to get the icon data from ICON mapping sheet for PC
-     *
-     * @return true/false
-     */
-    public Boolean importICONPCValue() {
-        loggers.info("Starting to import the ICON Values to Flat File");
-        boolean status = true;
-        XlsxReader sXL = XlsxReader.getInstance();
-        IconReader iCN = IconReader.getInstance();
-        HashMap<String, Object> whereConstraintSelect = new HashMap<String, Object>();
-        HashMap<String, Object> updateColumnNameValues = new HashMap<String, Object>();
-        ArrayList<HashMap<String, Object>> resultListRows = new ArrayList<HashMap<String, Object>>();
-        ArrayList<HashMap<String, Object>> resultListRows1 = new ArrayList<HashMap<String, Object>>();
-        HashMap<String, Object> whereConstraintUpdate = new HashMap<String, Object>();
-        String tcID = PCThreadCache.getInstance().getProperty("TCID");
-        String transFieldName = null;
-        String transFieldValue = null;
-        String sPCMappingField = null;
-        try {
-            whereConstraintSelect.clear();
-            whereConstraintSelect.put(PCConstants.ID, tcID);
-            resultListRows = iCN.executeSelectQuery("Trans", whereConstraintSelect);
-            if (resultListRows.size() > 0) {
-                for (HashMap<String, Object> processRow : resultListRows) {
-                    transFieldName = (String) processRow.get("Field_Name");
-                    transFieldValue = (String) processRow.get("Field_Value");
-                    whereConstraintSelect.clear();
-                    whereConstraintSelect.put("Field_Name", transFieldName);
-                    resultListRows1 = iCN.executeSelectQuery("Mapping", whereConstraintSelect);
-                    if (resultListRows.size() > 0) {
-                        for (HashMap<String, Object> processRow1 : resultListRows1) {
-                            sPCMappingField = (String) processRow1.get("PC");
-                            if (!sPCMappingField.equals("")) {
-                                updateColumnNameValues.clear();
-                                whereConstraintUpdate.clear();
-                                whereConstraintUpdate.put(PCConstants.ID, tcID);
-                                updateColumnNameValues.put("val" + sPCMappingField, transFieldValue);
-                                PCThreadCache.getInstance().setProperty("val" + sPCMappingField, transFieldValue);
-                                //status = sXL.executeUpdateQuery(PCConstants.SHEET_ICONValidation, updateColumnNameValues, whereConstraintUpdate);
-                            }
-                            if (transFieldName.equalsIgnoreCase("ACCOUNTNUMBER") || transFieldName.equalsIgnoreCase("POLICYNUMBER")) {
-                                status = updateAccountPolicyNumberforIcon(transFieldName, transFieldValue);
-                            }
-                        }
-                    } else {
-                        loggers.info("Trans field ID " + transFieldName + " is not available in the Mapping Sheet");
-                    }
-                }
-            } else {
-                loggers.info("TestCase ID " + tcID + " is not available in the Trans Sheet");
-                status = false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return status;
     }
 
@@ -3110,7 +2954,7 @@ public class SCRCommon {
      */
     public static Boolean updateAccountPolicyNumberforIcon(String strField, String strValue) {
         Boolean blnStatus = false;
-        String tcID = PCThreadCache.getInstance().getProperty("TCID");
+        String tcID = ThreadCache.getInstance().getProperty("TCID");
         XlsxReader sXL = XlsxReader.getInstance();
         HashMap<String, Object> updateColumnNameValues = new HashMap<String, Object>();
         HashMap<String, Object> whereConstraintUpdate = new HashMap<String, Object>();
@@ -3120,14 +2964,14 @@ public class SCRCommon {
                 whereConstraintUpdate.clear();
                 whereConstraintUpdate.put(PCConstants.ID, tcID);
                 updateColumnNameValues.put("edtaccountNumber", strValue);
-                PCThreadCache.getInstance().setProperty("edtaccountNumber", strValue);
+                ThreadCache.getInstance().setProperty("edtaccountNumber", strValue);
                 //blnStatus = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHACCOUNT, updateColumnNameValues, whereConstraintUpdate);
 
                 updateColumnNameValues.clear();
                 whereConstraintUpdate.clear();
                 whereConstraintUpdate.put(PCConstants.ID, tcID);
                 updateColumnNameValues.put("AccountNumber", strValue);
-                PCThreadCache.getInstance().setProperty("AccountNumber", strValue);
+                ThreadCache.getInstance().setProperty("AccountNumber", strValue);
                 //blnStatus = sXL.executeUpdateQuery(PCConstants.SHEET_ICONValidation, updateColumnNameValues, whereConstraintUpdate);
                 break;
             case "POLICYNUMBER":
@@ -3136,14 +2980,14 @@ public class SCRCommon {
                 whereConstraintUpdate.clear();
                 whereConstraintUpdate.put(PCConstants.ID, tcID);
                 updateColumnNameValues.put("edtPolicyNumber", policyNumberSearch);
-                PCThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
+                ThreadCache.getInstance().setProperty("edtPolicyNumber", policyNumberSearch);
                 //blnStatus = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHPOLICY, updateColumnNameValues, whereConstraintUpdate);
 
                 updateColumnNameValues.clear();
                 whereConstraintUpdate.clear();
                 whereConstraintUpdate.put(PCConstants.ID, tcID);
                 updateColumnNameValues.put("PolicyNumber", strValue);
-                PCThreadCache.getInstance().setProperty("PolicyNumber", strValue);
+                ThreadCache.getInstance().setProperty("PolicyNumber", strValue);
                 //blnStatus = sXL.executeUpdateQuery(PCConstants.SHEET_ICONValidation, updateColumnNameValues, whereConstraintUpdate);
                 break;
         }
@@ -3168,7 +3012,7 @@ public class SCRCommon {
                     ElementExist = common.ElementExist(Common.o.getObject(element));
                     if (ElementExist) {
                         sGetPCValue = common.ReadElementGetAttribute(Common.o.getObject(element), "value", Integer.valueOf(HTML.properties.getProperty("VERYLONGWAIT")));
-                        Status = sReadWrite.write(PCThreadCache.getInstance().getProperty("TCID"), PCThreadCache.getInstance().getProperty("methodName"), elementName, sGetPCValue, "OUTPUT", sFileName);
+                        Status = sReadWrite.write(ThreadCache.getInstance().getProperty("TCID"), ThreadCache.getInstance().getProperty("methodName"), elementName, sGetPCValue, "OUTPUT", sFileName);
                     }
                     break;
                 case "ELE":
@@ -3178,21 +3022,21 @@ public class SCRCommon {
                         /*
                          * if(elementName.toUpperCase().contains("ACCOUNTNUMBER")) {
                          */
-                        Status = sReadWrite.write(PCThreadCache.getInstance().getProperty("TCID"), PCThreadCache.getInstance().getProperty("methodName"), elementName, sGetPCValue, "OUTPUT", sFileName);
+                        Status = sReadWrite.write(ThreadCache.getInstance().getProperty("TCID"), ThreadCache.getInstance().getProperty("methodName"), elementName, sGetPCValue, "OUTPUT", sFileName);
                         /*
                          * }else if(elementName.toUpperCase().contains("POLICYNUMBER")) { Status =
-                         * sReadWrite.write(PCThreadCache.getInstance().getProperty ("TCID"
-                         * ),PCThreadCache.getInstance().getProperty("methodName"), "PolicyNumber",
+                         * sReadWrite.write(ThreadCache.getInstance().getProperty ("TCID"
+                         * ),ThreadCache.getInstance().getProperty("methodName"), "PolicyNumber",
                          * sGetPCValue, "OUTPUT", sFileName); }else { Status =
-                         * sReadWrite.write(PCThreadCache.getInstance().getProperty ("TCID"
-                         * ),PCThreadCache.getInstance().getProperty("methodName"), elementName,
+                         * sReadWrite.write(ThreadCache.getInstance().getProperty ("TCID"
+                         * ),ThreadCache.getInstance().getProperty("methodName"), elementName,
                          * sGetPCValue, "OUTPUT", sFileName); }
                          */
                     }
                     break;
                 case "DAT":
                     sGetPCValue = ReturnCurrentDate();
-                    Status = sReadWrite.write(PCThreadCache.getInstance().getProperty("TCID"), PCThreadCache.getInstance().getProperty("methodName"), elementName, sGetPCValue, "OUTPUT", sFileName);
+                    Status = sReadWrite.write(ThreadCache.getInstance().getProperty("TCID"), ThreadCache.getInstance().getProperty("methodName"), elementName, sGetPCValue, "OUTPUT", sFileName);
                     break;
             }
         }
@@ -3201,7 +3045,7 @@ public class SCRCommon {
 
     public String FlatFileName() {
         XlsxReader xls = XlsxReader.getInstance();
-        String tcID = PCThreadCache.getInstance().getProperty("TCID");
+        String tcID = ThreadCache.getInstance().getProperty("TCID");
         String[] splittcID = tcID.split("_");
         String sFileName = null;
         HashMap<String, Object> whereConstraint = new HashMap<String, Object>();
@@ -3228,13 +3072,13 @@ public class SCRCommon {
         if (HTML.properties.getProperty("EXECUTIONAPP").contains("ODS")) {
             loggers.info("Started Input for ODS Function");
             XlsxReader xls = XlsxReader.getInstance();
-            String tcID = PCThreadCache.getInstance().getProperty("TCID");
+            String tcID = ThreadCache.getInstance().getProperty("TCID");
             String sFileName = FlatFileName();
             // FlatFileWriter write = FlatFileWriter.getInstance(sFileName);
             FlatFile sReadWrite = FlatFile.getInstance();
             int rowcount = xls.getRowCount(SheetName);
             for (int i = 2; i <= rowcount; i++) {
-                if (xls.getCellData(SheetName, "ID", i).equals(PCThreadCache.getInstance().getProperty("TCID"))) {
+                if (xls.getCellData(SheetName, "ID", i).equals(ThreadCache.getInstance().getProperty("TCID"))) {
                     int colcount = xls.getColumnCount(SheetName);
                     for (int j = 2; j <= colcount; j++) {
                         String ColName = xls.getCellData(SheetName, j, 1);
@@ -3244,10 +3088,10 @@ public class SCRCommon {
                             String elementName = ColName.substring(3);
                             if (!value.isEmpty()) {
                                 if (element.toUpperCase().contains("ODS") || element.toUpperCase().contains("EDT") || element.toUpperCase().contains("EDJ") || element.toUpperCase().contains("LST") || element.toUpperCase().contains("LSJ")) {
-                                    Status = sReadWrite.write(tcID, PCThreadCache.getInstance().getProperty("methodName"), elementName, value, "input", sFileName);
+                                    Status = sReadWrite.write(tcID, ThreadCache.getInstance().getProperty("methodName"), elementName, value, "input", sFileName);
                                 } else if (element.toUpperCase().contains("VAL")) {
                                     String strIconElement[] = elementName.split("_");
-                                    Status = sReadWrite.write(tcID, PCThreadCache.getInstance().getProperty("methodName"), strIconElement[1], value, "input", sFileName);
+                                    Status = sReadWrite.write(tcID, ThreadCache.getInstance().getProperty("methodName"), strIconElement[1], value, "input", sFileName);
                                 }
                             }
                         }
@@ -3265,17 +3109,17 @@ public class SCRCommon {
         String[] funcValue = sFuncValue.split(":::");
         int sRowCount = 0;
         XlsxReader sXL = XlsxReader.getInstance();// new XlsxReader(
-        // PCThreadCache.getInstance().getProperty("DataSheetName)
+        // ThreadCache.getInstance().getProperty("DataSheetName)
         try {
             int rowcount = sXL.getRowCount(funcValue[0]);
             for (int i = 2; i <= rowcount; i++) {
-                String TCID = PCThreadCache.getInstance().getProperty("TCID");
-                String Iteration = PCThreadCache.getInstance().getProperty("Iteration");
+                String TCID = ThreadCache.getInstance().getProperty("TCID");
+                String Iteration = ThreadCache.getInstance().getProperty("Iteration");
                 String TCIDAdd = sXL.getCellData(funcValue[0], "ID", i);
                 String TCIDIteration = sXL.getCellData(funcValue[0], "Iteration", i);
                 if (TCIDAdd.equals(TCID) && TCIDIteration.equals(Iteration))
                 // if(sXL.getCellData(funcValue[0], "ID",
-                // i).equals(PCThreadCache.getInstance().getProperty("TCID")) &&
+                // i).equals(ThreadCache.getInstance().getProperty("TCID")) &&
                 // sXL.getCellData(funcValue[0], "Iteration",
                 // i).contains(PCConstants.Iteration))
                 {
@@ -3345,7 +3189,7 @@ public class SCRCommon {
                         }
                     }
                     if (!tcAvailable) {
-                        logger.info("" + PCThreadCache.getInstance().getProperty("TCID") + " is not avilable in the " + funcValue[0] + "");
+                        logger.info("" + ThreadCache.getInstance().getProperty("TCID") + " is not avilable in the " + funcValue[0] + "");
                     }
                 }
             }
@@ -3363,17 +3207,17 @@ public class SCRCommon {
         String[] funcValue = sFuncValue.split(":::");
         int sRowCount = 0;
         XlsxReader sXL = XlsxReader.getInstance();// new XlsxReader(
-        // PCThreadCache.getInstance().getProperty("DataSheetName)
+        // ThreadCache.getInstance().getProperty("DataSheetName)
 
         int rowcount = sXL.getRowCount(funcValue[0]);
         for (int i = 2; i <= rowcount; i++) {
-            String TCID = PCThreadCache.getInstance().getProperty("TCID");
-            String Iteration = PCThreadCache.getInstance().getProperty("Iteration");
+            String TCID = ThreadCache.getInstance().getProperty("TCID");
+            String Iteration = ThreadCache.getInstance().getProperty("Iteration");
             String TCIDAdd = sXL.getCellData(funcValue[0], "ID", i);
             String TCIDIteration = sXL.getCellData(funcValue[0], "Iteration", i);
             if (TCIDAdd.equals(TCID) && TCIDIteration.equals(Iteration))
             // if(sXL.getCellData(funcValue[0], "ID",
-            // i).equals(PCThreadCache.getInstance().getProperty("TCID")) &&
+            // i).equals(ThreadCache.getInstance().getProperty("TCID")) &&
             // sXL.getCellData(funcValue[0], "Iteration",
             // i).contains(PCConstants.Iteration))
             {
@@ -3427,7 +3271,7 @@ public class SCRCommon {
     }
 
     public static Boolean coverageSheet(String strSheetName) {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         logger.info("Entering into coverage details function");
         Common common = CommonManager.getInstance().getCommon();
         Boolean status = true;
@@ -3441,16 +3285,16 @@ public class SCRCommon {
         String strCoverageType = null;
         Boolean blnTableHeaderBody = false;
         String sRemoveCoverage = null;
-        String currentCompoentName = PCThreadCache.getInstance().getProperty("methodName");
+        String currentCompoentName = ThreadCache.getInstance().getProperty("methodName");
 
         int loop;
         XlsxReader xls = XlsxReader.getInstance();
-        String tcID = PCThreadCache.getInstance().getProperty("TCID");
+        String tcID = ThreadCache.getInstance().getProperty("TCID");
         HashMap<String, Object> whereConstraint = new HashMap<String, Object>();
         ArrayList<HashMap<String, Object>> resultListRows = new ArrayList<HashMap<String, Object>>();
         whereConstraint.clear();
         whereConstraint.put(PCConstants.ID, tcID);
-        whereConstraint.put(PCConstants.Iteration, PCThreadCache.getInstance().getProperty("Iteration"));
+        whereConstraint.put(PCConstants.Iteration, ThreadCache.getInstance().getProperty("Iteration"));
         whereConstraint.put("Component", currentCompoentName);
         resultListRows = xls.executeSelectQuery(strSheetName, whereConstraint);
         try {
@@ -3485,7 +3329,7 @@ public class SCRCommon {
                         if (!(sFieldName == null) && !(sFieldValue == null) && !sFieldName.isEmpty() && !sFieldValue.isEmpty()) {
                             if (!(strCoverageType == null) && !(sCoverageName == null) && !strCoverageType.isEmpty() && !sCoverageName.isEmpty() && loop == 0) {
                                 if (status) {
-                                    blnTableHeaderBody = getCoverageTableHeader(sCoverageName, strCoverageType, PCThreadCache.getInstance().getProperty(PCConstants.CoverageID));
+                                    blnTableHeaderBody = getCoverageTableHeader(sCoverageName, strCoverageType, ThreadCache.getInstance().getProperty(PCConstants.CoverageID));
                                     loop = 1;
                                 } else {
                                     logger.info("" + sCoverageName + " is not present in the screen for identifying the table");
@@ -3512,15 +3356,15 @@ public class SCRCommon {
                                     break;
                             }
                             if (!status) {
-                                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Coverage " + sCoverageName + " should be filled for the " + sFieldName + " field", "Error in the " + sCoverageName + " Coverage for the " + sFieldName + " field", "FAIL");
+                                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Coverage " + sCoverageName + " should be filled for the " + sFieldName + " field", "Error in the " + sCoverageName + " Coverage for the " + sFieldName + " field", "FAIL");
                                 break Outer;
                             }
                         }
                     }
                 }
             } else {
-                logger.info("TestCaseID " + tcID + " or Iteration " + PCThreadCache.getInstance().getProperty("Iteration") + " is not available in the " + strSheetName + " Sheet");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "TestCaseID " + tcID + " and Iteration " + PCThreadCache.getInstance().getProperty("Iteration") + " should available in the " + strSheetName + " Sheet", "TestCaseID " + tcID + " or Iteration " + PCThreadCache.getInstance().getProperty("Iteration") + " is not available in the " + strSheetName + " Sheet", "FAIL");
+                logger.info("TestCaseID " + tcID + " or Iteration " + ThreadCache.getInstance().getProperty("Iteration") + " is not available in the " + strSheetName + " Sheet");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "TestCaseID " + tcID + " and Iteration " + ThreadCache.getInstance().getProperty("Iteration") + " should available in the " + strSheetName + " Sheet", "TestCaseID " + tcID + " or Iteration " + ThreadCache.getInstance().getProperty("Iteration") + " is not available in the " + strSheetName + " Sheet", "FAIL");
                 status = false;
             }
         } catch (Exception e) {
@@ -3538,7 +3382,7 @@ public class SCRCommon {
      * @function This will use to fill the fields of the particular coverage
      */
     public static Boolean fillCoverage(String CoverageName, String sFieldName, String sFieldValue) throws IOException {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         logger.info("Entering into fill the " + CoverageName + " fields");
         JavascriptExecutor js = (JavascriptExecutor) ManagerDriver.getInstance().getWebDriver();
         Boolean status = false;
@@ -3618,7 +3462,7 @@ public class SCRCommon {
                     }
                     if (!sChildLabel) {
                         logger.info("Unable to find the coverage field '" + sFieldName + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "'" + sFieldName + "' Field should available in the '" + CoverageName + "' Coverage", "'" + sFieldName + "' Field is not available in the '" + CoverageName + "' Coverage", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "'" + sFieldName + "' Field should available in the '" + CoverageName + "' Coverage", "'" + sFieldName + "' Field is not available in the '" + CoverageName + "' Coverage", "FAIL");
                     }
                 }
                 /*
@@ -3627,7 +3471,7 @@ public class SCRCommon {
             }
             if (!sParenetLabel) {
                 logger.info("Unable to find the coverage '" + sFieldName + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "'" + CoverageName + "' Coverage should available in the system", "'" + CoverageName + "' Coverage is not available in the system", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "'" + CoverageName + "' Coverage should available in the system", "'" + CoverageName + "' Coverage is not available in the system", "FAIL");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -3650,7 +3494,7 @@ public class SCRCommon {
      * @function Convert the label id attribute into radio button id attribute
      */
     public static String getRadioButtonID(String sId, String option) {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         String radioID = null;
         String[] splitID = sId.split("-");
         switch (option.toUpperCase()) {
@@ -3671,7 +3515,7 @@ public class SCRCommon {
      * @function This function will select the check box by using the label name
      */
     public static Boolean selectCheckBoxUsingLabelName(String sFuncValue) throws IOException {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         Boolean status = false;
         Boolean sLabelFound = false;
         String getIDofLabel = null;
@@ -3688,7 +3532,7 @@ public class SCRCommon {
                     logger.info("" + sFuncValue + " label found in the Screen");
                     sLabelFound = true;
                     getIDofLabel = element.getAttribute("id");
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageID, getIDofLabel);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageID, getIDofLabel);
                     sSplitID = getIDofLabel.split("-");
                     actualID = sSplitID[0].concat(":_checkbox");
                     actualTblID = sSplitID[0].concat("-legendChk");
@@ -3714,7 +3558,7 @@ public class SCRCommon {
             }
             if (!sLabelFound) {
                 logger.info("" + sFuncValue + " is not present in the Screen");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "'" + sFuncValue + "' CheckBox should available in the system", "'" + sFuncValue + "' CheckBox is not available in the system", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "'" + sFuncValue + "' CheckBox should available in the system", "'" + sFuncValue + "' CheckBox is not available in the system", "FAIL");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -3731,7 +3575,7 @@ public class SCRCommon {
      * HashMap<String,Object> whereConstraint = new HashMap<String,Object>();
      * ArrayList<HashMap<String,Object>> resultListRows= new
      * ArrayList<HashMap<String,Object>>(); whereConstraint.put(PCConstants.ID,
-     * PCThreadCache.getInstance().getProperty("TCID"));
+     * ThreadCache.getInstance().getProperty("TCID"));
      * whereConstraint.put("Coverage", sFuncValue); resultListRows =
      * sXL.executeSelectQuery("Coverages", whereConstraint);
      *
@@ -3847,9 +3691,9 @@ public class SCRCommon {
         if (!(sSetValue[0].isEmpty())) {
             status = common.ActionOnTable_JS(Common.o.getObject("elePredominateSearchRes"), 1, 0, sSetValue[0], "a");
             if (status) {
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify whether class code can be Added successfully", "As expected, class code had been selected", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify whether class code can be Added successfully", "As expected, class code had been selected", "PASS");
             } else {
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify whether class code can be Added successfully", "Class code had not been selected", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify whether class code can be Added successfully", "Class code had not been selected", "FAIL");
             }
         }
 
@@ -3871,7 +3715,7 @@ public class SCRCommon {
         String[] funcValue = sFuncValue.split(":::");
         int sRowCount = 0;
         XlsxReader sXL = XlsxReader.getInstance();// new XlsxReader(
-        // PCThreadCache.getInstance().getProperty("DataSheetName)
+        // ThreadCache.getInstance().getProperty("DataSheetName)
 
         int rowcount = sXL.getRowCount("Modifiers");
 
@@ -3891,13 +3735,13 @@ public class SCRCommon {
             // find category
             // in excel
             {
-                String TCID = PCThreadCache.getInstance().getProperty("TCID");
-                String Iteration = PCThreadCache.getInstance().getProperty("Iteration");
+                String TCID = ThreadCache.getInstance().getProperty("TCID");
+                String Iteration = ThreadCache.getInstance().getProperty("Iteration");
                 String TCIDAdd = sXL.getCellData(funcValue[0], "ID", i);
                 String TCIDIteration = sXL.getCellData(funcValue[0], "Iteration", i);
                 if (TCIDAdd.equals(TCID))
                 // if(sXL.getCellData(funcValue[0], "ID",
-                // i).equals(PCThreadCache.getInstance().getProperty("TCID")) &&
+                // i).equals(ThreadCache.getInstance().getProperty("TCID")) &&
                 // sXL.getCellData(funcValue[0], "Iteration",
                 // i).contains(PCConstants.Iteration))
                 {
@@ -3974,7 +3818,7 @@ public class SCRCommon {
         String TCIDAdd = null;
         int iPos = 0;
         String[] arrCoverageName = null;
-        String currentCompoentName = PCThreadCache.getInstance().getProperty("methodName");
+        String currentCompoentName = ThreadCache.getInstance().getProperty("methodName");
         arrSheetTabName = sFuncValue.split("_");
         int rowcount;
         String sCovAvailablity = null;
@@ -3982,12 +3826,12 @@ public class SCRCommon {
         XlsxReader sXL = XlsxReader.getInstance();
         rowcount = sXL.getRowCount(arrSheetTabName[0]);
         for (int i = 2; i <= rowcount; i++) {
-            TCID = PCThreadCache.getInstance().getProperty("TCID");
+            TCID = ThreadCache.getInstance().getProperty("TCID");
             TCIDAdd = sXL.getCellData(arrSheetTabName[0], "ID", i);
             sCoverageComponentName = sXL.getCellData(arrSheetTabName[0], "Component", i);
             sTabName = sXL.getCellData(arrSheetTabName[0], "CoverageTab", i);
 
-            String Iteration = PCThreadCache.getInstance().getProperty("Iteration");
+            String Iteration = ThreadCache.getInstance().getProperty("Iteration");
             String TCIDIteration = sXL.getCellData(arrSheetTabName[0], "Iteration", i);
             // Checking for Testcases ID, Component Name , TabNaem and Iteration
             if (TCIDAdd.equals(TCID) && currentCompoentName.equals(sCoverageComponentName) && arrSheetTabName[1].equalsIgnoreCase(sTabName) && Iteration.equalsIgnoreCase(TCIDIteration)) {
@@ -4078,11 +3922,11 @@ public class SCRCommon {
                     status = common.SafeAction(Common.o.getObject("eleSearch_AddSelectedCovBtn"), "ele", "eleSearch_AddSelectedCovBtn");
                 } else if (intRowCnt == 0 && covAvail.equalsIgnoreCase("NO")) {
                     logger.info("As expected coverage is not available to Add");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify whether Coverage can be Added successfully", "As expected,Coverage - " + arrCoverageName[0] + " is not available to add", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify whether Coverage can be Added successfully", "As expected,Coverage - " + arrCoverageName[0] + " is not available to add", "PASS");
                     status = common.SafeAction(Common.o.getObject("eleReturnToLink"), "ele", "eleReturnToLink");
                 } else {
                     logger.info("No records found for the search result");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify whether Coverage can be Added successfully", "Coverage - " + arrCoverageName[0] + " is not available to add", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify whether Coverage can be Added successfully", "Coverage - " + arrCoverageName[0] + " is not available to add", "FAIL");
                     status = common.SafeAction(Common.o.getObject("eleReturnToLink"), "ele", "eleReturnToLink");
                 }
             } else {
@@ -4109,7 +3953,7 @@ public class SCRCommon {
                             if (sUICoverageName.equals(sCovName)) {
                                 blnCoveragefound = true;
                                 logger.info("Expected coverage is displayed on Screen " + sCovName);
-                                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify the provided coverage is available in Search Results to select and Add. Coverage to be selected '" + sCovName + "'", "Expected Coverage is displayed on screen", "PASS");
+                                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify the provided coverage is available in Search Results to select and Add. Coverage to be selected '" + sCovName + "'", "Expected Coverage is displayed on screen", "PASS");
                                 status = common.ActionOnTable(Common.o.getObject("eleSearch_CovResultTbl"), 1, 0, sCovName, "img");
                             }
                             if (blnCoveragefound) {
@@ -4185,8 +4029,8 @@ public class SCRCommon {
                     if (sElementText.equals(sFunValue)) {
                         // logger.info("Expected coverage is displayed in Screen "
                         // +sElementText);
-                        // HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"),
-                        // PCThreadCache.getInstance().getProperty("methodName"),
+                        // HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"),
+                        // ThreadCache.getInstance().getProperty("methodName"),
                         // "Validate the Added coverage/Exclusion/Condition displayed on UI. Actual
                         // Coverage available in UI is '"
                         // + sElementText +
@@ -4203,7 +4047,7 @@ public class SCRCommon {
                     sElementText = sText.getText();
                     if (sElementText.equals(sFunValue)) {
                         logger.info("Expected coverage is displayed in Screen " + sElementText);
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate the Added coverage/Exclusion/Condition displayed on UI. Actual Coverage available in UI is '" + sElementText + "'", "Expected Coverage is displayed on screen", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate the Added coverage/Exclusion/Condition displayed on UI. Actual Coverage available in UI is '" + sElementText + "'", "Expected Coverage is displayed on screen", "PASS");
                         status = true;
                         break Outer;
                     }
@@ -4212,10 +4056,10 @@ public class SCRCommon {
 
             if (!status) {
                 logger.info("Expected coverage is NOT displayed on Screen " + sFunValue);
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate the Added coverage/Exclusion/Condition displayed on UI. Coverage to be displayed '" + sFunValue + "'", "Expected Coverage is NOT displayed on screen", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate the Added coverage/Exclusion/Condition displayed on UI. Coverage to be displayed '" + sFunValue + "'", "Expected Coverage is NOT displayed on screen", "FAIL");
             } else {
                 logger.info("Expected coverage is displayed in Screen " + sElementText);
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate the Added coverage/Exclusion/Condition displayed on UI. Actual Coverage available in UI is '" + sElementText + "'", "Expected Coverage is displayed on screen", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate the Added coverage/Exclusion/Condition displayed on UI. Actual Coverage available in UI is '" + sElementText + "'", "Expected Coverage is displayed on screen", "PASS");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -4247,10 +4091,10 @@ public class SCRCommon {
             rowcount = sXL.getRowCount(sheetName);
             Outer:
             for (int i = 2; i <= rowcount; i++) {
-                TCID = PCThreadCache.getInstance().getProperty("TCID");
+                TCID = ThreadCache.getInstance().getProperty("TCID");
                 TCIDAdd = sXL.getCellData(sheetName, "ID", i);
                 sIteration = sXL.getCellData(sheetName, "Iteration", i);
-                if (TCIDAdd.equals(TCID) && sIteration.equalsIgnoreCase(PCThreadCache.getInstance().getProperty(PCConstants.Iteration))) {
+                if (TCIDAdd.equals(TCID) && sIteration.equalsIgnoreCase(ThreadCache.getInstance().getProperty(PCConstants.Iteration))) {
                     tcAvailable = true;
                     int colcount = sXL.getColumnCount(sheetName);
                     sCategory = sXL.getCellData(sheetName, "Category", i);
@@ -4302,7 +4146,7 @@ public class SCRCommon {
             }
             if (!tcAvailable) {
                 logger.info("" + TCID + " is not available in the " + sheetName + " Sheet");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + TCID + " should avilable in the " + sheetName + "", "" + TCID + " is not avilable in the " + sheetName + "", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + TCID + " should avilable in the " + sheetName + "", "" + TCID + " is not avilable in the " + sheetName + "", "FAIL");
             } else if (!status) {
                 logger.info("Problem in filling the " + sCategory + " Coverage");
             }
@@ -4342,10 +4186,10 @@ public class SCRCommon {
             rowcount = sXL.getRowCount(sheetName);
             Outer:
             for (int i = 2; i <= rowcount; i++) {
-                TCID = PCThreadCache.getInstance().getProperty("TCID");
+                TCID = ThreadCache.getInstance().getProperty("TCID");
                 TCIDAdd = sXL.getCellData(sheetName, "ID", i);
                 sIteration = sXL.getCellData(sheetName, "Iteration", i);
-                if (TCIDAdd.equals(TCID) && sIteration.equalsIgnoreCase(PCThreadCache.getInstance().getProperty(PCConstants.Iteration))) {
+                if (TCIDAdd.equals(TCID) && sIteration.equalsIgnoreCase(ThreadCache.getInstance().getProperty(PCConstants.Iteration))) {
                     tcAvailable = true;
                     colcount = sXL.getColumnCount(sheetName);
                     sCategory = sXL.getCellData(sheetName, "Category", i);
@@ -4376,7 +4220,7 @@ public class SCRCommon {
             }
             if (!tcAvailable) {
                 logger.info("" + TCID + " is not available in the " + sheetName + " Sheet");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + TCID + " should avilable in the " + sheetName + "", "" + TCID + " is not avilable in the " + sheetName + "", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + TCID + " should avilable in the " + sheetName + "", "" + TCID + " is not avilable in the " + sheetName + "", "FAIL");
             } else if (!status) {
                 logger.info("Problem in filling the " + sCategory + " Coverage");
             }
@@ -4449,7 +4293,7 @@ public class SCRCommon {
             }
             if (!SearchString || !Status) {
                 logger.info("" + sCateGoryName + " is not available in the rating table");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "'" + sCateGoryName + "' should available in the Schedule Mod Justification", "'" + sCateGoryName + "' is not available in the Schedule Mod Justification", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "'" + sCateGoryName + "' should available in the Schedule Mod Justification", "'" + sCateGoryName + "' is not available in the Schedule Mod Justification", "FAIL");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -4492,10 +4336,10 @@ public class SCRCommon {
             intRowCount = sXL.getRowCount(sheetName);
             Outer:
             for (int i = 2; i <= intRowCount; i++) {
-                strTCID = PCThreadCache.getInstance().getProperty("TCID");
+                strTCID = ThreadCache.getInstance().getProperty("TCID");
                 strTCIDAdd = sXL.getCellData(sheetName, "ID", i);
                 strIteration = sXL.getCellData(sheetName, "Iteration", i);
-                if (strTCIDAdd.equals(strTCID) && strIteration.equalsIgnoreCase(PCThreadCache.getInstance().getProperty(PCConstants.Iteration))) {
+                if (strTCIDAdd.equals(strTCID) && strIteration.equalsIgnoreCase(ThreadCache.getInstance().getProperty(PCConstants.Iteration))) {
                     blnTcAvailable = true;
                     intColCount = sXL.getColumnCount(sheetName);
                     for (int j = 2; j <= intColCount; j++) {
@@ -4566,8 +4410,8 @@ public class SCRCommon {
                 }
             }
             if (!blnTcAvailable) {
-                logger.info("'" + strTCID + "' TCID or '" + PCThreadCache.getInstance().getProperty(PCConstants.Iteration) + "' IterationNo is not available in the " + sheetName + " Sheet");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "'" + strTCID + "' TCID and '" + PCThreadCache.getInstance().getProperty(PCConstants.Iteration) + "' IterationNo should avilable in the " + sheetName + "", "'" + strTCID + "' TCID or '" + PCThreadCache.getInstance().getProperty(PCConstants.Iteration) + "' IterationNo is not avilable in the " + sheetName + "", "FAIL");
+                logger.info("'" + strTCID + "' TCID or '" + ThreadCache.getInstance().getProperty(PCConstants.Iteration) + "' IterationNo is not available in the " + sheetName + " Sheet");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "'" + strTCID + "' TCID and '" + ThreadCache.getInstance().getProperty(PCConstants.Iteration) + "' IterationNo should avilable in the " + sheetName + "", "'" + strTCID + "' TCID or '" + ThreadCache.getInstance().getProperty(PCConstants.Iteration) + "' IterationNo is not avilable in the " + sheetName + "", "FAIL");
             } else if (!blnStatus) {
                 logger.info("Problem in filling the " + strCategory + " Coverage");
             }
@@ -4645,13 +4489,13 @@ public class SCRCommon {
             }
             if (SearchString) {
                 logger.info("Entered " + sElement + " in " + sFieldName + " for Category: " + sCateGoryName);
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should enter '" + sFieldValue + "' in " + sElement + " for Category: " + sCateGoryName, "Value entered '" + sFieldValue + "' in " + sElement + " for Category: " + sCateGoryName, "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should enter '" + sFieldValue + "' in " + sElement + " for Category: " + sCateGoryName, "Value entered '" + sFieldValue + "' in " + sElement + " for Category: " + sCateGoryName, "PASS");
                 break Outer;
             }
         }
         if (!SearchString || !Status) {
             logger.info("" + sCateGoryName + " is not available in the rating table");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "'" + sCateGoryName + "' should available in the Schedule Mod Justification", "'" + sCateGoryName + "' is not available in the Schedule Mod Justification", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "'" + sCateGoryName + "' should available in the Schedule Mod Justification", "'" + sCateGoryName + "' is not available in the Schedule Mod Justification", "FAIL");
         }
         return Status;
     }
@@ -4705,14 +4549,14 @@ public class SCRCommon {
             }
             if (SearchString) {
                 logger.info(sElement + " for Category: " + sCateGoryName + "displayed as expected. '" + sFieldValue + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should validate value displayed in " + sElement + " for Category: " + sCateGoryName + " as : '" + sFieldValue + "'", "Value displayed as '" + sFieldValue + "' in " + sFieldName + " for Category: " + sCateGoryName, "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should validate value displayed in " + sElement + " for Category: " + sCateGoryName + " as : '" + sFieldValue + "'", "Value displayed as '" + sFieldValue + "' in " + sFieldName + " for Category: " + sCateGoryName, "PASS");
                 break Outer;
 
             }
         }
         if (!SearchString) {
             logger.info("Incorrect Value displayed for " + sCateGoryName + " in the rating table");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), sElement + " for '" + sCateGoryName + "' should be " + sFieldValue, sElement + " for " + "'" + sCateGoryName + "' is not " + sFieldValue, "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), sElement + " for '" + sCateGoryName + "' should be " + sFieldValue, sElement + " for " + "'" + sCateGoryName + "' is not " + sFieldValue, "FAIL");
         }
         return SearchString;
     }
@@ -4784,7 +4628,7 @@ public class SCRCommon {
         // String expectedText=null;
         if ((common.ElementSize(Common.o.getObject("eleValidationMsg")) == 0)) {
             logger.info("No Error/Warning messages in screen to validate");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen", "FAIL");
             status = true;
             return status;
         } else {
@@ -4802,13 +4646,13 @@ public class SCRCommon {
                     if (expectedText.equals(actWarningMsg)) {
                         matchStatus = true;
                         logger.info("Expected " + Msgtype[0] + " Message  is matching with actual message '" + expectedText + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "Expected error text is matching with actual text '" + expectedText + "'", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "Expected error text is matching with actual text '" + expectedText + "'", "PASS");
                         break;
 
                     }
                 }
 
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", Msgtype[0].toUpperCase() + "Message - " + actWarningMsg + " is displayed on screen", "WARNING");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", Msgtype[0].toUpperCase() + "Message - " + actWarningMsg + " is displayed on screen", "WARNING");
 
             }
 
@@ -4831,7 +4675,7 @@ public class SCRCommon {
         // String expectedText=null;
         if ((common.ElementSize(Common.o.getObject("eleValidationMsg_BulkAct")) == 0)) {
             logger.info("No Error/Warning messages in screen to validate");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen", "PASS");
             status = true;
             return status;
         } else {
@@ -4851,13 +4695,13 @@ public class SCRCommon {
                     if (expectedText.equals(actWarningMsg)) {
                         matchStatus = true;
                         logger.info("Expected " + Msgtype[0] + " Message  is matching with actual message '" + expectedText + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "Expected error text is matching with actual text '" + expectedText + "'", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "Expected error text is matching with actual text '" + expectedText + "'", "PASS");
                         break;
 
                     }
                 }
 
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", Msgtype[0].toUpperCase() + "Message - " + actWarningMsg + " is displayed on screen", "WARNING");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", Msgtype[0].toUpperCase() + "Message - " + actWarningMsg + " is displayed on screen", "WARNING");
 
             }
 
@@ -4993,7 +4837,7 @@ public class SCRCommon {
                     logger.info("" + strCoverageName + " coverage found in the in the page for finding the button ID");
                     blnStatus = true;
                     getIDofLabel = element.getAttribute("id");
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageID, getIDofLabel);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageID, getIDofLabel);
                 }
                 if (blnStatus) {
                     break;
@@ -5026,9 +4870,9 @@ public class SCRCommon {
                     strCoverageButtonID = sSplitID[0].concat(strAddRemoveID);
                     strTableHeader = ".//*[@id='" + strTableHeaderID + "']/div[2]/div/div";
                     strTableBody = strTableHeaderID.concat("-body");
-                    PCThreadCache.getInstance().setProperty(PCConstants.TableHeader, strTableHeader);
-                    PCThreadCache.getInstance().setProperty(PCConstants.TableBody, strTableBody);
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.TableHeader, strTableHeader);
+                    ThreadCache.getInstance().setProperty(PCConstants.TableBody, strTableBody);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
                 case "ADDDEFAULT":
@@ -5037,9 +4881,9 @@ public class SCRCommon {
                     strCoverageButtonID = sSplitID[0].concat(strAddRemoveID);
                     strTableHeader = ".//*[@id='" + strTableHeaderID + "']/div[2]/div/div";
                     strTableBody = strTableHeaderID.concat("-body");
-                    PCThreadCache.getInstance().setProperty(PCConstants.TableHeader, strTableHeader);
-                    PCThreadCache.getInstance().setProperty(PCConstants.TableBody, strTableBody);
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.TableHeader, strTableHeader);
+                    ThreadCache.getInstance().setProperty(PCConstants.TableBody, strTableBody);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
                 case "ADDR3":
@@ -5048,15 +4892,15 @@ public class SCRCommon {
                     strCoverageButtonID = sSplitID[0].concat(strAddRemoveID);
                     strTableHeader = ".//*[@id='" + strTableHeaderID + "']/div[2]/div/div";
                     strTableBody = strTableHeaderID.concat("-body");
-                    PCThreadCache.getInstance().setProperty(PCConstants.TableHeader, strTableHeader);
-                    PCThreadCache.getInstance().setProperty(PCConstants.TableBody, strTableBody);
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.TableHeader, strTableHeader);
+                    ThreadCache.getInstance().setProperty(PCConstants.TableBody, strTableBody);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
                 case "ADDSOLEPROPRIETORS":
                     strAddRemoveID = (String) PCConstants.class.getDeclaredField(strTableName.toUpperCase() + "_AddRemove").get(null);
                     strCoverageButtonID = sSplitID[0].concat(strAddRemoveID);
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
                 default:
@@ -5066,15 +4910,15 @@ public class SCRCommon {
                     strCoverageButtonID = sSplitID[0].concat(strAddRemoveID);
                     strTableHeader = ".//*[@id='" + strTableHeaderID + "']/div[2]/div/div";
                     strTableBody = strTableHeaderID.concat("-body");
-                    PCThreadCache.getInstance().setProperty(PCConstants.TableHeader, strTableHeader);
-                    PCThreadCache.getInstance().setProperty(PCConstants.TableBody, strTableBody);
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.TableHeader, strTableHeader);
+                    ThreadCache.getInstance().setProperty(PCConstants.TableBody, strTableBody);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
             }
             if (!blnStatus) {
                 logger.info("Problem in identify the " + strCoverageName + " table header and body ID");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should find the " + strCoverageName + " table header and body ID", "Problem in identify the " + strCoverageName + " table header and body ID", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should find the " + strCoverageName + " table header and body ID", "Problem in identify the " + strCoverageName + " table header and body ID", "FAIL");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -5106,29 +4950,29 @@ public class SCRCommon {
                 strTableObject = strFieldName.substring(strFieldName.length() - 3);
                 switch (strTableObject.toUpperCase()) {
                     case "TBD":
-                        intTblColCount = getCoverageTableHeaderColumn(strFieldName, PCThreadCache.getInstance().getProperty(PCConstants.TableHeader));
-                        intTblRowCount = getCoverageTableRowCount(PCThreadCache.getInstance().getProperty(PCConstants.TableBody));
+                        intTblColCount = getCoverageTableHeaderColumn(strFieldName, ThreadCache.getInstance().getProperty(PCConstants.TableHeader));
+                        intTblRowCount = getCoverageTableRowCount(ThreadCache.getInstance().getProperty(PCConstants.TableBody));
                         if (intTblColCount >= 1 && intTblRowCount >= 1) {
-                            blnStatus = clickCoverageTableCell(PCThreadCache.getInstance().getProperty(PCConstants.TableBody), intTblRowCount, intTblColCount, "Single", "div");
+                            blnStatus = clickCoverageTableCell(ThreadCache.getInstance().getProperty(PCConstants.TableBody), intTblRowCount, intTblColCount, "Single", "div");
                             blnStatus = common.SafeAction(Common.o.getObject(strFieldName), strFieldValue, strFieldName);
                             blnStatus = common.SafeAction(Common.o.getObject(strPageName), strPageName, strPageName);
                         }
                         break;
                     case "TBA":
-                        intTblColCount = getCoverageTableHeaderColumn(strFieldName, PCThreadCache.getInstance().getProperty(PCConstants.TableHeader));
-                        intTblRowCount = getCoverageTableRowCount(PCThreadCache.getInstance().getProperty(PCConstants.TableBody));
+                        intTblColCount = getCoverageTableHeaderColumn(strFieldName, ThreadCache.getInstance().getProperty(PCConstants.TableHeader));
+                        intTblRowCount = getCoverageTableRowCount(ThreadCache.getInstance().getProperty(PCConstants.TableBody));
                         if (intTblColCount >= 1 && intTblRowCount >= 1) {
-                            blnStatus = clickCoverageTableCell(PCThreadCache.getInstance().getProperty(PCConstants.TableBody), intTblRowCount, intTblColCount, "Single", "div");
+                            blnStatus = clickCoverageTableCell(ThreadCache.getInstance().getProperty(PCConstants.TableBody), intTblRowCount, intTblColCount, "Single", "div");
                             blnStatus = common.SafeAction(Common.o.getObject(strFieldName), strFieldValue, strFieldName);
                             blnStatus = common.SafeAction(Common.o.getObject(strPageName), strPageName, strPageName);
                         }
                         break;
                     case "TBP":
-                        intTblColCount = getCoverageTableHeaderColumn(strFieldName, PCThreadCache.getInstance().getProperty(PCConstants.TableHeader));
-                        intTblRowCount = getCoverageTableRowCount(PCThreadCache.getInstance().getProperty(PCConstants.TableBody));
+                        intTblColCount = getCoverageTableHeaderColumn(strFieldName, ThreadCache.getInstance().getProperty(PCConstants.TableHeader));
+                        intTblRowCount = getCoverageTableRowCount(ThreadCache.getInstance().getProperty(PCConstants.TableBody));
                         if (intTblColCount >= 1 && intTblRowCount >= 1) {
 
-                            blnStatus = clickCoverageTableCell(PCThreadCache.getInstance().getProperty(PCConstants.TableBody), intTblRowCount, intTblColCount, "Single", "div");
+                            blnStatus = clickCoverageTableCell(ThreadCache.getInstance().getProperty(PCConstants.TableBody), intTblRowCount, intTblColCount, "Single", "div");
                             blnStatus = common.SafeAction(Common.o.getObject(strFieldName), strFieldValue, strFieldName);
                             // blnStatus =
                             // common.SafeAction(Common.o.getObject(pageElement),
@@ -5144,8 +4988,8 @@ public class SCRCommon {
                         strAddRemoveButtonID = strFieldName.substring(0, strFieldName.length() - 3);
                         // blnStatus = getAddRemoveCoverageButton(strCoverageName,
                         // strAddRemoveButtonID,
-                        // PCThreadCache.getInstance().getProperty(PCConstants.CoverageID));
-                        blnStatus = common.SafeAction(By.id(PCThreadCache.getInstance().getProperty(PCConstants.CoverageButtonID)), strFieldValue, strFieldName);
+                        // ThreadCache.getInstance().getProperty(PCConstants.CoverageID));
+                        blnStatus = common.SafeAction(By.id(ThreadCache.getInstance().getProperty(PCConstants.CoverageButtonID)), strFieldValue, strFieldName);
                         /*
                          * // } else{ blnStatus = common.SafeAction(Common.o.getObject(strFieldName),
                          * strFieldValue, strFieldName); }
@@ -5153,22 +4997,22 @@ public class SCRCommon {
                         break;
                     case "RMV":
                         String[] strRemoveValues = strFieldValue.split(":::");
-                        intTblColCount = getCoverageTableHeaderColumn(strRemoveValues[0], PCThreadCache.getInstance().getProperty(PCConstants.TableHeader));
-                        blnStatus = SCRCommon.selectCoverageTableRowToRemove(intTblColCount, PCThreadCache.getInstance().getProperty(PCConstants.TableBody), strRemoveValues[1]);
+                        intTblColCount = getCoverageTableHeaderColumn(strRemoveValues[0], ThreadCache.getInstance().getProperty(PCConstants.TableHeader));
+                        blnStatus = SCRCommon.selectCoverageTableRowToRemove(intTblColCount, ThreadCache.getInstance().getProperty(PCConstants.TableBody), strRemoveValues[1]);
                         strAddRemoveButtonID = strFieldName.substring(0, strFieldName.length() - 3);
-                        blnStatus = getAddRemoveCoverageButton(strCoverageName, strAddRemoveButtonID, PCThreadCache.getInstance().getProperty(PCConstants.CoverageID));
-                        blnStatus = common.SafeAction(By.id(PCThreadCache.getInstance().getProperty(PCConstants.CoverageButtonID)), strFieldName, strFieldName);
+                        blnStatus = getAddRemoveCoverageButton(strCoverageName, strAddRemoveButtonID, ThreadCache.getInstance().getProperty(PCConstants.CoverageID));
+                        blnStatus = common.SafeAction(By.id(ThreadCache.getInstance().getProperty(PCConstants.CoverageButtonID)), strFieldName, strFieldName);
                         break;
                     case "TAG":
-                        intTblColCount = getCoverageTableHeaderColumn(strFieldName, PCThreadCache.getInstance().getProperty(PCConstants.TableHeader));
-                        intTblRowCount = getCoverageTableRowCount(PCThreadCache.getInstance().getProperty(PCConstants.TableBody));
+                        intTblColCount = getCoverageTableHeaderColumn(strFieldName, ThreadCache.getInstance().getProperty(PCConstants.TableHeader));
+                        intTblRowCount = getCoverageTableRowCount(ThreadCache.getInstance().getProperty(PCConstants.TableBody));
                         if (intTblColCount >= 1 && intTblRowCount >= 1) {
                             if (strFieldValue.equalsIgnoreCase("LINK")) {
-                                blnStatus = clickCoverageTableCell(PCThreadCache.getInstance().getProperty(PCConstants.TableBody), intTblRowCount, intTblColCount, "ELEMENTEXIST", "a");
+                                blnStatus = clickCoverageTableCell(ThreadCache.getInstance().getProperty(PCConstants.TableBody), intTblRowCount, intTblColCount, "ELEMENTEXIST", "a");
                             }
                             // link validation
                             // blnStatus =
-                            // clickCoverageTableCell(PCThreadCache.getInstance().getProperty(PCConstants.TableBody),
+                            // clickCoverageTableCell(ThreadCache.getInstance().getProperty(PCConstants.TableBody),
                             // intTblRowCount, intTblColCount, "ELEMENTEXIST", "a");
                             blnStatus = common.SafeAction(Common.o.getObject(strPageName), strPageName, strPageName);
                             // blnStatus =
@@ -5187,7 +5031,7 @@ public class SCRCommon {
             }
             if (!blnStatus) {
                 logger.info("Failed in filling the '" + strFieldName + "' table object");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Should not fail in filling the '" + strFieldName + "' table object", "Failed in filling the '" + strFieldName + "' table object", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Should not fail in filling the '" + strFieldName + "' table object", "Failed in filling the '" + strFieldName + "' table object", "FAIL");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -5219,76 +5063,76 @@ public class SCRCommon {
             switch (strButtonType.toUpperCase()) {
                 case "ADDBLANKETWAIVER":
                     strCoverageButtonID = sSplitID[0].concat(":WC7BlanketWaiverOfSubroLV_tb:Add-btnInnerEl");
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
                 case "EDITADDBLANKETWAIVER":
                     strCoverageButtonID = sSplitID[0].concat(":WC7BlanketWaiverLV_tb:Add-btnInnerEl");
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
                 case "EDITADDSPECIFICWAIVER":
                     strCoverageButtonID = sSplitID[0].concat(":WC7SpecWOSubroForPolCchangeLV_tb:Add-btnInnerEl");
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
                 case "ADD":
                     strCoverageButtonID = sSplitID[0].concat(":ScheduleInputSet:Add-btnInnerEl");
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
                 case "ADDFOREIGNVOLUNTARY":
                     strCoverageButtonID = sSplitID[0].concat(":WC7ForeignVolunCovLV_tb:Add-btnInnerEl");
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
                 case "ADDSOLEPROPRIETORS":
                     strCoverageButtonID = sSplitID[0].concat(":ContactLV_tb:AddContactsButton-btnInnerEl");
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
                 case "ADDEMPLOYEELEASING":
                     strCoverageButtonID = sSplitID[0].concat(":WC7PolicyLaborContractorDetailsLV_tb:AddWC7PolicyLaborContractor-btnInnerEl");
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
                 case "REMOVE":
                     strCoverageButtonID = sSplitID[0].concat(":ScheduleInputSet:Remove-btnInnerEl");
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
                 case "REMOVEBLANKET":
                     strCoverageButtonID = sSplitID[0].concat(":WC7BlanketWaiverOfSubroLV_tb:Remove-btnInnerEl");
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
                 case "REMOVESPECIFIC":
                     strCoverageButtonID = sSplitID[0].concat(":WC7SpecificWaiverOfSubroLV_tb:Remove-btnInnerEl");
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
 
                 case "ADDFEDERALEMPLOYEE":
                     strCoverageButtonID = sSplitID[0].concat(":WC7FedCovEmpLV_tb:Add-btnInnerEl");
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
                 case "ADDEMPLOYEELEASINGCLIENT":
                     strCoverageButtonID = sSplitID[0].concat(":WC7PolicyLaborClientDetailsCondLV_tb:AddWC7PolicyLaborClientCond-btnInnerEl");
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
 
                 case "ADDEMPLOYEELEASINGCLIENTEXCLUSION":
                     strCoverageButtonID = sSplitID[0].concat(":WC7PolicyLaborClientDetailsExclLV_tb:AddWC7PolicyLaborClientExcl-btnInnerEl");
-                    PCThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
+                    ThreadCache.getInstance().setProperty(PCConstants.CoverageButtonID, strCoverageButtonID);
                     blnStatus = true;
                     break;
 
             }
             if (!blnStatus) {
                 logger.info("" + strCoverageName + " is not present in the page for finding the Add/Remove button ID");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "'" + strCoverageName + "' coverage should available in the page for finding the Add/Remove button ID", "'" + strCoverageName + "' CheckBox is not available in the page for finding the Add/Remove button ID", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "'" + strCoverageName + "' coverage should available in the page for finding the Add/Remove button ID", "'" + strCoverageName + "' CheckBox is not available in the page for finding the Add/Remove button ID", "FAIL");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -5365,12 +5209,12 @@ public class SCRCommon {
                                 if (sClassName.endsWith("x-form-cb-checked")) {
                                     blnExistenceFlag = true;
                                     logger.info("Coverage - " + strCovName + "displayed as expected in " + ExistenceMode);
-                                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI in Expected Mode", "Coverage - " + strCovName + " displayed in screen in Mode -" + ExistenceMode, "PASS");
+                                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI in Expected Mode", "Coverage - " + strCovName + " displayed in screen in Mode -" + ExistenceMode, "PASS");
                                 } else {
                                     blnExistenceFlag = false;
                                     logger.info("Coverage - " + strCovName + "is NOT displayed as expected in " + ExistenceMode);
                                     logger.info("Checkbox is NOT CHECKED by default for Coverage - " + strCovName);
-                                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI in Expected Mode", "Coverage - " + strCovName + " NOT displayed in screen in Mode -" + ExistenceMode, "FAIL");
+                                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI in Expected Mode", "Coverage - " + strCovName + " NOT displayed in screen in Mode -" + ExistenceMode, "FAIL");
                                 }
                                 break;
                             case "ELECTABLE":
@@ -5379,12 +5223,12 @@ public class SCRCommon {
                                 {
                                     blnExistenceFlag = true;
                                     logger.info("Coverage - " + strCovName + "displayed as expected in " + ExistenceMode);
-                                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI in Expected Mode", "Coverage - " + strCovName + " displayed in screen in Mode -" + ExistenceMode, "PASS");
+                                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI in Expected Mode", "Coverage - " + strCovName + " displayed in screen in Mode -" + ExistenceMode, "PASS");
                                 } else {
                                     blnExistenceFlag = false;
                                     logger.info("Coverage - " + strCovName + "is NOT displayed as expected in " + ExistenceMode);
                                     logger.info("Checkbox is CHECKED by default for Coverage - " + strCovName);
-                                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI in Expected Mode", "Coverage - " + strCovName + " NOT displayed in screen in Mode -" + ExistenceMode, "FAIL");
+                                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI in Expected Mode", "Coverage - " + strCovName + " NOT displayed in screen in Mode -" + ExistenceMode, "FAIL");
                                 }
                                 break;
                         }
@@ -5394,12 +5238,12 @@ public class SCRCommon {
                         {
                             logger.info("Coverage - " + strCovName + "displayed as expected in " + ExistenceMode);
                             blnExistenceFlag = true;
-                            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI in Expected Mode", "Coverage - " + strCovName + " displayed in screen in Mode -" + ExistenceMode, "PASS");
+                            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI in Expected Mode", "Coverage - " + strCovName + " displayed in screen in Mode -" + ExistenceMode, "PASS");
                         } else if (!ExistenceMode.toUpperCase().equals("REQUIRED")) {
                             blnExistenceFlag = false;
                             logger.info("Coverage - " + strCovName + "is NOT displayed as expected in " + ExistenceMode);
                             logger.info("NO checkbox is available Coverage - " + strCovName);
-                            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI in Expected Mode", "Coverage - " + strCovName + " NOT displayed in screen in Mode -" + ExistenceMode, "FAIL");
+                            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI in Expected Mode", "Coverage - " + strCovName + " NOT displayed in screen in Mode -" + ExistenceMode, "FAIL");
                         }
                     }
 
@@ -5417,11 +5261,11 @@ public class SCRCommon {
                         // As expected cov not avail
                         blnExistenceFlag = true;
                         logger.info("" + strCovName + " is not present in the Screen");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is NOT displayed in UI", "Coverage - " + strCovName + " not displayed in screen as expected", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is NOT displayed in UI", "Coverage - " + strCovName + " not displayed in screen as expected", "PASS");
                     } else {
                         blnExistenceFlag = false;
                         logger.info("" + strCovName + " is not present in the Screen");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI", "Coverage - " + strCovName + " is NOT displayed in screen", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI", "Coverage - " + strCovName + " is NOT displayed in screen", "FAIL");
                     }
                     break;
             }
@@ -5480,7 +5324,7 @@ public class SCRCommon {
         String sCoverageComponentName = null;
         String sChooseCoverage = null;
         String sCoverageName = null;
-        String currentCompoentName = PCThreadCache.getInstance().getProperty("methodName");
+        String currentCompoentName = ThreadCache.getInstance().getProperty("methodName");
         String sFieldName = null;
         String sFieldValue = null;
         String fieldType = null;
@@ -5502,14 +5346,14 @@ public class SCRCommon {
         String[] arrColName = {"Coverages", "RefCode", "cfufillCoverages", "cfuPageScreenShot", "cfuVerifyExistence", "Field_Validation"};
 
         XlsxReader xls = XlsxReader.getInstance();
-        String tcID = PCThreadCache.getInstance().getProperty("TCID");
+        String tcID = ThreadCache.getInstance().getProperty("TCID");
         // String[] splittcID = tcID.split("_");
         String sFileName = null;
         HashMap<String, Object> whereConstraint = new HashMap<String, Object>();
         ArrayList<HashMap<String, Object>> resultListRows = new ArrayList<HashMap<String, Object>>();
         whereConstraint.clear();
         whereConstraint.put(PCConstants.ID, tcID);
-        whereConstraint.put(PCConstants.Iteration, PCThreadCache.getInstance().getProperty("Iteration"));
+        whereConstraint.put(PCConstants.Iteration, ThreadCache.getInstance().getProperty("Iteration"));
         whereConstraint.put(PCConstants.componentSheet, currentCompoentName);
         resultListRows = xls.executeSelectQuery(sheetName, whereConstraint);
         if (resultListRows.size() > 0) {
@@ -5539,7 +5383,7 @@ public class SCRCommon {
 
                         case "cfuVerifyExistence":
                             if (!sCoverageName.isEmpty() && !getKeyValue.isEmpty()) {
-                                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validation for Ref Code ----> <BR>" + sRefCode, "Coverage Name  --- " + sCoverageName, "PASS");
+                                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validation for Ref Code ----> <BR>" + sRefCode, "Coverage Name  --- " + sCoverageName, "PASS");
                                 status = ValidateCovExistence(sCoverageName, getKeyValue);
                                 logger.info("sRefCode");
                             }
@@ -5552,7 +5396,7 @@ public class SCRCommon {
                                 sFileValues = (String) processRow.get("Validate_FieldValue" + f);
 
                                 if (!sFieldName.isEmpty()) {
-                                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validation for Fields inside the Coverage .<BR> Ref Code - " + sRefCode, "Coverage Name  --- " + sCoverageName + " <BR> Field Name - " + sFieldName, "PASS");
+                                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validation for Fields inside the Coverage .<BR> Ref Code - " + sRefCode, "Coverage Name  --- " + sCoverageName + " <BR> Field Name - " + sFieldName, "PASS");
                                     status = ValidateFieldLevel(sFieldName, sFileType, sFileDefValue, sFileValues, sCoverageName);
                                 }
                                 if (!status) {
@@ -5599,7 +5443,7 @@ public class SCRCommon {
         }
         if (!blnRenewalStatus) {
             logger.info("Renewal Flow is not ready to use hence try later");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Renewal Transaction should get ready", "Renewal Transaction should get ready", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Renewal Transaction should get ready", "Renewal Transaction should get ready", "FAIL");
         }
         return blnRenewalStatus;
     }
@@ -5617,7 +5461,7 @@ public class SCRCommon {
         blnCoverageAvailable = getCoverageNameID(sCoverageName);
         if (blnCoverageAvailable) {
             logger.info("" + sCoverageName + " label found in the Screen");
-            String GetCovID = PCThreadCache.getInstance().getProperty(PCConstants.CoverageID);
+            String GetCovID = ThreadCache.getInstance().getProperty(PCConstants.CoverageID);
             sSplitID = GetCovID.split("-");
             By sTargetID = By.id(sSplitID[0]);
             WebElement sTargetLegend = CommonManager.getInstance().getCommon().returnObject(sTargetID);
@@ -5633,7 +5477,7 @@ public class SCRCommon {
                     sChildLabel = true;
                     sLabelID = sLabel.getAttribute("id");
                     sLabelIDSplit = sLabelID.split("-");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Field in Coverage is displayed in UI", "Field : " + strFieldName + " displayed in screen", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Field in Coverage is displayed in UI", "Field : " + strFieldName + " displayed in screen", "PASS");
                     status = verifyCovFieldType(sLabelIDSplit[0], sFieldType, sDefValue, sFieldAllVal);
                 }
                 if (sChildLabel) {
@@ -5646,17 +5490,17 @@ public class SCRCommon {
                     if (sFieldType.equalsIgnoreCase("NOT_AVAIL")) {
                         status = true;
                         logger.info("" + strFieldName + " is not present in the Screen");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the field is NOT displayed in UI", "Field - " + strFieldName + " not displayed in screen", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the field is NOT displayed in UI", "Field - " + strFieldName + " not displayed in screen", "PASS");
                     } else {
                         status = true;
                         logger.info("" + strFieldName + " is not present in the Screen");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the field is displayed in UI", "Field - " + strFieldName + " not displayed in screen", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the field is displayed in UI", "Field - " + strFieldName + " not displayed in screen", "FAIL");
                     }
                     break;
             }
         } else {
             logger.info("" + sCoverageName + " is not present in the Screen");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI", "Coverage - " + sCoverageName + " not displayed in screen", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI", "Coverage - " + sCoverageName + " not displayed in screen", "FAIL");
         }
         return status;
     }
@@ -5693,7 +5537,7 @@ public class SCRCommon {
         }
         if (!blnRenewalStatus) {
             logger.info("Renewal Flow is not ready to use hence try later");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Renewal Transaction should get ready", "Renewal Transaction is not ready to go", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Renewal Transaction should get ready", "Renewal Transaction is not ready to go", "FAIL");
         }
         return blnRenewalStatus;
     }
@@ -5711,9 +5555,9 @@ public class SCRCommon {
         XlsxReader sXL = XlsxReader.getInstance();
         HashMap<String, Object> whereConstraint = new HashMap<String, Object>();
         ArrayList<HashMap<String, Object>> resultListRows = new ArrayList<HashMap<String, Object>>();
-        whereConstraint.put("Iteration", PCThreadCache.getInstance().getProperty(PCConstants.Iteration));
+        whereConstraint.put("Iteration", ThreadCache.getInstance().getProperty(PCConstants.Iteration));
         whereConstraint.put("TCValidationCase", strFuncValue);
-        whereConstraint.put(PCConstants.ID, PCThreadCache.getInstance().getProperty("TCID"));
+        whereConstraint.put(PCConstants.ID, ThreadCache.getInstance().getProperty("TCID"));
         resultListRows = sXL.executeSelectQuery("Validation", whereConstraint);
         logger.info("Entered into Validate function");
         if (!resultListRows.isEmpty()) {
@@ -5734,8 +5578,8 @@ public class SCRCommon {
             }
         } else {
             logger.info("No Result Found in the Validation sheet");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Test Case '" + PCThreadCache.getInstance().getProperty("TCID") + "' and Iteration '" + PCThreadCache.getInstance().getProperty(PCConstants.Iteration) + "' should available in the validation sheet",
-                    "Test Case '" + PCThreadCache.getInstance().getProperty("TCID") + "' or Iteration '" + PCThreadCache.getInstance().getProperty(PCConstants.Iteration) + "' is not present in the validation sheet", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Test Case '" + ThreadCache.getInstance().getProperty("TCID") + "' and Iteration '" + ThreadCache.getInstance().getProperty(PCConstants.Iteration) + "' should available in the validation sheet",
+                    "Test Case '" + ThreadCache.getInstance().getProperty("TCID") + "' or Iteration '" + ThreadCache.getInstance().getProperty(PCConstants.Iteration) + "' is not present in the validation sheet", "FAIL");
             blnStatus = false;
         }
 
@@ -5758,7 +5602,7 @@ public class SCRCommon {
                 roletype = sFieldType.getAttribute(strAttribute);
                 if (roletype.toUpperCase().equals("COMBOBOX") && strFieldType.toUpperCase().equals("DROPDOWN")) {
                     logger.info("Field Type matched");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType for Coverage ", "ActualField Type -" + strFieldType + " macthes with the Expected Field type.", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType for Coverage ", "ActualField Type -" + strFieldType + " macthes with the Expected Field type.", "PASS");
                     status = true;
                     blnRoleMatched = true;
                 }
@@ -5771,7 +5615,7 @@ public class SCRCommon {
                 roletype = sFieldType.getAttribute(strAttribute);
                 if (roletype.toUpperCase().equals(strFieldType.toUpperCase())) {
                     logger.info("Field Type matched");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType for Coverage ", "ActualField Type -" + strFieldType + " macthes with the Expected Field type.", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType for Coverage ", "ActualField Type -" + strFieldType + " macthes with the Expected Field type.", "PASS");
                     status = true;
                     blnRoleMatched = true;
                 }
@@ -5784,7 +5628,7 @@ public class SCRCommon {
                 roletype = sFieldType.getAttribute(strAttribute);
                 if (strFieldType.toUpperCase().equals("DATE_FIELD") && roletype.toUpperCase().equals("TEXTBOX")) {
                     logger.info("Field Type matched");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType for Coverage ", "ActualField Type -" + strFieldType + " macthes with the Expected Field type.", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType for Coverage ", "ActualField Type -" + strFieldType + " macthes with the Expected Field type.", "PASS");
                     status = true;
                     blnRoleMatched = true;
                 }
@@ -5796,7 +5640,7 @@ public class SCRCommon {
                 roletype = sFieldType.getAttribute(strAttribute);
                 if (strFieldType.toUpperCase().equals("READONLY") && roletype.equals("x-form-display-field")) {
                     logger.info("Field Type  matched");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType for Coverage", "ActualField Type -" + strFieldType + " macthes with the Expected Field type.", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType for Coverage", "ActualField Type -" + strFieldType + " macthes with the Expected Field type.", "PASS");
                     status = true;
                     blnRoleMatched = true;
                 }
@@ -5808,7 +5652,7 @@ public class SCRCommon {
                 roletype = sFieldType.getAttribute(strAttribute);
                 if (roletype.toUpperCase().equals(strFieldType.toUpperCase())) {
                     logger.info("Field Type matched");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType for Coverage ", "ActualField Type -" + strFieldType + " macthes with the Expected Field type.", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType for Coverage ", "ActualField Type -" + strFieldType + " macthes with the Expected Field type.", "PASS");
                     status = true;
                     blnRoleMatched = true;
                 }
@@ -5819,7 +5663,7 @@ public class SCRCommon {
                 strAttribute = "role";
                 if (roletype.toUpperCase().equals(strFieldType.toUpperCase())) {
                     logger.info("Field Type matched");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType for Coverage ", "ActualField Type -" + strFieldType + " macthes with the Expected Field type.", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType for Coverage ", "ActualField Type -" + strFieldType + " macthes with the Expected Field type.", "PASS");
                     status = true;
                     blnRoleMatched = true;
                 }
@@ -5829,7 +5673,7 @@ public class SCRCommon {
 
         if (!blnRoleMatched) {
             logger.info("Field Type not matched");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType for Coverage - <BR>" + sObjId, "ActualField Type -" + strFieldType + "<BR> Expected Fieldtype -" + roletype + "doesnt match", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType for Coverage - <BR>" + sObjId, "ActualField Type -" + strFieldType + "<BR> Expected Fieldtype -" + roletype + "doesnt match", "FAIL");
             status = false;
         }
 
@@ -6058,11 +5902,11 @@ public class SCRCommon {
         if (SearchString) {
             // logger.info("Search String available in the table. '" +
             // strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is avilable in the " + strTableName + " table", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is avilable in the " + strTableName + " table", "PASS");
         } else {
             // logger.info("Search String not available in the table. '" +
             // strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is not avilable in the " + strTableName + " table", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is not avilable in the " + strTableName + " table", "PASS");
             SearchString = false;
         }
         return SearchString;
@@ -6100,9 +5944,9 @@ public class SCRCommon {
         WebElement radioButton = ManagerDriver.getInstance().getWebDriver().findElement(Common.o.getObject(strElementName));
         blnStatus = radioButton.isDisplayed();
         if (blnStatus) {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " element should be selected as " + strExpected + "", "" + strElementName + " element is selected as " + strExpected + "", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " element should be selected as " + strExpected + "", "" + strElementName + " element is selected as " + strExpected + "", "PASS");
         } else {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " element should be selected as " + strExpected + "", "" + strElementName + " element is not selected as " + strExpected + "", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " element should be selected as " + strExpected + "", "" + strElementName + " element is not selected as " + strExpected + "", "FAIL");
             blnStatus = true;
         }
         return blnStatus;
@@ -6148,10 +5992,10 @@ public class SCRCommon {
                 }
         }
         if (strExpFlag) {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " element should be displayed as " + strExpected + "", "" + strElementName + " element is displayed as " + strExpected + "", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " element should be displayed as " + strExpected + "", "" + strElementName + " element is displayed as " + strExpected + "", "PASS");
             blnStatus = true;
         } else {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " element should be displayed as " + strExpected + "", "" + strElementName + " element is not displayed as " + strExpected + "", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " element should be displayed as " + strExpected + "", "" + strElementName + " element is not displayed as " + strExpected + "", "FAIL");
             blnStatus = true;
         }
         return blnStatus;
@@ -6193,9 +6037,9 @@ public class SCRCommon {
                 }
             }
             if (blnSearchString) {
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should validate the display of document '" + strReadString + "' ", "Document '" + strReadString + "' is displayed in the document section", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should validate the display of document '" + strReadString + "' ", "Document '" + strReadString + "' is displayed in the document section", "PASS");
             } else {
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should validate the display of document '" + strReadString + "' ", "Document '" + strReadString + "' is NOT displayed in the document section", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should validate the display of document '" + strReadString + "' ", "Document '" + strReadString + "' is NOT displayed in the document section", "FAIL");
             }
             if (icheckNextPageButton > 0) {
                 blnStatus = common.SafeAction(Common.o.getObject("eleFirstPage"), "", "eleFirstPage");
@@ -6342,10 +6186,10 @@ public class SCRCommon {
         }
         if (blnForm && blnformDesc) {
             logger.info("Form is available in forms table. '" + strformName + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strformName + "'", "Form '" + strformName + "' and its description '" + formDesc + "' is available in forms table", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strformName + "'", "Form '" + strformName + "' and its description '" + formDesc + "' is available in forms table", "PASS");
         } else if (blnForm && !blnformDesc) {
             logger.info("Search String not available in the table. '" + strformName + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Form '" + strformName + "' and its description '" + formDesc + "' should be available in forms table", "Form '" + strformName + "' is available. But description'" + formDesc + "' is not availalbe", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Form '" + strformName + "' and its description '" + formDesc + "' should be available in forms table", "Form '" + strformName + "' is available. But description'" + formDesc + "' is not availalbe", "FAIL");
             SearchString = false;
         }
         return SearchString;
@@ -6383,12 +6227,12 @@ public class SCRCommon {
         if (sActValue.equals(sDefValue)) {
             status = PageScreenShot("FieldDropDownValue");
             logger.info("Default value for the element macthed !!");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify whether default value matches with the expected .", "Expected Default Value -" + sDefValue + "<BR> Actual value in UI - " + sActValue, "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify whether default value matches with the expected .", "Expected Default Value -" + sDefValue + "<BR> Actual value in UI - " + sActValue, "PASS");
             status = true;
         } else {
             status = PageScreenShot("FieldDropDownValue");
             logger.info("Default value for the element doesnt match with the expected !!");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify whether default value matches with the expected .", "Expected Default Value -" + sDefValue + "<BR> Actual value in UI - " + sActValue + "doesnt match", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify whether default value matches with the expected .", "Expected Default Value -" + sDefValue + "<BR> Actual value in UI - " + sActValue + "doesnt match", "FAIL");
             status = false;
         }
         return status;
@@ -6412,7 +6256,7 @@ public class SCRCommon {
             for (int k = 0; k < gwListBox.size(); k++) {
                 if (sExpListValue[j].equals(gwListBox.get(k).getText())) {
                     logger.info("Expected UI dropdown value - " + sExpListValue[j] + " is available in List");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are available in UI List", "Expected Dropdown Value - '" + sExpListValue[j] + "' available in UI list", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are available in UI List", "Expected Dropdown Value - '" + sExpListValue[j] + "' available in UI list", "PASS");
                     blnMatchFound = true;
                     break;
                 }
@@ -6421,7 +6265,7 @@ public class SCRCommon {
             // "ele", "eleDropdown");
             if (!blnMatchFound) {
                 logger.info("Expected UI dropdown value - " + sExpListValue[j] + "is not available in List");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are available in UI List", "Expected Dropdown Value - " + sExpListValue[j] + "NOT available in UI list", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are available in UI List", "Expected Dropdown Value - " + sExpListValue[j] + "NOT available in UI list", "FAIL");
                 status = CommonManager.getInstance().getCommon().SafeAction(By.id(eleObjID), "ele", "eleDropdown");
             }
         }
@@ -6462,13 +6306,13 @@ public class SCRCommon {
             switch (valCount) {
                 case 0:
                     logger.info("" + readStr + " does not exist in un attqched document Table");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + readStr + " should available in the forms Table", "" + readStr + " is not available in forms Table", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + readStr + " should available in the forms Table", "" + readStr + " is not available in forms Table", "FAIL");
                     break;
                 case 1:
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should validate the display of form '" + readStr + "' and description '" + actStr + "'", "Form '" + readStr + "' is available but description '" + actStr + "' is not matching as expected", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should validate the display of form '" + readStr + "' and description '" + actStr + "'", "Form '" + readStr + "' is available but description '" + actStr + "' is not matching as expected", "FAIL");
                     break;
                 case 2:
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should validate the display of form '" + readStr + "' and description '" + actStr + "'", "Form '" + readStr + "' and description '" + actStr + "' are matching as expected", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should validate the display of form '" + readStr + "' and description '" + actStr + "'", "Form '" + readStr + "' and description '" + actStr + "' are matching as expected", "PASS");
                     break;
             }
 
@@ -6476,7 +6320,7 @@ public class SCRCommon {
                 blnStatus = common.SafeAction(Common.o.getObject("eleFirstPage"), "", "eleFirstPage");
             }
         } catch (Exception e) {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + readStr + " should available in forms Table", "" + readStr + " is not available in forms Table", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + readStr + " should available in forms Table", "" + readStr + " is not available in forms Table", "FAIL");
             e.printStackTrace();
         }
         return blnStatus;
@@ -6501,7 +6345,7 @@ public class SCRCommon {
 
         if (CellElements.size() == 0) {
             logger.info("No Error/Warning messages in screen to validate");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen", "PASS");
             status = true;
             return status;
         }
@@ -6535,7 +6379,7 @@ public class SCRCommon {
 
                         String actWarningMsg = Cells.get(j).getText();
                         logger.info(actWarningMsg);
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Valdiate any " + arvalidate[i] + " is displayed on screen", "Error/Warning message ----- " + actWarningMsg + " ------is displayed on screen", blnPrintStatus);
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Valdiate any " + arvalidate[i] + " is displayed on screen", "Error/Warning message ----- " + actWarningMsg + " ------is displayed on screen", blnPrintStatus);
                     }
 
                 }
@@ -6553,9 +6397,9 @@ public class SCRCommon {
          * expectedText = expText.toString(); for(String actText: a) { if
          * (actText.equals(expText)) { matchStatus = true;
          * logger.info("Expected Warning Message  is matching with actual message '" +
-         * expectedText + "'"); HTML.fnInsertResult(PCThreadCache.getInstance()
+         * expectedText + "'"); HTML.fnInsertResult(ThreadCache.getInstance()
          * .getProperty("testcasename"),
-         * PCThreadCache.getInstance().getProperty("methodName"),
+         * ThreadCache.getInstance().getProperty("methodName"),
          * "Expected error text should matching with actual text '" + expectedText +
          * "'","Expected error text is matching with actual text '" + expectedText +
          * "'", "PASS"); break; } }
@@ -6563,8 +6407,8 @@ public class SCRCommon {
          * if(matchStatus == false) { logger.info(
          * "Expected Warning Message is not matching with actual message '" +
          * expectedText + "'");
-         * HTML.fnInsertResult(PCThreadCache.getInstance().getProperty ("testcasename"),
-         * PCThreadCache.getInstance().getProperty("methodName"),
+         * HTML.fnInsertResult(ThreadCache.getInstance().getProperty ("testcasename"),
+         * ThreadCache.getInstance().getProperty("methodName"),
          * "Expected error text should matching with actual text '" + expectedText +
          * "'","Expected error text is not matching with actual text '" + expectedText +
          * "'", "FAIL"); //Status = false; } }
@@ -6610,8 +6454,8 @@ public class SCRCommon {
         }
         if (SearchString && !getString) {
             logger.info("Search String not available in the table. '" + strGetString + "'");
-            // HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"),
-            // PCThreadCache.getInstance().getProperty("methodName"), "Form '" +
+            // HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"),
+            // ThreadCache.getInstance().getProperty("methodName"), "Form '" +
             // strReadString+"' and its description '"+strGetString +
             // "' should be available in forms table","Form '" +
             // strReadString+"' is available. But description'"+strGetString+"' is not
@@ -6641,7 +6485,7 @@ public class SCRCommon {
         blnCoverageAvailable = getCoverageNameID(sFuncValue);
         if (blnCoverageAvailable) {
             logger.info("" + sFuncValue + " label found in the Screen");
-            String GetCovID = PCThreadCache.getInstance().getProperty(PCConstants.CoverageID);
+            String GetCovID = ThreadCache.getInstance().getProperty(PCConstants.CoverageID);
             WebElement sTargetLegend = CommonManager.getInstance().getCommon().returnObject(By.id(GetCovID));
             getIDofLabel = sTargetLegend.getAttribute("id");
             sSplitID = getIDofLabel.split("-");
@@ -6656,11 +6500,11 @@ public class SCRCommon {
                     logger.info("Already Checkbox is selected." + sFuncValue + "");
                     status = CommonManager.getInstance().getCommon().SafeAction(By.id(actualID), "elj" + sFuncValue + "", "elj" + sFuncValue + "");
                     logger.info("Clicked the checkbox of " + sFuncValue + "");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the coverage is available to remove", "As expected,Coverage - " + sFuncValue + "is removed from screen", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the coverage is available to remove", "As expected,Coverage - " + sFuncValue + "is removed from screen", "PASS");
                 } else {
 
                     logger.info("Already Covergae is not in Selected mode " + sFuncValue + "");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the coverage is available to remove", "As expected,Coverage - " + sFuncValue + "is not available to remove", "WARNING");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the coverage is available to remove", "As expected,Coverage - " + sFuncValue + "is not available to remove", "WARNING");
                 }
 
             } catch (Exception e) {
@@ -6671,7 +6515,7 @@ public class SCRCommon {
         } else {
 
             logger.info("" + sFuncValue + " is not present in the Screen");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "'" + sFuncValue + "' CheckBox should available in the system", "'" + sFuncValue + "' CheckBox is not available in the system", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "'" + sFuncValue + "' CheckBox should available in the system", "'" + sFuncValue + "' CheckBox is not available in the system", "FAIL");
 
         }
 
@@ -6715,11 +6559,11 @@ public class SCRCommon {
                 blnstatus = true;
                 logger.info("Number of class codes in PC  matches with CDR");
 
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + num + " class codes in PC", "" + count + " class codes in CDR", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + num + " class codes in PC", "" + count + " class codes in CDR", "PASS");
             } else {
                 logger.info("Number of class codes in PC DOES NOT matches with CDR");
 
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + num + " class codes in PC", "" + count + " class codes in CDR", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + num + " class codes in PC", "" + count + " class codes in CDR", "FAIL");
             }
 
         }
@@ -6750,12 +6594,12 @@ public class SCRCommon {
                 if (pctext.equals(arrclscode[j])) {
                     logger.info("Column " + j + " matched");
 
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + pctext + " displayed in PC", "" + arrclscode[j] + " displayed in CDR", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + pctext + " displayed in PC", "" + arrclscode[j] + " displayed in CDR", "PASS");
 
                 } else {
                     blnstatus = false;
                     logger.info("Column " + j + " didnt match");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + pctext + " displayed in PC", "" + arrclscode[j] + " displayed in CDR", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + pctext + " displayed in PC", "" + arrclscode[j] + " displayed in CDR", "FAIL");
 
                 }
 
@@ -6779,7 +6623,7 @@ public class SCRCommon {
         Common common = CommonManager.getInstance().getCommon();
         if (common.ElementSize(Common.o.getObject("ele" + obj)) <= 0) {
             SearchString = false;
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should not avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is not avilable in the " + strTableName + " table", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should not avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is not avilable in the " + strTableName + " table", "PASS");
         } else {
             WebElement mytable = ManagerDriver.getInstance().getWebDriver().findElement(Common.o.getObject(obj));
             List<WebElement> allrows = mytable.findElements(By.tagName("tr"));
@@ -6796,11 +6640,11 @@ public class SCRCommon {
         if (!SearchString) {
             // logger.info("Search String not available in the table. '" +
             // strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should not avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is not avilable in the " + strTableName + " table", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should not avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is not avilable in the " + strTableName + " table", "PASS");
         } else {
             // logger.info("Search String available in the table. '" +
             // strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is  avilable in the " + strTableName + " table", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is  avilable in the " + strTableName + " table", "FAIL");
 
         }
         return SearchString;
@@ -6812,7 +6656,7 @@ public class SCRCommon {
         Common common = CommonManager.getInstance().getCommon();
         if (common.ElementSize(Common.o.getObject("ele" + obj)) <= 0) {
             SearchString = false;
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should not avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is not avilable in the " + strTableName + " table", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should not avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is not avilable in the " + strTableName + " table", "FAIL");
         } else {
             WebElement mytable = ManagerDriver.getInstance().getWebDriver().findElement(Common.o.getObject("ele" + obj));
             List<WebElement> allrows = mytable.findElements(By.tagName("tr"));
@@ -6828,10 +6672,10 @@ public class SCRCommon {
 
         if (!SearchString) {
             logger.info("Search String not available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should not avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is not avilable in the " + strTableName + " table", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should not avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is not avilable in the " + strTableName + " table", "FAIL");
         } else {
             logger.info("Search String available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is  avilable in the " + strTableName + " table", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is  avilable in the " + strTableName + " table", "PASS");
 
         }
         return SearchString;
@@ -6868,21 +6712,21 @@ public class SCRCommon {
         if (SearchString) {
             // logger.info("Search String available in the table. '" +
             // strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Read String '" + strReadString + "' should avilable in the " + strTableName + " table", "Read String '" + strReadString + "' is avilable in the " + strTableName + " table", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Read String '" + strReadString + "' should avilable in the " + strTableName + " table", "Read String '" + strReadString + "' is avilable in the " + strTableName + " table", "PASS");
             if (ActionString) {
                 // logger.info("Search String available in the table. '" +
                 // strReadString + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Action Search string '" + strActionString + "' should avilable in the " + strTableName + " table", "Action Search string '" + strActionString + "' is avilable in the " + strTableName + " table", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Action Search string '" + strActionString + "' should avilable in the " + strTableName + " table", "Action Search string '" + strActionString + "' is avilable in the " + strTableName + " table", "PASS");
             } else {
                 // logger.info("Search String not available in the table. '" +
                 // strReadString + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Read String '" + strActionString + "' should avilable in the " + strTableName + " table", "Read String '" + strActionString + "' is not avilable in the " + strTableName + " table", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Read String '" + strActionString + "' should avilable in the " + strTableName + " table", "Read String '" + strActionString + "' is not avilable in the " + strTableName + " table", "FAIL");
                 ActionString = false;
             }
         } else {
             // logger.info("Search String not available in the table. '" +
             // strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is not avilable in the " + strTableName + " table", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Search string '" + strReadString + "' should avilable in the " + strTableName + " table", "Search string '" + strReadString + "' is not avilable in the " + strTableName + " table", "FAIL");
             SearchString = false;
         }
         return SearchString;
@@ -6915,11 +6759,11 @@ public class SCRCommon {
         }
         if (CellElements.size() == 0 && expWarnignMsg[0].equals("NIL")) {
             logger.info("No Error/Warning messages in screen to validate");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "As Expected,No Error/Warning messgae in the screen to validate", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "As Expected,No Error/Warning messgae in the screen to validate", "PASS");
             status = true;
         } else if (CellElements.size() == 0 && !(expWarnignMsg[0].equals("NIL"))) {
             logger.info("No Error/Warning messages in screen to validate");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "No Error/Warning messgae in the screen to validate", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "No Error/Warning messgae in the screen to validate", "FAIL");
             status = true;
         }
         for (int i = 0; i <= CellElements.size() - 1; i++) {
@@ -6947,18 +6791,18 @@ public class SCRCommon {
                 if (actText.equals(expText)) {
                     matchStatus = true;
                     logger.info("Expected Warning Message  is matching with actual message '" + expectedText + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected error/warning text '" + expectedText + "' should matching with actual text '" + expectedText + "'", "Expected error/warning text '" + expectedText + "' is matching with actual text '" + actMsgText + "'", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected error/warning text '" + expectedText + "' should matching with actual text '" + expectedText + "'", "Expected error/warning text '" + expectedText + "' is matching with actual text '" + actMsgText + "'", "PASS");
                     break;
                 }
             }
 
             if (matchStatus == false && sAvailablity != "NOERROR") {
                 logger.info("Expected Warning Message is not matching with actual message in UI '" + expectedText + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected error/warning text '" + expectedText + "' should matching with actual text '" + actMsgText + "'", "Expected error text is not matching with actual text '" + expectedText + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected error/warning text '" + expectedText + "' should matching with actual text '" + actMsgText + "'", "Expected error text is not matching with actual text '" + expectedText + "'", "FAIL");
                 // Status = false;
             } else if (matchStatus == false && sAvailablity == "NOERROR") {
                 logger.info("Expected Warning Message is not matching with actual message in UI '" + expectedText + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "As expected Expected error message is not displayed in UI '" + expectedText + "'", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected error text should matching with actual text '" + expectedText + "'", "As expected Expected error message is not displayed in UI '" + expectedText + "'", "PASS");
                 // Status = false;
             }
         }
@@ -7001,7 +6845,7 @@ public class SCRCommon {
                         String readAttriID1 = element.getAttribute("id");
                         blnStatus = common.SafeAction(By.id(readAttriID1), "", "ele" + strEachActivity + "");
                         Thread.sleep(500);
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click the " + strEachActivity + " Activity", "System clicked " + strEachActivity + " Activity", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click the " + strEachActivity + " Activity", "System clicked " + strEachActivity + " Activity", "PASS");
                         blnStatus = true;
                         Counter = Counter + 1;
                         break inner;
@@ -7015,7 +6859,7 @@ public class SCRCommon {
                         }
                     } else {
                         if (blnStatus == false) {
-                            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strEachActivity + "Activity should present in the activity list of " + arrActivtyName[1] + "", "" + strEachActivity + " Activity is not present in the activity list of " + arrActivtyName[1] + "", "FAIL");
+                            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strEachActivity + "Activity should present in the activity list of " + arrActivtyName[1] + "", "" + strEachActivity + " Activity is not present in the activity list of " + arrActivtyName[1] + "", "FAIL");
                             break outer;
                         }
                     }
@@ -7052,14 +6896,14 @@ public class SCRCommon {
                         String readAttriID1 = element.getAttribute("id");
                         blnStatus = common.SafeAction(By.id(readAttriID1), "", "ele" + strEachActivity + "");
                         Thread.sleep(500);
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click the " + strEachActivity + " Activity", "System clicked " + strEachActivity + " Activity", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click the " + strEachActivity + " Activity", "System clicked " + strEachActivity + " Activity", "PASS");
                         blnStatus = true;
                         Counter = Counter + 1;
                         break inner;
                     }
                 }
                 if (!blnStatus) {
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strEachActivity + "Activity should present in the activity list of " + arrActivtyName[1] + "", "" + strEachActivity + " Activity is not present in the activity list of " + arrActivtyName[1] + "", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strEachActivity + "Activity should present in the activity list of " + arrActivtyName[1] + "", "" + strEachActivity + " Activity is not present in the activity list of " + arrActivtyName[1] + "", "FAIL");
                     break outer;
                 }
             }
@@ -7081,7 +6925,7 @@ public class SCRCommon {
         blnCoverageAvailable = getCoverageNameID(sCoverageName);
         if (blnCoverageAvailable) {
             logger.info("" + sCoverageName + " label found in the Screen");
-            String GetCovID = PCThreadCache.getInstance().getProperty(PCConstants.CoverageID);
+            String GetCovID = ThreadCache.getInstance().getProperty(PCConstants.CoverageID);
             sSplitID = GetCovID.split("-");
             By sTargetID = By.id(sSplitID[0]);
             switch (strFieldName.toUpperCase()) {
@@ -7104,9 +6948,9 @@ public class SCRCommon {
                     case "BUTTON":
                         fieldType = sTargetLegend.getAttribute("class");
                         if (fieldType.equals("x-btn-button")) {
-                            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType  in Coverage is displayed in UI", "Field : " + strFieldName + " displayed in screen", "PASS");
+                            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType  in Coverage is displayed in UI", "Field : " + strFieldName + " displayed in screen", "PASS");
                         } else {
-                            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType  in Coverage is displayed in UI", "Field : " + strFieldName + " NOT displayed in screen", "FAIL");
+                            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the FieldType  in Coverage is displayed in UI", "Field : " + strFieldName + " NOT displayed in screen", "FAIL");
                         }
                         break;
                 }
@@ -7118,17 +6962,17 @@ public class SCRCommon {
                     if (sFieldType.equalsIgnoreCase("NOT_AVAIL")) {
                         status = true;
                         logger.info("" + strFieldName + " is not present in the Screen");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the field is NOT displayed in UI", "Field - " + strFieldName + " not displayed in screen", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the field is NOT displayed in UI", "Field - " + strFieldName + " not displayed in screen", "PASS");
                     } else {
                         status = true;
                         logger.info("" + strFieldName + " is not present in the Screen");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the field is displayed in UI", "Field - " + strFieldName + " not displayed in screen", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the field is displayed in UI", "Field - " + strFieldName + " not displayed in screen", "FAIL");
                     }
                     break;
             }
         } else {
             logger.info("" + sCoverageName + " is not present in the Screen");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI", "Coverage - " + sCoverageName + " not displayed in screen", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Coverage is displayed in UI", "Coverage - " + sCoverageName + " not displayed in screen", "FAIL");
         }
         return status;
     }
@@ -7144,20 +6988,20 @@ public class SCRCommon {
                 sClassName = sTargetLegend.getAttribute("class");
                 if (!sClassName.contains("x-btn-disabled")) {
                     logger.info("" + strFieldName + " is dispalyed as ENABLED in the Screen");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify the Field Existence Mode- Enable/Disable", "Field - " + strFieldName + " is displayed as ENABLED as expected", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify the Field Existence Mode- Enable/Disable", "Field - " + strFieldName + " is displayed as ENABLED as expected", "PASS");
                 } else {
                     logger.info("" + strFieldName + " is NOT dispalyed as ENABLED in the Screen");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify the Field Existence Mode- Enable/Disable", "Field - " + strFieldName + " is NOT displayed as ENABLED as expected", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify the Field Existence Mode- Enable/Disable", "Field - " + strFieldName + " is NOT displayed as ENABLED as expected", "FAIL");
                 }
                 break;
             case "DISABLED":
                 sClassName = sTargetLegend.getAttribute("class");
                 if (sClassName.contains("x-btn-disabled")) {
                     logger.info("" + strFieldName + " is dispalyed as DISABLED in the Screen");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify the Field Existence Mode- Enable/Disable", "Field - " + strFieldName + " is displayed as DISABLED as expected", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify the Field Existence Mode- Enable/Disable", "Field - " + strFieldName + " is displayed as DISABLED as expected", "PASS");
                 } else {
                     logger.info("" + strFieldName + " is NOT dispalyed as DISABLED in the Screen");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify the Field Existence Mode- Enable/Disable", "Field - " + strFieldName + " is NOT displayed as DISABLED as expected", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify the Field Existence Mode- Enable/Disable", "Field - " + strFieldName + " is NOT displayed as DISABLED as expected", "FAIL");
                 }
                 break;
         }
@@ -7192,13 +7036,13 @@ public class SCRCommon {
                             if (readAttriID2.contains(":UWRef_ExtMenuItemSet:") && strEachLink.equals(arrActivtyName[1])) {
                                 blnStatus = common.SafeAction(By.id(readAttriID2), "", "ele" + strEachLink + "");
                                 Thread.sleep(500);
-                                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click the " + strEachLink + " Link", "System clicked " + strEachLink + " Link", "PASS");
+                                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click the " + strEachLink + " Link", "System clicked " + strEachLink + " Link", "PASS");
                                 blnStatus = true;
                                 break inner;
                             } else if (!readAttriID2.contains(":UWRef_ExtMenuItemSet:") && strEachLink.equals(arrActivtyName[0])) {
                                 blnStatus = common.SafeAction(By.id(readAttriID2), "", "ele" + strEachLink + "");
                                 Thread.sleep(500);
-                                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click the " + strEachLink + " Link", "System clicked " + strEachLink + " Link", "PASS");
+                                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click the " + strEachLink + " Link", "System clicked " + strEachLink + " Link", "PASS");
                                 blnStatus = true;
                                 break inner;
                             }
@@ -7211,7 +7055,7 @@ public class SCRCommon {
 
             }
             if (blnStatus == false) {
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strEachLink + "Link should present in the list", "" + strEachLink + " Link is not present in the list", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strEachLink + "Link should present in the list", "" + strEachLink + " Link is not present in the list", "FAIL");
                 break outer;
             }
         }
@@ -7231,12 +7075,12 @@ public class SCRCommon {
 
         if (CellElements.size() == 0 && sErrAvailablity.equalsIgnoreCase("NOERROR")) {
             logger.info("No Error/Warning messages in screen to validate");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen", "PASS");
             status = true;
             return status;
         } else if (CellElements.size() == 0) {
             logger.info("No Error/Warning messages in screen to validate");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen", "FAIL");
             status = true;
             return status;
         }
@@ -7275,13 +7119,13 @@ public class SCRCommon {
                 }
                 if (blnMatchFound && !sErrAvailablity.equalsIgnoreCase("NOERROR")) {
                     logger.info("As expected Expected and Actual Messgae Matches !!");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Valdiate expected  " + sMsgType + " is displayed on screen", "Error/Warning message ----- <BR> Expected Message - " + sExpErr + " is displayed on screen", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Valdiate expected  " + sMsgType + " is displayed on screen", "Error/Warning message ----- <BR> Expected Message - " + sExpErr + " is displayed on screen", "PASS");
                 } else if (!blnMatchFound && sErrAvailablity.equalsIgnoreCase("NOERROR")) {
                     logger.info("As expected Expected is not availabel in Screen !!");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Valdiate expected  " + sMsgType + " is NOT displayed on screen", " Expected Error/Warning message ----- <BR>- " + sExpErr + " is NOT displayed on screen", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Valdiate expected  " + sMsgType + " is NOT displayed on screen", " Expected Error/Warning message ----- <BR>- " + sExpErr + " is NOT displayed on screen", "PASS");
                 } else if (!blnMatchFound && !sErrAvailablity.equalsIgnoreCase("NOERROR")) {
                     logger.info("Expected message is not availabel in Screen !!");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Valdiate expected  " + sMsgType + " is displayed on screen", " Expected Error/Warning message ----- <BR>- " + sExpErr + " is NOT displayed on screen", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Valdiate expected  " + sMsgType + " is displayed on screen", " Expected Error/Warning message ----- <BR>- " + sExpErr + " is NOT displayed on screen", "FAIL");
                 }
 
             }
@@ -7323,19 +7167,19 @@ public class SCRCommon {
         }
         if (SearchString) {
             logger.info("Search String available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "PASS");
             if (ActionObject) {
                 logger.info("Search and click on object in the table cell and object name is '" + strReadString + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "PASS");
                 Status = true;
             } else {
                 logger.info("Search and click on object in the table cell and object name is '" + strReadString + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "FAIL");
                 Status = false;
             }
         } else {
             logger.info("Search String not available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "FAIL");
             Status = false;
         }
         return Status;
@@ -7572,10 +7416,10 @@ public class SCRCommon {
         try {
             rowcount = sXL.getRowCount(sheetName);
             for (int i = 2; i <= rowcount; i++) {
-                TCID = PCThreadCache.getInstance().getProperty("TCID");
+                TCID = ThreadCache.getInstance().getProperty("TCID");
                 TCIDAdd = sXL.getCellData(sheetName, "ID", i);
                 sIteration = sXL.getCellData(sheetName, "Iteration", i);
-                if (TCIDAdd.equals(TCID) && sIteration.equalsIgnoreCase(PCThreadCache.getInstance().getProperty(PCConstants.Iteration))) {
+                if (TCIDAdd.equals(TCID) && sIteration.equalsIgnoreCase(ThreadCache.getInstance().getProperty(PCConstants.Iteration))) {
                     tcAvailable = true;
                     int colcount = sXL.getColumnCount(sheetName);
                     for (int j = 2; j <= colcount; j++) {
@@ -7587,7 +7431,7 @@ public class SCRCommon {
                             switch (strColumnName.toUpperCase()) {
                                 case "VERIFYLOGGEDUSERNAME":
                                     if (strColumnValue.equalsIgnoreCase("YES")) {
-                                        String expUserName = PCThreadCache.getInstance().getProperty("LOGGED_USERNAME");
+                                        String expUserName = ThreadCache.getInstance().getProperty("LOGGED_USERNAME");
                                         String strAssignTo = common.ReadElement(Common.o.getObject("Activity_AssignTo"), 10);
                                         if (expUserName.equalsIgnoreCase(strAssignTo.trim())) {
                                             blnLoggeduser = true;
@@ -7604,7 +7448,7 @@ public class SCRCommon {
                                     String[] strLogedUserName = strColumnValue.split(":::");
                                     if (strLogedUserName[0].equalsIgnoreCase("USERROLE")) {
                                         // String
-                                        // expUserName=PCThreadCache.getInstance().getProperty("LOGGED_USERNAME");
+                                        // expUserName=ThreadCache.getInstance().getProperty("LOGGED_USERNAME");
                                         // strColumnValue=strColumnValue.replace("LOGGEDUSERNAME",
                                         // expUserName);
                                         // status =
@@ -7673,7 +7517,7 @@ public class SCRCommon {
                                         Date d = (Date) formatter.parse(strExpected);
                                         cal2.setTime(d);
                                         targetDaysHrs = getTaskEndTime(cal2, addHrs);
-                                        PCThreadCache.getInstance().setProperty(PCConstants.TARGETDAYSNDHRS, targetDaysHrs);
+                                        ThreadCache.getInstance().setProperty(PCConstants.TARGETDAYSNDHRS, targetDaysHrs);
                                         strArray = strExpected.split(" ");
                                         strExpected = strArray[0].trim();
 
@@ -7739,7 +7583,7 @@ public class SCRCommon {
                                         Date d = (Date) formatter.parse(strExpected);
                                         cal1.setTime(d);
                                         escDayandHrs = getTaskEndTime(cal1, addHrs);
-                                        PCThreadCache.getInstance().setProperty(PCConstants.TARGETDAYSNDHRS, escDayandHrs);
+                                        ThreadCache.getInstance().setProperty(PCConstants.TARGETDAYSNDHRS, escDayandHrs);
                                         strArray = strExpected.split(" ");
                                         strExpected = strArray[0].trim();
 
@@ -7789,56 +7633,6 @@ public class SCRCommon {
             }
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return blnStatus;
-    }
-
-    public static Boolean getAccountNamePolicyNumber() {
-        Boolean blnStatus = false;
-        XlsxReader sXL = XlsxReader.getInstance();
-        IconReader iCN = IconReader.getInstance();
-        HashMap<String, Object> whereConstraintSelect = new HashMap<String, Object>();
-        HashMap<String, Object> updateColumnNameValues = new HashMap<String, Object>();
-        ArrayList<HashMap<String, Object>> resultListRows = new ArrayList<HashMap<String, Object>>();
-        HashMap<String, Object> whereConstraintUpdate = new HashMap<String, Object>();
-        String tcID = PCThreadCache.getInstance().getProperty("TCID");
-        try {
-            whereConstraintSelect.clear();
-            whereConstraintSelect.put(PCConstants.ID, tcID);
-            resultListRows = iCN.executeSelectQuery("Trans", whereConstraintSelect);
-            if (resultListRows.size() > 0) {
-                for (HashMap<String, Object> processRow : resultListRows) {
-                    String transFieldName = (String) processRow.get("Field_Name"); // AccountName
-                    String transFieldValue = (String) processRow.get("Field_Value"); // errtgg
-                    if (transFieldName.equals("AccountName")) {
-                        updateColumnNameValues.clear();
-                        whereConstraintUpdate.clear();
-                        whereConstraintUpdate.put(PCConstants.ID, tcID);
-                        updateColumnNameValues.put("edtSearchCompanyName", transFieldValue);
-                        PCThreadCache.getInstance().setProperty("edtSearchCompanyName", transFieldValue);
-                        //blnStatus = sXL.executeUpdateQuery("SearchAccount", updateColumnNameValues, whereConstraintUpdate);
-
-                        updateColumnNameValues.clear();
-                        whereConstraintUpdate.clear();
-                        whereConstraintUpdate.put(PCConstants.ID, tcID);
-                        updateColumnNameValues.put("cfugetAccountNumber", transFieldValue);
-                        PCThreadCache.getInstance().setProperty("cfugetAccountNumber", transFieldValue);
-                        //blnStatus = sXL.executeUpdateQuery("SearchAccount", updateColumnNameValues, whereConstraintUpdate);
-                    } else if (transFieldName.equals("PolicyNumber")) {
-                        updateColumnNameValues.clear();
-                        whereConstraintUpdate.clear();
-                        whereConstraintUpdate.put(PCConstants.ID, tcID);
-                        updateColumnNameValues.put("funtrimPolicyNumber", transFieldValue);
-                        PCThreadCache.getInstance().setProperty("funtrimPolicyNumber", transFieldValue);
-                        //blnStatus = sXL.executeUpdateQuery("SearchPolicy", updateColumnNameValues, whereConstraintUpdate);
-                    }
-                }
-            } else {
-                logger.info("TestCase ID " + tcID + " is not available in the Trans Sheet");
-                blnStatus = false;
-            }
-        } catch (Exception e) {
             e.printStackTrace();
         }
         return blnStatus;
@@ -7994,11 +7788,11 @@ public class SCRCommon {
                 rowcount = sXL.getRowCount("ODSOutputValues");
                 Outer:
                 for (int i = 2; i <= rowcount; i++) {
-                    TCID = PCThreadCache.getInstance().getProperty("TCID");
+                    TCID = ThreadCache.getInstance().getProperty("TCID");
                     TCIDAdd = sXL.getCellData("ODSOutputValues", "ID", i);
                     sIteration = sXL.getCellData("ODSOutputValues", "Iteration", i);
                     componentName = sXL.getCellData("ODSOutputValues", "Component", i);
-                    if (TCIDAdd.equals(TCID) && sIteration.equalsIgnoreCase(PCThreadCache.getInstance().getProperty(PCConstants.Iteration)) && sheetName.equalsIgnoreCase(componentName)) {
+                    if (TCIDAdd.equals(TCID) && sIteration.equalsIgnoreCase(ThreadCache.getInstance().getProperty(PCConstants.Iteration)) && sheetName.equalsIgnoreCase(componentName)) {
                         tcAvailable = true;
                         int colcount = sXL.getColumnCount("ODSOutputValues");
                         for (int j = 2; j <= colcount; j++) {
@@ -8052,7 +7846,7 @@ public class SCRCommon {
         FlatFile sReadWrite = FlatFile.getInstance();
         String textValue = common.ReadElement(Common.o.getObject(sElement), Integer.parseInt(HTML.properties.getProperty("LONGWAIT")));
         String sFileName = scrCommon.FlatFileName();
-        Status = sReadWrite.write(PCThreadCache.getInstance().getProperty("TCID"), PCThreadCache.getInstance().getProperty("methodName"), strOdsFFName, textValue, "OUTPUT", sFileName);
+        Status = sReadWrite.write(ThreadCache.getInstance().getProperty("TCID"), ThreadCache.getInstance().getProperty("methodName"), strOdsFFName, textValue, "OUTPUT", sFileName);
         if (!Status || textValue.equals("") || textValue == null) {
             logger.info("'" + sElement + "' is not found in the system");
         }
@@ -8067,7 +7861,7 @@ public class SCRCommon {
         FlatFile sReadWrite = FlatFile.getInstance();
         String textValue = common.ReadElementGetAttribute(Common.o.getObject(sElement), "value", Integer.parseInt(HTML.properties.getProperty("LONGWAIT")));
         String sFileName = scrCommon.FlatFileName();
-        Status = sReadWrite.write(PCThreadCache.getInstance().getProperty("TCID"), PCThreadCache.getInstance().getProperty("methodName"), strOdsFFName, textValue, "OUTPUT", sFileName);
+        Status = sReadWrite.write(ThreadCache.getInstance().getProperty("TCID"), ThreadCache.getInstance().getProperty("methodName"), strOdsFFName, textValue, "OUTPUT", sFileName);
         if (!Status || textValue.equals("") || textValue == null) {
             logger.info("'" + sElement + "' is not found in the system");
         }
@@ -8093,9 +7887,9 @@ public class SCRCommon {
                 String getText = Cells.get(actionCol).getText();
                 if (strOdsFFName.equals("PolicyNumber")) {
                     getText = "%" + getText.substring(getText.length() - 6);
-                    Status = sReadWrite.write(PCThreadCache.getInstance().getProperty("TCID"), PCThreadCache.getInstance().getProperty("methodName"), strOdsFFName, getText, "OUTPUT", sFileName);
+                    Status = sReadWrite.write(ThreadCache.getInstance().getProperty("TCID"), ThreadCache.getInstance().getProperty("methodName"), strOdsFFName, getText, "OUTPUT", sFileName);
                 } else {
-                    Status = sReadWrite.write(PCThreadCache.getInstance().getProperty("TCID"), PCThreadCache.getInstance().getProperty("methodName"), strOdsFFName, getText, "OUTPUT", sFileName);
+                    Status = sReadWrite.write(ThreadCache.getInstance().getProperty("TCID"), ThreadCache.getInstance().getProperty("methodName"), strOdsFFName, getText, "OUTPUT", sFileName);
                 }
             }
             if (SearchString) {
@@ -8104,10 +7898,10 @@ public class SCRCommon {
         }
         if (SearchString) {
             logger.info("Search String available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "PASS");
         } else {
             logger.info("Search String not available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "FAIL");
             Status = false;
         }
 
@@ -8162,17 +7956,17 @@ public class SCRCommon {
             blnStatus = common.SafeAction(Common.o.getObject("elePreferences"), "elePreferences", "elePreferences");
             String strUserName = common.ReadElement(Common.o.getObject("eleLogOut"), Integer.valueOf(HTML.properties.getProperty("LONGWAIT")));
             strUserName = strUserName.replace("Log Out", "");
-            PCThreadCache.getInstance().setProperty(PCConstants.LOGGED_USERNAME, strUserName.trim());
-            logger.info("Logged in UserName is :" + PCThreadCache.getInstance().getProperty("LOGGED_USERNAME"));
+            ThreadCache.getInstance().setProperty(PCConstants.LOGGED_USERNAME, strUserName.trim());
+            logger.info("Logged in UserName is :" + ThreadCache.getInstance().getProperty("LOGGED_USERNAME"));
 
             blnStatus = common.SafeAction(Common.o.getObject("eleBuildInfo"), "eleBuildInfo", "eleBuildInfo");
             String strServerName = common.ReadElement(Common.o.getObject("btnServerName"), Integer.valueOf(HTML.properties.getProperty("LONGWAIT")));
             strServerName = strServerName.replace("Server ID: ", "");
-            PCThreadCache.getInstance().setProperty(PCConstants.LOGGED_SERVERNAME, strServerName.trim());
-            logger.info("Logged in ServerName is :" + PCThreadCache.getInstance().getProperty("LOGGED_SERVERNAME"));
+            ThreadCache.getInstance().setProperty(PCConstants.LOGGED_SERVERNAME, strServerName.trim());
+            logger.info("Logged in ServerName is :" + ThreadCache.getInstance().getProperty("LOGGED_SERVERNAME"));
 
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Get the Logged in UserName", "Logged in UserName : " + PCThreadCache.getInstance().getProperty("LOGGED_USERNAME") + "'", "PASS");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Get the Logged in ServerName", "Logged in ServerName : " + PCThreadCache.getInstance().getProperty("LOGGED_SERVERNAME") + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Get the Logged in UserName", "Logged in UserName : " + ThreadCache.getInstance().getProperty("LOGGED_USERNAME") + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Get the Logged in ServerName", "Logged in ServerName : " + ThreadCache.getInstance().getProperty("LOGGED_SERVERNAME") + "'", "PASS");
 
             blnStatus = common.SafeAction(Common.o.getObject("elePreferences"), "elePreferences", "elePreferences");
         } catch (Exception e) {
@@ -8202,7 +7996,7 @@ public class SCRCommon {
             driver.switchTo().window(sPrimaryWindow);
         } else {
             status = false;
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Switch to New Window", "Could not switch to New Window", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Switch to New Window", "Could not switch to New Window", "FAIL");
         }
         return status;
     }
@@ -8239,10 +8033,10 @@ public class SCRCommon {
             blnStatus = common.ElementExist(Common.o.getObject("AccountSearchResultsTbl"));
             if (blnStatus) {
                 strAccountNumber = common.GetTextFromTable(Common.o.getObject("AccountSearchResultsTbl"), 2, 1, strFuncValue);
-                PCThreadCache.getInstance().setProperty(PCConstants.AccountNumber, strAccountNumber);
-                whereConstraint.put(PCConstants.ID, PCThreadCache.getInstance().getProperty("TCID"));
+                ThreadCache.getInstance().setProperty(PCConstants.AccountNumber, strAccountNumber);
+                whereConstraint.put(PCConstants.ID, ThreadCache.getInstance().getProperty("TCID"));
                 updateColumnNameValues.put("edtaccountNumber", strAccountNumber);
-                PCThreadCache.getInstance().setProperty("edtaccountNumber", strAccountNumber);
+                ThreadCache.getInstance().setProperty("edtaccountNumber", strAccountNumber);
                 //blnStatus = sXL.executeUpdateQuery(PCConstants.SHEET_SEARCHACCOUNT, updateColumnNameValues, whereConstraint);
 
                 updateColumnNameValues.clear();
@@ -8252,7 +8046,7 @@ public class SCRCommon {
                     FlatFile sReadWrite = FlatFile.getInstance();
                     SCRCommon scrCommon = new SCRCommon();
                     String FlatFileName = scrCommon.FlatFileName();
-                    blnStatus = sReadWrite.write(PCThreadCache.getInstance().getProperty("TCID"), PCThreadCache.getInstance().getProperty("methodName"), "AccountNumber", strAccountNumber, "OUTPUT", FlatFileName);
+                    blnStatus = sReadWrite.write(ThreadCache.getInstance().getProperty("TCID"), ThreadCache.getInstance().getProperty("methodName"), "AccountNumber", strAccountNumber, "OUTPUT", FlatFileName);
                 }
             } else {
                 logger.info("Account Name " + strFuncValue + " is not exist in PC");
@@ -8336,7 +8130,7 @@ public class SCRCommon {
 
         HashMap<String, String> CSV_Hashmap = new HashMap<String, String>();
 
-        String sFileName = PCThreadCache.getInstance().getProperty(PCConstants.Integ_FlatFile);
+        String sFileName = ThreadCache.getInstance().getProperty(PCConstants.Integ_FlatFile);
 
         //String sheetName = "PageValues";
         //String[] strKeyNames = KeyNames.split(":::");
@@ -8347,8 +8141,8 @@ public class SCRCommon {
         HashMap<String, Object> whereConstraint = new HashMap<String, Object>();
         ArrayList<HashMap<String, Object>> resultListRows = new ArrayList<HashMap<String, Object>>();
         whereConstraint.clear();
-        whereConstraint.put(PCConstants.ID, PCThreadCache.getInstance().getProperty("TCID"));
-        whereConstraint.put(PCConstants.Iteration, PCThreadCache.getInstance().getProperty("Iteration"));
+        whereConstraint.put(PCConstants.ID, ThreadCache.getInstance().getProperty("TCID"));
+        whereConstraint.put(PCConstants.Iteration, ThreadCache.getInstance().getProperty("Iteration"));
         resultListRows = xls.executeSelectQuery(sheetName, whereConstraint);
         try {
             if (resultListRows.size() > 0) {
@@ -8500,7 +8294,7 @@ public class SCRCommon {
                         List<WebElement> CellElements = ManagerDriver.getInstance().getWebDriver().findElements(By.xpath("//div[contains(@id,'SubmissionWizard:LOBWizardStepGroup')]//div[img[@class='warning_icon']]"));
                         if (CellElements.size() != 0) {
                             logger.info("Warning messages dispalyed in UI");
-                            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify whether any Warnign message is displayed in screen beforeproceeding !!", "Warning message is displayed in screen ", "PASS");
+                            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify whether any Warnign message is displayed in screen beforeproceeding !!", "Warning message is displayed in screen ", "PASS");
                             status = common.SafeAction(Common.o.getObject("eljNext"), "eljNext", "eljNext");
                             status = true;
                         }
@@ -8578,7 +8372,7 @@ public class SCRCommon {
                         }
                         if (!getFieldValue.equals("") || !(getFieldValue == null)) {
                             int rowcount = sXL.getRowCount(sheetName);
-                            sXL.setCellData(sheetName, PCThreadCache.getInstance().getProperty("TCID"), rowcount, 0);
+                            sXL.setCellData(sheetName, ThreadCache.getInstance().getProperty("TCID"), rowcount, 0);
                             sXL.setCellData(sheetName, getFieldName, rowcount, 1);
                             sXL.setCellData(sheetName, getFieldValue, rowcount, 2);
                         }
@@ -8608,7 +8402,7 @@ public class SCRCommon {
                     }
                     if (!(getCovergeName == null)) {
                         int rowcount = sXL.getRowCount(sheetName);
-                        sXL.setCellData(sheetName, PCThreadCache.getInstance().getProperty("TCID"), rowcount, 0);
+                        sXL.setCellData(sheetName, ThreadCache.getInstance().getProperty("TCID"), rowcount, 0);
                         sXL.setCellData(sheetName, getCovergeName, rowcount, 3);
                     }
                     break;
@@ -8623,8 +8417,8 @@ public class SCRCommon {
     public static boolean SelectTblRowChkBox(String sValue, String sCoverageName) throws IOException {
         int intTblColCount;
         Boolean blnStatus = false;
-        intTblColCount = getCoverageTableHeaderColumn("", PCThreadCache.getInstance().getProperty(PCConstants.TableHeader));
-        blnStatus = SCRCommon.selectCoverageTableRowToRemove(intTblColCount, PCThreadCache.getInstance().getProperty(PCConstants.TableBody), "SampleProductModel");
+        intTblColCount = getCoverageTableHeaderColumn("", ThreadCache.getInstance().getProperty(PCConstants.TableHeader));
+        blnStatus = SCRCommon.selectCoverageTableRowToRemove(intTblColCount, ThreadCache.getInstance().getProperty(PCConstants.TableBody), "SampleProductModel");
         return blnStatus;
 
     }
@@ -8637,12 +8431,12 @@ public class SCRCommon {
         int trackCount = 0;
         Common common = CommonManager.getInstance().getCommon();
         XlsxReader xls = XlsxReader.getInstance();
-        String tcID = PCThreadCache.getInstance().getProperty("TCID");
+        String tcID = ThreadCache.getInstance().getProperty("TCID");
         HashMap<String, Object> whereConstraint = new HashMap<String, Object>();
         ArrayList<HashMap<String, Object>> resultListRows = new ArrayList<HashMap<String, Object>>();
         whereConstraint.clear();
         whereConstraint.put(PCConstants.ID, tcID);
-        whereConstraint.put(PCConstants.Iteration, PCThreadCache.getInstance().getProperty("Iteration"));
+        whereConstraint.put(PCConstants.Iteration, ThreadCache.getInstance().getProperty("Iteration"));
         resultListRows = xls.executeSelectQuery(strSheetName, whereConstraint);
         try {
             if (resultListRows.size() > 0) {
@@ -8738,7 +8532,7 @@ public class SCRCommon {
                     // }
                 }
             } else {
-                logger.info("TestCaseID " + tcID + " or Iteration " + PCThreadCache.getInstance().getProperty("Iteration") + " is not available in the " + strSheetName + " Sheet");
+                logger.info("TestCaseID " + tcID + " or Iteration " + ThreadCache.getInstance().getProperty("Iteration") + " is not available in the " + strSheetName + " Sheet");
                 blnStatus = true;
             }
         } catch (Exception e) {
@@ -8769,7 +8563,7 @@ public class SCRCommon {
         Boolean bFlag = false;
         arrValues = getKeyValue.split(":::");
         arrListValue = arrValues[1].split("##");
-        String CovID = PCThreadCache.getInstance().getProperty(PCConstants.CoverageID);
+        String CovID = ThreadCache.getInstance().getProperty(PCConstants.CoverageID);
         arrCovID = CovID.split("-");
         switch (arrValues[0].toUpperCase()) {
             case "ADD":
@@ -8798,20 +8592,20 @@ public class SCRCommon {
                     if (strListValue.contains(arrListValue[j])) {
 
                         logger.info("List value macthed !!");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the List value are displayed in UI", "Field : '" + strListValue + "' displayed in Picker List", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the List value are displayed in UI", "Field : '" + strListValue + "' displayed in Picker List", "PASS");
                         bFlag = true;
                         break;
                     }
                 }
                 if (!bFlag) {
                     logger.info("Picker list value not available ");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the List value are displayed in UI", "Field : '" + arrListValue[j] + "' NOT displayed in Picker List", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the List value are displayed in UI", "Field : '" + arrListValue[j] + "' NOT displayed in Picker List", "FAIL");
                 }
 
             }
         } else {
             logger.info("Picker List not dispalyed");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the List value are displayed in UI", "Picker List box is NOT displayed ", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the List value are displayed in UI", "Picker List box is NOT displayed ", "FAIL");
         }
         return true;
     }
@@ -8823,7 +8617,7 @@ public class SCRCommon {
         String TCID = null;
         String TCIDAdd = null;
         String sCoverageComponentName = null;
-        String currentCompoentName = PCThreadCache.getInstance().getProperty("methodName");
+        String currentCompoentName = ThreadCache.getInstance().getProperty("methodName");
         String sColumnName = null;
         String sColumnValue = null;
         String fieldType = null;
@@ -8832,7 +8626,7 @@ public class SCRCommon {
         try {
             rowcount = sXL.getRowCount(sheetName);
             for (int i = 2; i <= rowcount; i++) {
-                TCID = PCThreadCache.getInstance().getProperty("TCID");
+                TCID = ThreadCache.getInstance().getProperty("TCID");
                 TCIDAdd = sXL.getCellData(sheetName, "ID", i);
                 sCoverageComponentName = sXL.getCellData(sheetName, "Component", i);
                 if (TCIDAdd.equals(TCID) && currentCompoentName.equals(sCoverageComponentName)) {
@@ -8885,10 +8679,10 @@ public class SCRCommon {
         }
         if (blnStatus) {
             logger.info("Element " + strElementName + " contains the value " + txt + "");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " element should NOT be NULL", "" + strElementName + " element is not NULL", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " element should NOT be NULL", "" + strElementName + " element is not NULL", "PASS");
         } else {
             logger.info("Element " + strElementName + " does not contain any value " + "");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " element should NOT be NULL", "" + strElementName + " element is NULL", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " element should NOT be NULL", "" + strElementName + " element is NULL", "FAIL");
         }
         return blnStatus;
     }
@@ -8903,10 +8697,10 @@ public class SCRCommon {
         }
         if (blnStatus) {
             logger.info("Today's date '" + exp + "' is matching with Field date '" + txt + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " should display today's date as " + exp, "" + strElementName + " is displaying today's date as " + txt, "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " should display today's date as " + exp, "" + strElementName + " is displaying today's date as " + txt, "PASS");
         } else {
             logger.info("Today's date '" + exp + "' is NOT matching with field date '" + txt + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " should display today's date as " + exp, "" + strElementName + " is displaying today's date as " + txt, "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + strElementName + " should display today's date as " + exp, "" + strElementName + " is displaying today's date as " + txt, "FAIL");
         }
         return blnStatus;
     }
@@ -8934,7 +8728,7 @@ public class SCRCommon {
         FlatFile sReadWrite = FlatFile.getInstance();
         String textValue = common.ReadElement(Common.o.getObject(sElement), Integer.parseInt(HTML.properties.getProperty("LONGWAIT")));
         String sFileName = scrCommon.FlatFileName();
-        Status = sReadWrite.write(PCThreadCache.getInstance().getProperty("TCID"), PCThreadCache.getInstance().getProperty("methodName"), strOdsFFName, textValue, "PC_INPUT", sFileName);
+        Status = sReadWrite.write(ThreadCache.getInstance().getProperty("TCID"), ThreadCache.getInstance().getProperty("methodName"), strOdsFFName, textValue, "PC_INPUT", sFileName);
         if (!Status || textValue.equals("") || textValue == null) {
             logger.info("'" + sElement + "' is not found in the system");
         }
@@ -8981,7 +8775,7 @@ public class SCRCommon {
 
         logger.info("Started Input for ODS Function");
         XlsxReader xls = XlsxReader.getInstance();
-        String tcID = PCThreadCache.getInstance().getProperty("TCID");
+        String tcID = ThreadCache.getInstance().getProperty("TCID");
         // String sFileName = FlatFileName();
         // FlatFileWriter write = FlatFileWriter.getInstance(sFileName);
         SCRCommon scrCommon = new SCRCommon();
@@ -8989,7 +8783,7 @@ public class SCRCommon {
         String sFileName = scrCommon.FlatFileName();
         int rowcount = xls.getRowCount(SheetName);
         for (int i = 2; i <= rowcount; i++) {
-            if (xls.getCellData(SheetName, "ID", i).equals(PCThreadCache.getInstance().getProperty("TCID"))) {
+            if (xls.getCellData(SheetName, "ID", i).equals(ThreadCache.getInstance().getProperty("TCID"))) {
                 int colcount = xls.getColumnCount(SheetName);
                 for (int j = 2; j <= colcount; j++) {
                     String ColName = xls.getCellData(SheetName, j, 1);
@@ -8999,10 +8793,10 @@ public class SCRCommon {
                         String elementName = ColName.substring(3);
                         if (!value.isEmpty()) {
                             if (element.toUpperCase().contains("ODS") || element.toUpperCase().contains("EDT") || element.toUpperCase().contains("EDJ") || element.toUpperCase().contains("LST") || element.toUpperCase().contains("LSJ")) {
-                                Status = sReadWrite.write(tcID, PCThreadCache.getInstance().getProperty("methodName"), elementName, value, "input", sFileName);
+                                Status = sReadWrite.write(tcID, ThreadCache.getInstance().getProperty("methodName"), elementName, value, "input", sFileName);
                             } else if (element.toUpperCase().contains("VAL")) {
                                 String strIconElement[] = elementName.split("_");
-                                Status = sReadWrite.write(tcID, PCThreadCache.getInstance().getProperty("methodName"), strIconElement[1], value, "input", sFileName);
+                                Status = sReadWrite.write(tcID, ThreadCache.getInstance().getProperty("methodName"), strIconElement[1], value, "input", sFileName);
                             }
                         }
                     }
@@ -9022,7 +8816,7 @@ public class SCRCommon {
 
         String textValue = common.ReadElement(Common.o.getObject(EleName[0]), Integer.parseInt(HTML.properties.getProperty("LONGWAIT")));
         String sFileName = scrCommon.FlatFileName();
-        Status = sReadWrite.write(PCThreadCache.getInstance().getProperty("TCID"), PCThreadCache.getInstance().getProperty("methodName"), EleName[1], textValue, "OUTPUT", sFileName);
+        Status = sReadWrite.write(ThreadCache.getInstance().getProperty("TCID"), ThreadCache.getInstance().getProperty("methodName"), EleName[1], textValue, "OUTPUT", sFileName);
         if (!Status || textValue.equals("") || textValue == null) {
             logger.info("'" + sElement + "' is not found in the system");
         }
@@ -9038,10 +8832,10 @@ public class SCRCommon {
             blnStatus = common.SafeAction(Common.o.getObject("eleBuildInfo"), "eleBuildInfo", "eleBuildInfo");
             String strServerName = common.ReadElement(Common.o.getObject("btnServerName"), Integer.valueOf(HTML.properties.getProperty("LONGWAIT")));
             strServerName = strServerName.replace("Server ID: ", "");
-            PCThreadCache.getInstance().setProperty(PCConstants.LOGGED_SERVERNAME, strServerName.trim());
-            logger.info("Logged in ServerName is :" + PCThreadCache.getInstance().getProperty("LOGGED_SERVERNAME"));
+            ThreadCache.getInstance().setProperty(PCConstants.LOGGED_SERVERNAME, strServerName.trim());
+            logger.info("Logged in ServerName is :" + ThreadCache.getInstance().getProperty("LOGGED_SERVERNAME"));
 
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Get the Logged in ServerName", "Logged in ServerName : " + PCThreadCache.getInstance().getProperty("LOGGED_SERVERNAME") + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Get the Logged in ServerName", "Logged in ServerName : " + ThreadCache.getInstance().getProperty("LOGGED_SERVERNAME") + "'", "PASS");
             // blnStatus = common.SafeAction(Common.o.getObject("eleDeskTopAction"),
             // "ele","eleDeskTopAction");
             blnStatus = common.SafeAction(Common.o.getObject("elePreferences"), "elePreferences", "elePreferences");
@@ -9054,7 +8848,7 @@ public class SCRCommon {
 
     public static String Newe_FlatFileName() {
         XlsxReader xls = XlsxReader.getInstance();
-        String tcID = PCThreadCache.getInstance().getProperty("TCID");
+        String tcID = ThreadCache.getInstance().getProperty("TCID");
         String[] splittcID = tcID.split("_");
         String sFileName = null;
         HashMap<String, Object> whereConstraint = new HashMap<String, Object>();
@@ -9208,12 +9002,12 @@ public class SCRCommon {
 
         if (CellElements.size() == 0 && sAvailiblityType.equalsIgnoreCase("NOT_AVAIL")) {
             logger.info("No Error/Warning messages in screen to validate");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen as expected", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen as expected", "PASS");
             status = true;
             return status;
         } else if (CellElements.size() == 0 && !sAvailiblityType.equalsIgnoreCase("NOT_AVAIL")) {
             logger.info("No Error/Warning messages in screen to validate");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen to validate", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Valdiate any error/Warning is displayed on screen", "No warning message is displayed on screen to validate", "FAIL");
             status = true;
             return status;
         } else {
@@ -9252,25 +9046,25 @@ public class SCRCommon {
                         if (actText.equals(sValue)) {
                             matchStatus = true;
                             logger.info("Expected Warning Message  is matching with actual message '" + sValue + "'");
-                            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected " + sMsgType + " text should matching with actual text '" + sValue + "'", "Expected " + sMsgType + " text is matching with actual text '" + sValue + "'", "PASS");
+                            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected " + sMsgType + " text should matching with actual text '" + sValue + "'", "Expected " + sMsgType + " text is matching with actual text '" + sValue + "'", "PASS");
                             break;
                         }
                     } else if (CompareType.equalsIgnoreCase("CONTAINS"))
                         if (actText.contains(sValue)) {
                             matchStatus = true;
                             logger.info("Expected Warning Message  is matching with actual message '" + sValue + "'");
-                            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected " + sMsgType + " text should matching with actual text '" + sValue + "'", "Expected " + sMsgType + " text is matching with actual text '" + sValue + "'", "PASS");
+                            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected " + sMsgType + " text should matching with actual text '" + sValue + "'", "Expected " + sMsgType + " text is matching with actual text '" + sValue + "'", "PASS");
                             break;
                         }
 
                 }
                 if (matchStatus == false && sAvailiblityType.equalsIgnoreCase("NOT_AVAIL")) {
                     logger.info("Expected Warning Message is not matching with actual message '" + sValue + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected " + sMsgType + " text should matching with actual text '" + sValue + "'", "Expected " + sMsgType + " text is NOT matching with actual text available '" + sValue + "'. Expected availability Type-" + sAvailiblityType, "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected " + sMsgType + " text should matching with actual text '" + sValue + "'", "Expected " + sMsgType + " text is NOT matching with actual text available '" + sValue + "'. Expected availability Type-" + sAvailiblityType, "PASS");
 
                 } else if (matchStatus == false && !sAvailiblityType.equalsIgnoreCase("NOT_AVAIL")) {
                     logger.info("Expected Warning Message is not matching with actual message '" + sValue + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Expected " + sMsgType + " text should matching with actual text '" + sValue + "'", "Expected " + sMsgType + " text is NOT matching with actual text available '" + sValue + "'. Expected availability Type-" + sAvailiblityType, "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Expected " + sMsgType + " text should matching with actual text '" + sValue + "'", "Expected " + sMsgType + " text is NOT matching with actual text available '" + sValue + "'. Expected availability Type-" + sAvailiblityType, "FAIL");
                 }
 
             }
@@ -9297,7 +9091,7 @@ public class SCRCommon {
                 if (sExpListValue[j].equals(gwListBox.get(k).getText())) {
                     logger.info("Expected UI dropdown value - " + sExpListValue[j] + " is available in List");
                     gwListBox.get(k).click();
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are available in UI List", "Expected Dropdown Value - '" + sExpListValue[j] + "' available in UI list", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are available in UI List", "Expected Dropdown Value - '" + sExpListValue[j] + "' available in UI list", "PASS");
                     blnMatchFound = true;
                     break;
                 }
@@ -9306,7 +9100,7 @@ public class SCRCommon {
             // "ele", "eleDropdown");
             if (!blnMatchFound) {
                 logger.info("Expected UI dropdown value - " + sExpListValue[j] + "is not available in List");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are available in UI List", "Expected Dropdown Value - " + sExpListValue[j] + "NOT available in UI list", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are available in UI List", "Expected Dropdown Value - " + sExpListValue[j] + "NOT available in UI list", "FAIL");
                 status = CommonManager.getInstance().getCommon().SafeAction(Common.o.getObject(arrVal[0]), "ele", "eleDropdown");
             }
         }
@@ -9332,7 +9126,7 @@ public class SCRCommon {
                 if (sExpListValue[j].equals(gwListBox.get(k).getText())) {
                     logger.info("Expected UI dropdown value - " + sExpListValue[j] + " is available in List");
                     gwListBox.get(k).click();
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are available in UI List", "Expected Dropdown Value - '" + sExpListValue[j] + "' available in UI list", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are available in UI List", "Expected Dropdown Value - '" + sExpListValue[j] + "' available in UI list", "FAIL");
                     blnMatchFound = true;
                     break;
                 }
@@ -9341,7 +9135,7 @@ public class SCRCommon {
             // "ele", "eleDropdown");
             if (!blnMatchFound) {
                 logger.info("Expected UI dropdown value - " + sExpListValue[j] + "is not available in List");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are available in UI List", "Expected Dropdown Value - " + sExpListValue[j] + "NOT available in UI list", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Validate whether the Dropdown values are available in UI List", "Expected Dropdown Value - " + sExpListValue[j] + "NOT available in UI list", "PASS");
                 status = CommonManager.getInstance().getCommon().SafeAction(Common.o.getObject(arrVal[0]), "ele", "eleDropdown");
             }
         }
@@ -9359,11 +9153,11 @@ public class SCRCommon {
 
         if (txt.trim().length() == 0) {
             logger.info("Field is displayed '" + strField + "' with NULL value " + txt);
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + strField + "' with pre polulated value ", "System displayed '" + strField + "' with pre polulated value", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + strField + "' with pre polulated value ", "System displayed '" + strField + "' with pre polulated value", "PASS");
             // Status = true;
         } else {
             logger.info("Field is NOT displayed '" + strField + "' with value");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + strField + "' with pre polulated value ", "System is NOT displayed '" + strField + "' with pre polulated value", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + strField + "' with pre polulated value ", "System is NOT displayed '" + strField + "' with pre polulated value", "FAIL");
             // Status = false;
         }
         return Status;
@@ -9429,10 +9223,10 @@ public class SCRCommon {
 
                 }
                 if (blnColumnAvail) {
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify Column availablity in Table '" + sTblTitle + "' to fetch Value", "'" + sGetTextonColumn + "' Column available in table to fetch value", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify Column availablity in Table '" + sTblTitle + "' to fetch Value", "'" + sGetTextonColumn + "' Column available in table to fetch value", "PASS");
                     logger.info("GetText on column" + sGetTextonColumn + " avaialble ");
                 } else {
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify Column availablity in Table '" + sTblTitle + "' to fetch Value", "'" + sGetTextonColumn + "' Column NOT available in table to fetch value", "FAIL");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify Column availablity in Table '" + sTblTitle + "' to fetch Value", "'" + sGetTextonColumn + "' Column NOT available in table to fetch value", "FAIL");
                     logger.info("GetText on column" + sGetTextonColumn + " NOT avaialble ");
                 }
 
@@ -9477,7 +9271,7 @@ public class SCRCommon {
             } else //	rows loop
             {
                 logger.info("No records found in the table to fetch records");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify rows available in the  Table '" + sTblTitle + "' to fetch Value", "No records available in table to fetch value", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify rows available in the  Table '" + sTblTitle + "' to fetch Value", "No records available in table to fetch value", "FAIL");
             }
 
         } catch (Exception e) {
@@ -9523,7 +9317,7 @@ public class SCRCommon {
                             case "<ACCNUM_SEARCH>":
                                 //go to bar type Account accno
                                 //625118206481908
-                                //srchVal="Account "+PCThreadCache.getInstance().getProperty("AccountNumber");
+                                //srchVal="Account "+ThreadCache.getInstance().getProperty("AccountNumber");
                                 srchVal = "Account 244656332345541";
                                 status = common.SafeAction(Common.o.getObject("txtGotoBar"), srchVal, "txtGotoBar");
                                 if (!strScreenTab.isEmpty()) {
@@ -9531,7 +9325,7 @@ public class SCRCommon {
                                 }
                                 break;
                             case "<POLNUM_SEARCH>":
-                                //srchVal="Policy "+PCThreadCache.getInstance().getProperty("CACHE_POLICY_NUMBER");
+                                //srchVal="Policy "+ThreadCache.getInstance().getProperty("CACHE_POLICY_NUMBER");
                                 srchVal = "Policy 59SBMAX2HF0";
                                 status = common.SafeAction(Common.o.getObject("txtGotoBar"), srchVal, "txtGotoBar");
                                 if (!strScreenTab.isEmpty()) {
@@ -9559,7 +9353,7 @@ public class SCRCommon {
 					if(strActualText.equals(sPageName))
 					{
 						logger.info("Navigated to the page as expected");
-						HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify page is navigated to '"+sPageName+"'", "'"+ sPageName +"'Page has been successfully navigated !!!", "PASS");
+						HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify page is navigated to '"+sPageName+"'", "'"+ sPageName +"'Page has been successfully navigated !!!", "PASS");
 						blnPagefound=true;
 						break;
 					}
@@ -9567,13 +9361,13 @@ public class SCRCommon {
 				if(!blnPagefound)
 				{
 					logger.info("NOT Navigated to the page as expected");
-					HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify page is navigated to '"+sPageName+"'", "'"+ sPageName +"'Page navigation has been Failed!!!", "FAIL");
+					HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify page is navigated to '"+sPageName+"'", "'"+ sPageName +"'Page navigation has been Failed!!!", "FAIL");
 				}
 			}*/
 
             } else {
                 logger.info("No rows available in sheet for specific criteria !!!");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify page is navigated to '" + sPageName + "'", "No records found in 'Page Navigation' sheet", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify page is navigated to '" + sPageName + "'", "No records found in 'Page Navigation' sheet", "FAIL");
             }
 
         } catch (Exception e) {
@@ -9601,13 +9395,13 @@ public class SCRCommon {
                     e.printStackTrace();
                 }
                 logger.info("Sub tab is available in screen to click !!!");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify sub tab is available in screen and clicked -" + subTabName, "Sub tab is available and clicked", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify sub tab is available in screen and clicked -" + subTabName, "Sub tab is available and clicked", "PASS");
                 break;
             }
         }
         if (!blnTabFound) {
             logger.info("Sub tab is NTO available in screen to click !!!");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Verify sub tab is available in screen and clicked -" + subTabName, "Sub tab is NOT available and clicked", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Verify sub tab is available in screen and clicked -" + subTabName, "Sub tab is NOT available and clicked", "FAIL");
         }
         return true;
 

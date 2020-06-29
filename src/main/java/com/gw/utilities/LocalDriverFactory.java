@@ -24,7 +24,7 @@ public class LocalDriverFactory {
 
 	//static Logger log = Logger.getLogger(LocalDriverFactory.class);
 	private static org.apache.log4j.Logger loggers;
-	//private org.apache.log4j.Logger log  = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(),PCThreadCache.getInstance().getProperty("TCID"));
+	//private org.apache.log4j.Logger log  = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(),ThreadCache.getInstance().getProperty("TCID"));
 
 	private static LocalDriverFactory instance = new LocalDriverFactory();
 
@@ -65,11 +65,11 @@ public class LocalDriverFactory {
 			if (browser.toUpperCase().contains("IE")) {
 				cap = DesiredCapabilities.internetExplorer();
 			}
-			try {
-				driver = new RemoteWebDriver(new URL(ManagerPhantomJS.getInstance().getPhantomJSDriverService().getUrl().toString()), cap);
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
+			//try {
+				//driver = new RemoteWebDriver(new URL(ManagerPhantomJS.getInstance().getPhantomJSDriverService().getUrl().toString()), cap);
+			//} catch (MalformedURLException e) {
+			//	e.printStackTrace();
+			//}
 			//log.info("Headless '" + browser.toUpperCase() + "' DesiredCapabilities initiated");
 			//log.info("Headless '" + browser.toUpperCase() + "' driver started");
 		}
@@ -87,7 +87,7 @@ public class LocalDriverFactory {
 					createFormDirectory();
 					HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
 					chromePrefs.put("profile.default_content_settings.popups", 0);
-					chromePrefs.put("download.default_directory", PCThreadCache.getInstance().getProperty(PCConstants.FormsFolderPath));
+					chromePrefs.put("download.default_directory", ThreadCache.getInstance().getProperty(PCConstants.FormsFolderPath));
 					options.setExperimentalOption("prefs", chromePrefs);
 				}
 
@@ -112,7 +112,7 @@ public class LocalDriverFactory {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy");
 		String date = dateFormat.format(d);
 		String dirAddress = HTML.properties.getProperty("FormsDownloadPath") + "\\" + date + "_" + d.getHours() + d.getMinutes() + d.getSeconds() + Thread.currentThread().getId();
-		PCThreadCache.getInstance().setProperty(PCConstants.FormsFolderPath, dirAddress);
+		ThreadCache.getInstance().setProperty(PCConstants.FormsFolderPath, dirAddress);
 		File dir = new File(dirAddress);
 		if (!dir.exists()) {
 			dir.mkdir();

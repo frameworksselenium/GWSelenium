@@ -48,9 +48,7 @@ public class XlsxReader {
 
 	public static XlsxReader getInstance(String Exccelbook) {
 		xlsReader = new XlsxReader(Exccelbook);
-
 		return xlsReader;
-
 	}
 
 	/**
@@ -100,7 +98,7 @@ public class XlsxReader {
 		XSSFRow row;
 		int iIndex = workbook.getSheetIndex(sheetName);
 		if (iIndex == -1) {
-			logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Sheet name-'" + sheetName + " , please Re-check sheet and column names");
+			logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Sheet name-'" + sheetName + " , please Re-check sheet and column names");
 
 			Exception e = new Exception("Sheet with name-'" + sheetName + "' doesn't exists in Data Folder");// .printStackTrace();
 			logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
@@ -133,7 +131,7 @@ public class XlsxReader {
 		XSSFRow row;
 		int iIndex = workbook.getSheetIndex(sheetName);
 		if (iIndex == -1) {
-			logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Sheet name-'" + sheetName + " , please Re-check sheet and column names");
+			logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Sheet name-'" + sheetName + " , please Re-check sheet and column names");
 
 			Exception e = new Exception("Sheet with name-'" + sheetName + "' doesn't exists in Data Folder");// .printStackTrace();
 			logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
@@ -179,7 +177,7 @@ public class XlsxReader {
 		int iIndex;
 		iIndex = workbook.getSheetIndex(sheetName);
 		if (iIndex == -1) {
-			logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Sheet name-'" + sheetName + " , please Re-check sheet and column names");
+			logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Sheet name-'" + sheetName + " , please Re-check sheet and column names");
 			// UtilityMethods.infoBox("Sheet with name-'"+sheetName+"' doesn't exists in
 			// this excel file, please Re-check given sheet name","Missing sheet");
 			Exception e = new Exception("Sheet with name-'" + sheetName + " , please Re-check given sheet name and column name");// .printStackTrace();
@@ -207,7 +205,7 @@ public class XlsxReader {
 			// UtilityMethods.infoBox("Sheet with name-'"+sheetName+"' doesn't exists in
 			// this excel file, please Re-check given sheet name","Missing sheet");
 			// System.exit(0);
-			logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Sheet name-'" + sheetName + " , please Re-check sheet and column names");
+			logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Sheet name-'" + sheetName + " , please Re-check sheet and column names");
 			Exception e = new Exception("Sheet with name-'" + sheetName + " , does not exist");
 			logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
 			return false;
@@ -333,7 +331,7 @@ public class XlsxReader {
 			if (isSheetExist(sheetName)) {
 				if (rowNum <= 0) {
 
-					logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
+					logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
 					Exception e = new Exception("Problem with rownum = " + rowNum + " Sheet Name= " + sheetName);
 					logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
 					// UtilityMethods.infoBox("Row number should be greater than 0",
@@ -356,7 +354,7 @@ public class XlsxReader {
 				}
 
 				if (col_Num == -1) {
-					logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
+					logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
 					Exception e = new Exception("Problem with col_Num = " + col_Num + " Sheet Name= " + sheetName + " Column Name =" + colName);
 					logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
 					// UtilityMethods.infoBox("Column with specified name"+colName+" is not being
@@ -423,7 +421,7 @@ public class XlsxReader {
 			XSSFCell cell;
 			if (isSheetExist(sheetName)) {
 				if (rowNum <= 0) {
-					logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
+					logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
 					Exception e = new Exception("Problem with rowNum = " + rowNum + " Sheet Name= " + sheetName);
 					logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
 					// UtilityMethods.infoBox("Row number should be greater than 0",
@@ -440,7 +438,7 @@ public class XlsxReader {
 						col_Num = i;
 				}
 				if (col_Num == -1) {
-					logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
+					logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
 					Exception e = new Exception("Problem with col_Num = " + col_Num + " Sheet Name= " + sheetName + " Column Name=" + colName);
 					logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
 					// UtilityMethods.infoBox("Column with specified name"+colName+" is not being
@@ -507,7 +505,7 @@ public class XlsxReader {
 			XSSFCell cell;
 			if (isSheetExist(sheetName)) {
 				if (rowNum <= 0) {
-					logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
+					logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
 					Exception e = new Exception("Problem with rowNum = " + rowNum + " Sheet Name= " + sheetName);
 					logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
 					// UtilityMethods.infoBox("Row number should be greater than 0",
@@ -578,7 +576,7 @@ public class XlsxReader {
 			XSSFCell cell;
 			if (isSheetExist(sheetName)) {
 				if (rowNum <= 0) {
-					logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
+					logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
 					Exception e = new Exception("Problem with rowNum = " + rowNum + " Sheet Name= " + sheetName);
 					logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
 					// UtilityMethods.infoBox("Row number should be greater than 0",
@@ -597,7 +595,7 @@ public class XlsxReader {
 					}
 				}
 				if (col_Num == -1) {
-					logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
+					logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
 					Exception e = new Exception("Problem with col_Num = " + col_Num + " Sheet Name= " + sheetName + " Column Name =" + colName);
 					logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
 					// UtilityMethods.infoBox("Column with specified name"+colName+" is not being
@@ -704,7 +702,7 @@ public class XlsxReader {
 			int iIndex = workbook.getSheetIndex(sheetName);
 			int colNum = -1;
 			if (iIndex == -1) {
-				logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
+				logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
 				Exception e = new Exception("Problem with Sheet Name = " + sheetName);
 				logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
 				// UtilityMethods.infoBox("Sheet with name-'"+sheetName+"' doesn't exists in
@@ -758,7 +756,7 @@ public class XlsxReader {
 			dir = directory.getCanonicalPath();
 			String sFilePath = dir + "\\Data\\" + HTML.properties.getProperty("DataSheetName") + ".xlsm";
 			// String sFilePath = dir + "\\Data\\" +
-			// PCThreadCache.getInstance().getProperty("DataSheetName") +
+			// ThreadCache.getInstance().getProperty("DataSheetName") +
 			// ".xlsm";
 			// String sFilePath =
 			// "D:\\FrameWorks\\SeleniumJava\\WorkSpace\\GuidewirePC\\Data\\Data.xlsx";
@@ -790,7 +788,7 @@ public class XlsxReader {
 			int iIndex = workbook.getSheetIndex(sheetName);
 			int colNum = -1;
 			if (iIndex == -1) {
-				logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
+				logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
 				Exception e = new Exception("Problem with Sheet Name = " + sheetName);
 				logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
 				// UtilityMethods.infoBox("Sheet with name-'"+sheetName+"' doesn't exists in
@@ -846,7 +844,7 @@ public class XlsxReader {
 			String sFilePath = dir + "\\Data\\" + datasheet + ".xlsm";
 			logger.info("sFilePath is:::" + sFilePath);
 			// String sFilePath = dir + "\\Data\\" +
-			// PCThreadCache.getInstance().getProperty("DataSheetName") +
+			// ThreadCache.getInstance().getProperty("DataSheetName") +
 			// ".xlsm";
 			// String sFilePath =
 			// "D:\\FrameWorks\\SeleniumJava\\WorkSpace\\GuidewirePC\\Data\\Data.xlsx";
@@ -891,7 +889,7 @@ public class XlsxReader {
 			int iIndex = workbook.getSheetIndex(sheetName);
 			int colNum = -1;
 			if (iIndex == -1) {
-				logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
+				logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
 				Exception e = new Exception("Problem with Sheet Name = " + sheetName);
 				logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
 				// UtilityMethods.infoBox("Sheet with name-'"+sheetName+"' doesn't exists in
@@ -966,7 +964,7 @@ public class XlsxReader {
 			// XSSFCell cell;
 			if (isSheetExist(sheetName)) {
 				if (rowNum <= 0) {
-					logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
+					logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
 					Exception e = new Exception("Problem with RowNum = " + rowNum + " Sheet Name= " + sheetName);
 					logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
 					// UtilityMethods.infoBox("Row number should be greater than 0",
@@ -983,7 +981,7 @@ public class XlsxReader {
 						col_Num = i;
 				}
 				if (col_Num == -1) {
-					logger.error("Issue in TestCase ID# " + PCThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
+					logger.error("Issue in TestCase ID# " + ThreadCache.getInstance().getProperty("TCID") + " Please check below exception log for more details.");
 					Exception e = new Exception("Problem with col_Num = " + col_Num + " Column Name=" + colName + " Sheet Name= " + sheetName);
 					logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
 					// UtilityMethods.infoBox("Column with specified name"+colName+" is not being
@@ -1024,11 +1022,11 @@ public class XlsxReader {
 	 * sElementName, String sElementProperty, String sException) throws Exception {
 	 * String sheetName = "FailureHub"; XlsxReader sXL = XlsxReader.getInstance();
 	 * int rowcount = sXL.getRowCount(sheetName); sXL.setCellData(sheetName,
-	 * PCThreadCache.getInstance().getProperty("TCID"), rowcount, 0);
+	 * ThreadCache.getInstance().getProperty("TCID"), rowcount, 0);
 	 * sXL.setCellData(sheetName,
-	 * PCThreadCache.getInstance().getProperty("testcasename"), rowcount, 1);
+	 * ThreadCache.getInstance().getProperty("testcasename"), rowcount, 1);
 	 * sXL.setCellData(sheetName,
-	 * PCThreadCache.getInstance().getProperty("methodName"), rowcount, 2);
+	 * ThreadCache.getInstance().getProperty("methodName"), rowcount, 2);
 	 * sXL.setCellData(sheetName, sExpected, rowcount, 4);
 	 * sXL.setCellData(sheetName, sAcutal, rowcount, 5); sXL.setCellData(sheetName,
 	 * sElementName, rowcount, 6); sXL.setCellData(sheetName, sElementProperty,
@@ -1039,14 +1037,14 @@ public class XlsxReader {
 	/*public void failuresReader(String sExpected, String sAcutal, String sElementName, String sElementProperty, String sException, BufferedWriter writer) throws Exception {
 		System.out.println("It is in failuresReader function ");
 		System.out.println("BufferedWriter is:::" + writer);
-		String ID = PCThreadCache.getInstance().getProperty("TCID");
-		String TestCaseID = PCThreadCache.getInstance().getProperty("TestCaseID");
+		String ID = ThreadCache.getInstance().getProperty("TCID");
+		String TestCaseID = ThreadCache.getInstance().getProperty("TestCaseID");
 		String newTestcaseID = TestCaseID;
 		if (TestCaseID.contains(",")) {
 			newTestcaseID = TestCaseID.replace(",", "||");
 		}
-		String name = PCThreadCache.getInstance().getProperty("testcasename");
-		String methodName = PCThreadCache.getInstance().getProperty("methodName");
+		String name = ThreadCache.getInstance().getProperty("testcasename");
+		String methodName = ThreadCache.getInstance().getProperty("methodName");
 		System.out.println("Id is :::" + ID);
 		System.out.println("Writer is :::" + writer);
 		writer.write(ID);
@@ -1078,8 +1076,8 @@ public void failuresReader (String sExpected, String sAcutal,  String htmllink, 
 		HSSFWorkbook my_workbook = ParallelExecDriver.my_workbook;
         HSSFSheet my_sheet =ParallelExecDriver.my_sheet;
         HSSFCreationHelper helper= ParallelExecDriver.helper;
-        String ID = PCThreadCache.getInstance().getProperty("TCID");
-		String TestCaseID = PCThreadCache.getInstance().getProperty("TestCaseID");
+        String ID = ThreadCache.getInstance().getProperty("TCID");
+		String TestCaseID = ThreadCache.getInstance().getProperty("TestCaseID");
 		String newTestcaseID = TestCaseID;
 		if (TestCaseID.contains(",")) {
 			newTestcaseID = TestCaseID.replace(",", "||");
@@ -1099,7 +1097,7 @@ public void failuresReader (String sExpected, String sAcutal,  String htmllink, 
         Cell cell2 = row.createCell(1);
         cell2.setCellStyle(my_style);
         cell2.setCellValue(newTestcaseID);
-        String name = PCThreadCache.getInstance().getProperty("testcasename");
+        String name = ThreadCache.getInstance().getProperty("testcasename");
         Cell cell3 = row.createCell(2);
         cell3.setCellStyle(my_style);
         cell3.setCellValue(name);
@@ -1107,7 +1105,7 @@ public void failuresReader (String sExpected, String sAcutal,  String htmllink, 
         Cell tccounts = row.createCell(3);
         tccounts.setCellStyle(my_style);
         tccounts.setCellValue(tccount);
-        String methodName = PCThreadCache.getInstance().getProperty("methodName");
+        String methodName = ThreadCache.getInstance().getProperty("methodName");
         Cell cell4 = row.createCell(4);
         cell4.setCellStyle(my_style);
         cell4.setCellValue(methodName);

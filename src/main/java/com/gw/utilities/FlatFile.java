@@ -114,9 +114,9 @@ public class FlatFile {
     public Boolean CreateFile() {
         Boolean status = false;
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-        String sFileName = "" + PCThreadCache.getInstance().getProperty("TCID") + "_" + timeStamp + "";
-        PCThreadCache.getInstance().setProperty("FlatFileName", sFileName);
-        PCThreadCache.getInstance().setProperty(PCConstants.FlatFile, sFileName);
+        String sFileName = "" + ThreadCache.getInstance().getProperty("TCID") + "_" + timeStamp + "";
+        ThreadCache.getInstance().setProperty("FlatFileName", sFileName);
+        ThreadCache.getInstance().setProperty(PCConstants.FlatFile, sFileName);
         FileWriter fw = null;
         BufferedWriter fileWriter = null;
         String dir = null;
@@ -302,7 +302,7 @@ public class FlatFile {
         Boolean status = false;
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         String sFileName = timeStamp;
-        PCThreadCache.getInstance().setProperty(PCConstants.FlatFile, sFileName);
+        ThreadCache.getInstance().setProperty(PCConstants.FlatFile, sFileName);
         FileWriter fw = null;
         BufferedWriter bufferedWriter = null;
         String dir = null;
@@ -383,8 +383,8 @@ public class FlatFile {
     public Boolean CreateE2ECSVFile() {
         Boolean status = false;
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-        String sFileName = "" + PCThreadCache.getInstance().getProperty("TCID") + "_" + timeStamp + "";
-        PCThreadCache.getInstance().setProperty(PCConstants.Integ_FlatFile, sFileName);
+        String sFileName = "" + ThreadCache.getInstance().getProperty("TCID") + "_" + timeStamp + "";
+        ThreadCache.getInstance().setProperty(PCConstants.Integ_FlatFile, sFileName);
         FileWriter fw = null;
         BufferedWriter fileWriter = null;
         String dir = null;

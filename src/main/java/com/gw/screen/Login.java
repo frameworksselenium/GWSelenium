@@ -8,13 +8,13 @@ import com.gw.driver.LoggerClass;
 import com.gw.utilities.Common;
 import com.gw.utilities.CommonManager;
 import com.gw.utilities.HTML;
-import com.gw.utilities.PCThreadCache;
+import com.gw.utilities.ThreadCache;
 
 public class Login {
 
 	public static String sheetname = "Login";
 	private static org.apache.log4j.Logger loggers;
-	private org.apache.log4j.Logger logger  = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(),PCThreadCache.getInstance().getProperty("TCID"));
+	private org.apache.log4j.Logger logger  = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(),ThreadCache.getInstance().getProperty("TCID"));
 	Common common = CommonManager.getInstance().getCommon();
 
 	public Boolean SCRLogin() throws Exception {
@@ -24,13 +24,13 @@ public class Login {
 		String date = dateFormat.format(d);
 		if (!s) {
 			logger.info("Thread ID = " + Thread.currentThread().getId() + "Application not Loggedin Successfully");
-			HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Application should login successfully", "Application not loggedin successfully", "PASS");
+			HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Application should login successfully", "Application not loggedin successfully", "PASS");
 			return false;
 		}
 		Boolean status = true;
 		if (HTML.properties.getProperty("TestCaseScreenShot").contains("YES")) {
-			File dir = new File(HTML.properties.getProperty("ResultsFolderPath") + "\\" + PCThreadCache.getInstance().getProperty("testcasename") + "_" + date + "_" + d.getHours() + d.getMinutes() + d.getSeconds() + Thread.currentThread().getId());
-			PCThreadCache.getInstance().setProperty(PCConstants.ZipFolderPath, HTML.properties.getProperty("ResultsFolderPath") + "\\" + PCThreadCache.getInstance().getProperty("testcasename") + "_" + date + "_" + d.getHours() + d.getMinutes() + d.getSeconds() + Thread.currentThread().getId());
+			File dir = new File(HTML.properties.getProperty("ResultsFolderPath") + "\\" + ThreadCache.getInstance().getProperty("testcasename") + "_" + date + "_" + d.getHours() + d.getMinutes() + d.getSeconds() + Thread.currentThread().getId());
+			ThreadCache.getInstance().setProperty(PCConstants.ZipFolderPath, HTML.properties.getProperty("ResultsFolderPath") + "\\" + ThreadCache.getInstance().getProperty("testcasename") + "_" + date + "_" + d.getHours() + d.getMinutes() + d.getSeconds() + Thread.currentThread().getId());
 			if (!dir.exists()) {
 				dir.mkdir();
 			}
@@ -41,12 +41,12 @@ public class Login {
 		}
 		if (common.WaitUntilClickable(Common.o.getObject("eleDeskTopAction"), Integer.valueOf(HTML.properties.getProperty("VERYLONGWAIT")))) {
 			logger.info("Thread ID = " + Thread.currentThread().getId() + " Application Loggedin Successfully");
-			HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Application should login successfully", "Application loggedin successfully", "PASS");
+			HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Application should login successfully", "Application loggedin successfully", "PASS");
 			//status = SCRCommon.funGetUserLoggedName();
 			status = true;
 		} else {
 			logger.info("Thread ID = " + Thread.currentThread().getId() + " Application not Loggedin Successfully");
-			HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Application should login successfully", "Application not loggedin successfully", "FAIL");
+			HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Application should login successfully", "Application not loggedin successfully", "FAIL");
 			status = false;
 		}
 		return status;

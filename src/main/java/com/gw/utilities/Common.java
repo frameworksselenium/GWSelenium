@@ -23,12 +23,9 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import com.codoid.products.fillo.Connection;
-import com.codoid.products.fillo.Fillo;
 import com.gw.constants.PCConstants;
 import com.gw.driver.LoggerClass;
 import com.gw.driver.ParallelExecDriver;
@@ -45,7 +42,6 @@ public class Common {
     public String TestCaseID; // ALM TestID
     public String TestSetID; // ALM TestSetID
     public String DataSheetName; // DataSheet Name
-    public PhantomJSDriverService service = null; // Headless browser Varaible
     private org.apache.log4j.Logger logger;// Logger variable
     public WebElement ele; // Safeaction Element Variabale
     public static Elements o = new Elements(); // Object for element class
@@ -61,7 +57,7 @@ public class Common {
     }
 
     public boolean WaitForElementExist(By bylocator, int iWaitTime) throws Exception {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         boolean bFlag = false;
         WebDriverWait wait = new WebDriverWait(ManagerDriver.getInstance().getWebDriver(), iWaitTime);
         try {
@@ -104,7 +100,7 @@ public class Common {
      **/
     public boolean SafeSelectGWListBox(By bylocator, String sOptionToSelect, int iWaitTime) throws Exception {
 
-        //logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(),PCThreadCache.getInstance().getProperty("TCID"));
+        //logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(),ThreadCache.getInstance().getProperty("TCID"));
         WaitUntilClickable(bylocator, iWaitTime);
         WebElement element = ManagerDriver.getInstance().getWebDriver().findElement(bylocator);
         element.click();
@@ -141,7 +137,7 @@ public class Common {
      */
     public boolean WaitUntilClickable(By bylocator, int iWaitTime) throws Exception {
 
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         boolean bFlag = false;
         WebDriverWait wait = new WebDriverWait(ManagerDriver.getInstance().getWebDriver(), iWaitTime);
         try {
@@ -154,14 +150,14 @@ public class Common {
             e.printStackTrace();
             logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
             // sXL.failuresReader("Component should run properly", "Error in executing: '" +
-            // PCThreadCache.getInstance().getProperty("methodName")+"'", "", "",
+            // ThreadCache.getInstance().getProperty("methodName")+"'", "", "",
             // "",writer);
             bFlag = false;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
             // sXL.failuresReader("Component should run properly", "Error in executing: '" +
-            // PCThreadCache.getInstance().getProperty("methodName")+"'", "", "",
+            // ThreadCache.getInstance().getProperty("methodName")+"'", "", "",
             // "",writer);
             bFlag = false;
         }
@@ -170,7 +166,7 @@ public class Common {
 
     public void highlightElement(By locator) throws Exception {
         // pro = new ConfigManager("sys");
-        //logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(),PCThreadCache.getInstance().getProperty("TCID"));
+        //logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(),ThreadCache.getInstance().getProperty("TCID"));
         WebElement element = ManagerDriver.getInstance().getWebDriver().findElement(locator);
         if (HTML.properties.getProperty("HighlightElements").equalsIgnoreCase("true")) {
             String attributevalue = "border:10px solid green;";
@@ -241,7 +237,7 @@ public class Common {
                     clickTriangle.moveToElement(ele).moveByOffset(xYaxis, yYaxis).click().perform();
                     returnValue = SCRCommon.JavaScript(js);
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " Clicked on '" + objectName + "' element or button or link and element '" + element + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
                     break;
                 case "ZED":
                     // ele.sendKeys(value);
@@ -254,7 +250,7 @@ public class Common {
                     // returnValue=SCRCommon.JavaScriptDynamicWait(ele, js);
                     returnValue = SCRCommon.JavaScript(js);
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " Value entered '" + value + "' in '" + objectName + "' field and element '" + element + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should enter value  '" + value + "' in '" + objectName + "' field", "Value entered '" + value + "' in '" + objectName + "' field", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should enter value  '" + value + "' in '" + objectName + "' field", "Value entered '" + value + "' in '" + objectName + "' field", "PASS");
                     break;
                 case "EDT":
                     ele.clear();
@@ -262,14 +258,14 @@ public class Common {
                     ele.sendKeys(Keys.TAB);
                     returnValue = SCRCommon.JavaScript(js);
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " Value entered '" + value + "' in '" + objectName + "' field and element '" + element + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should enter value  '" + value + "' in '" + objectName + "' field", "Value entered '" + value + "' in '" + objectName + "' field", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should enter value  '" + value + "' in '" + objectName + "' field", "Value entered '" + value + "' in '" + objectName + "' field", "PASS");
                     break;
                 case "NED":
                     ele.clear();
                     ele.sendKeys(value);
                     ele.sendKeys(Keys.TAB);
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " Value entered '" + value + "' in '" + objectName + "' field and element '" + element + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should enter value  '" + value + "' in '" + objectName + "' field", "Value entered '" + value + "' in '" + objectName + "' field", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should enter value  '" + value + "' in '" + objectName + "' field", "Value entered '" + value + "' in '" + objectName + "' field", "PASS");
                     break;
 
                 case "EDJ":
@@ -279,14 +275,14 @@ public class Common {
                     returnValue = SCRCommon.JavaScript(js);
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " Value entered '" + value + "' in '" + objectName + "' field and element '" + element + "'");
                     // returnValue=SCRCommon.JavaScriptDynamicWait(ele, js);
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should enter value  '" + value + "' in '" + objectName + "' field", "Value entered '" + value + "' in '" + objectName + "' field", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should enter value  '" + value + "' in '" + objectName + "' field", "Value entered '" + value + "' in '" + objectName + "' field", "PASS");
                     break;
                 case "PWD":
                     ele.clear();
                     ele.sendKeys(value);
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " Value entered '" + value + "' in '" + objectName + "' field and element '" + element + "'");
                     // returnValue=SCRCommon.JavaScriptDynamicWait(ele, js);
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should enter value  '" + value + "' in '" + objectName + "' field", "Value entered '" + value + "' in '" + objectName + "' field", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should enter value  '" + value + "' in '" + objectName + "' field", "Value entered '" + value + "' in '" + objectName + "' field", "PASS");
                     // returnValue = SCRCommon.JavaScript(js);
 
                     break;
@@ -294,14 +290,14 @@ public class Common {
                     ele.click();
                     returnValue = true;
                     logger.info("Thread ID = " + Thread.currentThread().getId() + "  Clicked on '" + objectName + "' element or button or link and element '" + element + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
                     break;
                 case "ELE":
                     Action objMouseClick1 = objActions.click(ele).build();
                     objMouseClick1.perform();
                     returnValue = SCRCommon.JavaScript(js);
                     logger.info("Thread ID = " + Thread.currentThread().getId() + "  Clicked on '" + objectName + "' element or button or link and element '" + element + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
                     break;
                 case "ELJ":
                     Action objMouseClick2 = objActions.click(ele).build();
@@ -311,7 +307,7 @@ public class Common {
                     // returnValue=SCRCommon.JavaScriptDynamicWait(ele, js);
                     returnValue = SCRCommon.JavaScript(js);
                     Thread.sleep(2000);
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
                     break;
                 case "DBL":
                     objActions.click(ele);
@@ -319,7 +315,7 @@ public class Common {
                     objMousedblClick.perform();
                     returnValue = true;
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " Double Clicked on '" + objectName + "' element or button or link and element '" + element + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should Double Click on '" + objectName + "' element or button or link", "Double Clicked on '" + objectName + "' element or button or link", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should Double Click on '" + objectName + "' element or button or link", "Double Clicked on '" + objectName + "' element or button or link", "PASS");
                     break;
                 case "LST":
                     // ManagerDriver.getInstance().getWebDriver().findElement(element).clear();
@@ -332,7 +328,7 @@ public class Common {
                     // WaitForPageToBeReady();
                     returnValue = SCRCommon.JavaScript(js);
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " Value available '" + value + "' in '" + objectName + "' listbox and element '" + element + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should Select item '" + value + "' from '" + objectName + "' listbox", "Selected item '" + value + "' from '" + objectName + "' listbox", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should Select item '" + value + "' from '" + objectName + "' listbox", "Selected item '" + value + "' from '" + objectName + "' listbox", "PASS");
                     break;
                 case "LSJ":
                     ManagerDriver.getInstance().getWebDriver().findElement(element).clear();
@@ -342,12 +338,12 @@ public class Common {
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " Value available '" + value + "' in '" + objectName + "' listbox and element '" + element + "'");
                     // returnValue = SCRCommon.JavaScriptDynamicWait(ele, js);
                     returnValue = SCRCommon.JavaScript(js);
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should Select item '" + value + "' from '" + objectName + "' listbox", "Selected item '" + value + "' from '" + objectName + "' listbox", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should Select item '" + value + "' from '" + objectName + "' listbox", "Selected item '" + value + "' from '" + objectName + "' listbox", "PASS");
                     break;
                 case "SCL":
                     ((JavascriptExecutor) ManagerDriver.getInstance().getWebDriver()).executeScript("arguments[0].scrollIntoView();", ManagerDriver.getInstance().getWebDriver().findElement(element));
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " Scroll Donw to the Element " + objectName + " element or button or link and element '" + element + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
                     returnValue = true;
                     break;
                 case "RDO":
@@ -355,19 +351,19 @@ public class Common {
                     objMouseClick3.perform();
                     returnValue = SCRCommon.JavaScript(js);
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " Selected Radio " + objectName + " element or button or link and element '" + element + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
                     returnValue = true;
                     break;
                 case "CHK":
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " Checked " + objectName + " element or button or link and element '" + element + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
                     returnValue = true;
                     break;
                 case "CLR":
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " Checked " + objectName + " element or button or link and element '" + element + "'");
                     ele.clear();
                     returnValue = SCRCommon.JavaScript(js);
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "", "", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "", "", "PASS");
                     returnValue = true;
                     break;
                 case "EJS":
@@ -375,7 +371,7 @@ public class Common {
                     JavascriptExecutor executor = (JavascriptExecutor) ManagerDriver.getInstance().getWebDriver();
                     executor.executeScript("arguments[0].click();", ele);
                     returnValue = SCRCommon.JavaScript(js);
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
                     break;
                 case "BLI":
                     ele.click();
@@ -386,17 +382,17 @@ public class Common {
                         ManagerDriver.getInstance().getWebDriver().findElement(option).click();
                         returnValue = SCRCommon.JavaScript(js);
                         logger.info("Thread ID = " + Thread.currentThread().getId() + "  Clicked on '" + objectName + "' element or button or link and element '" + element + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click on '" + objectName + "' element or button or link", "Clicked on '" + objectName + "' element or button or link", "PASS");
                     } else {
                         returnValue = false;
                         logger.info("Thread ID = " + Thread.currentThread().getId() + " Object not enabled or displayed or not clickable '" + element + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + objectName + "' in screen", "'" + objectName + "' not displayed in screen", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + objectName + "' in screen", "'" + objectName + "' not displayed in screen", "FAIL");
                     }
                     break;
                 case "DRP":
                     Select sDropDown = new Select(ele);
                     sDropDown.selectByVisibleText(value);
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should select the '" + value + "' from the Dropdown", "Selected the '" + value + "' from the Dropdown", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should select the '" + value + "' from the Dropdown", "Selected the '" + value + "' from the Dropdown", "PASS");
                     returnValue = true;
                     break;
                 case "SEL":
@@ -417,7 +413,7 @@ public class Common {
                             // logger.info("Selected item '"+ value +"' from '" +
                             // objectName + "' listbox and element '"+ element +
                             // "'");
-                            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should Select item '" + value + "' from '" + objectName + "' listbox", "Selected item '" + value + "' from '" + objectName + "' listbox", "PASS");
+                            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should Select item '" + value + "' from '" + objectName + "' listbox", "Selected item '" + value + "' from '" + objectName + "' listbox", "PASS");
                             break;
                         }
                     }
@@ -425,7 +421,7 @@ public class Common {
                         returnValue = false;
                         // logger.info("Value not available '"+ value +"' in '" +
                         // objectName + "' listbox and element '"+ element + "'");
-                        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should Select item '" + value + "' from '" + objectName + "' listbox", "Item '" + value + "' not available in '" + objectName + "' listbox", "FAIL");
+                        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should Select item '" + value + "' from '" + objectName + "' listbox", "Item '" + value + "' not available in '" + objectName + "' listbox", "FAIL");
                         break;
                     }
                     break;
@@ -435,13 +431,13 @@ public class Common {
                     ele.sendKeys(Keys.RETURN);
                     returnValue = SCRCommon.JavaScript(js);
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " Value entered '" + value + "' in '" + objectName + "' field and element '" + element + "'");
-                    HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should enter value  '" + value + "' in '" + objectName + "' field", "Value entered '" + value + "' in '" + objectName + "' field", "PASS");
+                    HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should enter value  '" + value + "' in '" + objectName + "' field", "Value entered '" + value + "' in '" + objectName + "' field", "PASS");
                     break;
             }
             // WaitForPageToBeReady();
         } else {
             logger.info("Thread ID = " + Thread.currentThread().getId() + " " + ColumnName + " Object not enabled or displayed or not clickable with the locator of '" + element + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + objectName + "' in screen", "'" + objectName + "' not displayed in screen", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + objectName + "' in screen", "'" + objectName + "' not displayed in screen", "FAIL");
         }
         return returnValue;
     }
@@ -493,9 +489,9 @@ public class Common {
         logger.info("Thread ID = " + Thread.currentThread().getId() + " Execution starting in '" + HTML.properties.getProperty("Region").toUpperCase() + "' environment");
         if (HTML.properties.getProperty("EXECUTIONMODE").equalsIgnoreCase("Remote")) {
             String sMachineAddress = RemoteDriverFactory.getInstance().hostname;
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Machine IP Address = " + sMachineAddress + "", "Machine IP Address = " + sMachineAddress + "", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Machine IP Address = " + sMachineAddress + "", "Machine IP Address = " + sMachineAddress + "", "PASS");
         }
-        HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "Execution should start in '" + HTML.properties.getProperty("Region").toUpperCase() + "' environment", "Execution started in '" + HTML.properties.getProperty("Region").toUpperCase() + "' environment", "PASS");
+        HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "Execution should start in '" + HTML.properties.getProperty("Region").toUpperCase() + "' environment", "Execution started in '" + HTML.properties.getProperty("Region").toUpperCase() + "' environment", "PASS");
         logger.info("Thread ID = " + Thread.currentThread().getId() + " Driver = " + ManagerDriver.getInstance().getWebDriver());
         ManagerDriver.getInstance().getWebDriver().manage().timeouts().implicitlyWait(25, TimeUnit.SECONDS);
         if (HTML.properties.getProperty("Browser").equalsIgnoreCase("CH") && HTML.properties.getProperty("TypeOfAutomation").equalsIgnoreCase("HEAD")) {
@@ -616,10 +612,10 @@ public class Common {
     public boolean CompareStringResult(String sCase, String sExpectedValue, String sAcutualValue) throws Exception {
         boolean status = true;
         if (sAcutualValue.contains(sExpectedValue)) {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": " + sExpectedValue + " should match", "" + sCase + ": " + sAcutualValue + " is matching", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": " + sExpectedValue + " should match", "" + sCase + ": " + sAcutualValue + " is matching", "PASS");
             status = true;
         } else {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": " + sExpectedValue + " should match", "" + sCase + ": " + sAcutualValue + " is not matching", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": " + sExpectedValue + " should match", "" + sCase + ": " + sAcutualValue + " is not matching", "FAIL");
             status = false;
         }
         return status;
@@ -659,10 +655,10 @@ public class Common {
     public boolean SpecialCompareResult(String sCase, String sExpectedValue, String sAcutualValue) throws Exception {
         boolean status = true;
         if (sExpectedValue.contains(sAcutualValue)) {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": " + sExpectedValue + " should match", "" + sCase + ": " + sAcutualValue + " is matching", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": " + sExpectedValue + " should match", "" + sCase + ": " + sAcutualValue + " is matching", "PASS");
             status = true;
         } else {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": " + sExpectedValue + " should match", "" + sCase + ": " + sAcutualValue + " is not matching", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": " + sExpectedValue + " should match", "" + sCase + ": " + sAcutualValue + " is not matching", "FAIL");
             status = false;
         }
         return status;
@@ -681,10 +677,10 @@ public class Common {
     public boolean ElementExistOrNotFalse(String sCase, String sExpectedValue, String sAcutualValue, By sId) throws Exception {
         boolean status = ManagerDriver.getInstance().getWebDriver().findElements(sId).size() != 0;
         if (status == false) {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": '" + sExpectedValue + "' should not present", "" + sCase + ": '" + sAcutualValue + "' not present", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": '" + sExpectedValue + "' should not present", "" + sCase + ": '" + sAcutualValue + "' not present", "PASS");
             status = true;
         } else {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": '" + sExpectedValue + "' should not present", "" + sCase + ": '" + sAcutualValue + "' is present", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": '" + sExpectedValue + "' should not present", "" + sCase + ": '" + sAcutualValue + "' is present", "FAIL");
             status = false;
         }
         return status;
@@ -703,10 +699,10 @@ public class Common {
     public boolean ElementExistOrNotTrue(String sCase, String sExpectedValue, String sAcutualValue, By sId) throws Exception {
         boolean status = ManagerDriver.getInstance().getWebDriver().findElements(sId).size() != 0;
         if (status == true) {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": '" + sExpectedValue + "'", "" + sCase + ": '" + sAcutualValue + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": '" + sExpectedValue + "'", "" + sCase + ": '" + sAcutualValue + "'", "PASS");
             status = true;
         } else {
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": '" + sExpectedValue + "'", "" + sCase + ": '" + sAcutualValue + "' is not present", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + sCase + ": '" + sExpectedValue + "'", "" + sCase + ": '" + sAcutualValue + "' is not present", "FAIL");
             status = false;
         }
         return status;
@@ -717,15 +713,15 @@ public class Common {
      * @function this function will quite the browser
      */
     public void Terminate() throws Exception {
-        String execution = HTML.properties.getProperty("TypeOfAutomation");
-        if (execution.toUpperCase().contains("HEADLESS")) {
+        //String execution = HTML.properties.getProperty("TypeOfAutomation");
+        //if (execution.toUpperCase().contains("HEADLESS")) {
             // service.stop();
-            ManagerPhantomJS.getInstance().getPhantomJSDriverService().stop();
-            logger.info("phantomjs service stoped");
-        } else {
+        //    ManagerPhantomJS.getInstance().getPhantomJSDriverService().stop();
+        //    logger.info("phantomjs service stoped");
+        //} else {
             ManagerDriver.getInstance().getWebDriver().quit();
             logger.info("Thread ID = " + Thread.currentThread().getId() + " WebDriver Quit");
-        }
+        //}
         //ScreenVideoCapture.stopVideoCapture(HTML.properties.getProperty("testcasename"));
     }
 
@@ -811,44 +807,13 @@ public class Common {
         String strTagName = ManagerDriver.getInstance().getWebDriver().findElement(byLocater).getTagName();
         return strTagName;
     }
-
-    /**
-     * @param sFilename
-     * @param sQuery
-     * @return true/false
-     * @throws Exception
-     * @function This function use to update the data in the excel sheet
-     */
-    public synchronized boolean UpdateQueryDeprecatedDoNotUse(String sFilename, String sQuery) throws Exception
-    // public boolean UpdateQueryDeprecated(String sFilename, String sQuery)
-    // throws Exception
-    {
-        boolean status = false;
-        try {
-            Fillo fillo = new Fillo();
-            File directory = new File(".");
-            String sConfigfilespath = directory.getCanonicalPath() + "\\Data\\" + sFilename + ".xlsm";
-            Connection connection = fillo.getConnection(sConfigfilespath);
-            String strQuery = sQuery;
-            connection.executeUpdate(strQuery);
-            connection.close();
-            status = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
-            status = false;
-        }
-        return status;
-    }
-
-
     /**
      * Function for getting the values from Thread cache for a specific column
      */
     public String getValue(String value, String ColName) {
         String flag = "";
         if (value.equals(PCConstants.datafromCache)) {
-            value = PCThreadCache.getInstance().getProperty(ColName);
+            value = ThreadCache.getInstance().getProperty(ColName);
         }
 
         if (value.contains((PCConstants.Cacheaccountnumber)) || (value.contains(PCConstants.CachePOLICYNUMBER)) || (value.contains(PCConstants.CacheSUBMISSIONNUMBER)) || (value.contains(PCConstants.CacheAthorityCPID)) || (value.contains(PCConstants.CacheAffGroupName)) || (value.contains(PCConstants.CacheCommertialProgramName))) {
@@ -859,7 +824,7 @@ public class Common {
                 col = value.split(":::");
             } else {
                 col = value.split(" ");
-                value = PCThreadCache.getInstance().getProperty(col[1]);
+                value = ThreadCache.getInstance().getProperty(col[1]);
             }
             if (col[0].contains((PCConstants.Cacheaccountnumber)) || (value.contains(PCConstants.CachePOLICYNUMBER)) || (value.contains(PCConstants.CacheSUBMISSIONNUMBER)) || (value.contains(PCConstants.CacheAthorityCPID)) || (value.contains(PCConstants.CacheAffGroupName)) || (value.contains(PCConstants.CacheCommertialProgramName))) {
 
@@ -870,7 +835,7 @@ public class Common {
                 //System.out.println("col[0] is :::"+col[0]);
                 //System.out.println("colnamee[0] is :::"+colnamee[0]);
                 //System.out.println("colnamee[1] is :::"+colnamee[1]);
-                value = PCThreadCache.getInstance().getProperty(colnamee[1]);
+                value = ThreadCache.getInstance().getProperty(colnamee[1]);
                 //System.out.println("Value is:::"+value);
 
                 value = value + flag;
@@ -887,7 +852,7 @@ public class Common {
                     }
                     if (var == 1) {
                         String colnamee[] = col[1].split(" ");
-                        value = PCThreadCache.getInstance().getProperty(colnamee[1]);
+                        value = ThreadCache.getInstance().getProperty(colnamee[1]);
                         flag = flag + value + ":::";
                     }
                 }
@@ -904,17 +869,17 @@ public class Common {
      * @function Common function for all the screen class
      */
     public Boolean ClassComponent(String Sheetname, Elements o) {
-        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), PCThreadCache.getInstance().getProperty("TCID"));
+        logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(), ThreadCache.getInstance().getProperty("TCID"));
         XlsxReader sXL;
         boolean tcAvailability = true;
         String sheetname = Sheetname;
-        PCThreadCache.getInstance().setProperty(PCConstants.componentSheet, Sheetname);
+        ThreadCache.getInstance().setProperty(PCConstants.componentSheet, Sheetname);
         sXL = XlsxReader.getInstance();// new XlsxReader(
         Boolean status = true;
         try {
             int rowcount = sXL.getRowCount(sheetname);
             for (int i = 2; i <= rowcount; i++) {
-                if (sXL.getCellData(sheetname, "ID", i).equals(PCThreadCache.getInstance().getProperty("TCID"))) {
+                if (sXL.getCellData(sheetname, "ID", i).equals(ThreadCache.getInstance().getProperty("TCID"))) {
                     tcAvailability = false;
                     int colcount = sXL.getColumnCount(sheetname);
                     for (int j = 2; j <= colcount; j++) {
@@ -925,7 +890,7 @@ public class Common {
 
                             String element = ColName.substring(0, 3);
                             String sIteration = sXL.getCellData(sheetname, 1, i);
-                            PCThreadCache.getInstance().setProperty(PCConstants.Iteration, sIteration);
+                            ThreadCache.getInstance().setProperty(PCConstants.Iteration, sIteration);
                             if (element.contentEquals("mel") || element.contentEquals("fun") || element.contentEquals("cfu") || element.contentEquals("zed") || element.contentEquals("edt") || element.contentEquals("btn") || element.contentEquals("ele") || element.contentEquals("lst") || element.contentEquals("pwd") || element.contentEquals("dbl") || element.contentEquals("scl") || element.contentEquals("rdo") || element.contentEquals("chk") || element.contentEquals("clr")
                                     || element.contentEquals("edj") || element.contentEquals("elj") || element.contentEquals("ofu") || element.contentEquals("edw") || element.contentEquals("bli") || (element.contentEquals("lsj") || (element.contentEquals("drp") || element.contentEquals("sel") || element.contentEquals("val") || element.contentEquals("ned")))) {
                                 if ((!value.equals(""))) {
@@ -978,7 +943,7 @@ public class Common {
                 }
             }
             if (tcAvailability) {
-                logger.info(PCThreadCache.getInstance().getProperty("TCID") + ":::" + PCThreadCache.getInstance().getProperty("TCID") + " not available in " + Sheetname + " Sheet");
+                logger.info(ThreadCache.getInstance().getProperty("TCID") + ":::" + ThreadCache.getInstance().getProperty("TCID") + " not available in " + Sheetname + " Sheet");
                 status = false;
             }
         } catch (Exception e) {
@@ -986,7 +951,7 @@ public class Common {
             logger.error("Thread ID = " + Thread.currentThread().getId() + " Error Occured =" + e.getMessage(), e);
             try {
                 // sXL.failuresReader("Component should run properly", "Error in executing: '" +
-                // PCThreadCache.getInstance().getProperty("methodName")+"'", "", "",
+                // ThreadCache.getInstance().getProperty("methodName")+"'", "", "",
                 // "",writer);
             } catch (Exception e1) {
                 // TODO Auto-generated catch block
@@ -1004,7 +969,7 @@ public class Common {
         String strFunctionType = strFunctionName.substring(0, 3);
         try {
             if (strFunctionType.toUpperCase().contains("FUN")) {
-                ClassName = "com.gw.screen." + PCThreadCache.getInstance().getProperty(PCConstants.componentSheet);
+                ClassName = "com.gw.screen." + ThreadCache.getInstance().getProperty(PCConstants.componentSheet);
                 if (strFunctionValue.toUpperCase().equals("YES")) {
                     Class noparams[] = {};
                     Class cls = Class.forName(ClassName);
@@ -1083,19 +1048,19 @@ public class Common {
         }
         if (SearchString) {
             logger.info("Search String available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "PASS");
             if (ActionObject) {
                 logger.info("Search and click on object in the table cell and object name is '" + actionObjetName + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "PASS");
                 Status = true;
             } else {
                 logger.info("Search and click on object in the table cell and object name is '" + actionObjetName + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "FAIL");
                 Status = false;
             }
         } else {
             logger.info("Search String not available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "FAIL");
             Status = false;
         }
         return Status;
@@ -1139,19 +1104,19 @@ public class Common {
         }
         if (SearchString) {
             logger.info("Search String available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "PASS");
             if (ActionObject) {
                 logger.info("Search and click on object in the table cell and object name is '" + strReadString + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "PASS");
                 Status = true;
             } else {
                 logger.info("Search and click on object in the table cell and object name is '" + strReadString + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "FAIL");
                 Status = false;
             }
         } else {
             logger.info("Search String not available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "FAIL");
             Status = false;
         }
         return Status;
@@ -1239,19 +1204,19 @@ public class Common {
         }
         if (SearchString) {
             logger.info("Search String available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "PASS");
             if (ActionObject) {
                 logger.info("Search and click on object in the table cell and object name is '" + strReadString + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "PASS");
                 Status = true;
             } else {
                 logger.info("Search and click on object in the table cell and object name is '" + strReadString + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "FAIL");
                 Status = false;
             }
         } else {
             logger.info("Search String not available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "FAIL");
             Status = false;
         }
         return Status;
@@ -1302,10 +1267,10 @@ public class Common {
         }
         if (SearchString) {
             logger.info("Search String available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and search string is  '" + strReadString + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and search string is  '" + strReadString + "'", "PASS");
         } else {
             logger.info("Search String not available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and search string is  '" + strReadString + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and search string is  '" + strReadString + "'", "FAIL");
             SearchString = false;
         }
         return text;
@@ -1342,11 +1307,11 @@ public class Common {
         if (SearchString) {
             // logger.info("Search String available in the table. '" +
             // strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and search string is  '" + strReadString + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and search string is  '" + strReadString + "'", "PASS");
         } else {
             // logger.info("Search String not available in the table. '" +
             // strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and search string is  '" + strReadString + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and search string is  '" + strReadString + "'", "FAIL");
             SearchString = false;
         }
         return readText;
@@ -1374,21 +1339,21 @@ public class Common {
         if (searchString) {
             // logger.info("Search String available in the table. '" +
             // strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadTextString + "'", "System searched string in table and search string is  '" + strReadTextString + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadTextString + "'", "System searched string in table and search string is  '" + strReadTextString + "'", "PASS");
             if (readString) {
                 // logger.info("Search String available in the table. '" +
                 // strReadString + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strGetTextString + "'", "System searched string in table and search string is  '" + strGetTextString + "'", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strGetTextString + "'", "System searched string in table and search string is  '" + strGetTextString + "'", "PASS");
             } else {
                 // logger.info("Search String not available in the table. '" +
                 // strReadString + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strGetTextString + "'", "System searched string in table and search string is  '" + strGetTextString + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strGetTextString + "'", "System searched string in table and search string is  '" + strGetTextString + "'", "FAIL");
                 searchString = false;
             }
         } else {
             // logger.info("Search String not available in the table. '" +
             // strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadTextString + "'", "System searched string in table and search string is  '" + strReadTextString + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadTextString + "'", "System searched string in table and search string is  '" + strReadTextString + "'", "FAIL");
             searchString = false;
         }
         return getText;
@@ -1413,7 +1378,7 @@ public class Common {
             if (!Region.isEmpty()) {
                 HTML.properties.setProperty("Region", Region);
             }
-            PCThreadCache.getInstance().setProperty("testCaseExecutionStartTime", sdf.format(d));
+            ThreadCache.getInstance().setProperty("testCaseExecutionStartTime", sdf.format(d));
             if (strRunMode.contains("RunModeYes")) {
                 strColumnName = "Execution";
                 strCondition = "YES";
@@ -1433,14 +1398,14 @@ public class Common {
                     TestSetID = sXL.getCellData(sheetname, "TestSetID", i);
                     testCaseType = sXL.getCellData(sheetname, "TestCaseType", i);
                     testcasecount = sXL.getCellData(sheetname, "TC Count", i);
-                    PCThreadCache.getInstance().setProperty("TCID", TCID);
-                    PCThreadCache.getInstance().setProperty("Row", String.valueOf(i));
-                    PCThreadCache.getInstance().setProperty("TestCaseID", TestCaseID);
-                    PCThreadCache.getInstance().setProperty("TestSetID", TestSetID);
-                    PCThreadCache.getInstance().setProperty("TestCaseType", testCaseType);
+                    ThreadCache.getInstance().setProperty("TCID", TCID);
+                    ThreadCache.getInstance().setProperty("Row", String.valueOf(i));
+                    ThreadCache.getInstance().setProperty("TestCaseID", TestCaseID);
+                    ThreadCache.getInstance().setProperty("TestSetID", TestSetID);
+                    ThreadCache.getInstance().setProperty("TestCaseType", testCaseType);
                     testcasename = sXL.getCellData(sheetname, "TestCaseName", i);
-                    PCThreadCache.getInstance().setProperty("testcasename", testcasename);
-                    PCThreadCache.getInstance().setProperty(testcasename + TCID, testcasecount);
+                    ThreadCache.getInstance().setProperty("testcasename", testcasename);
+                    ThreadCache.getInstance().setProperty(testcasename + TCID, testcasecount);
                     HTML.fnInitilization(testcasename);
                     logger.info("Thread ID = " + Thread.currentThread().getId() + " -----------------STARTED RUNNING TEST CASE " + testcasename + " EXECUTION----------------- Thread = " + Thread.currentThread().getId());
                     if (testCaseType != null && testCaseType.length() > 0 && "Regression".equalsIgnoreCase(testCaseType) && HTML.properties.getProperty("DataBaseUpdate").equalsIgnoreCase("YES")) {
@@ -1458,13 +1423,13 @@ public class Common {
                                 //System.out.println("colname contains component");
                                 TCRow = i;
                                 methodName = sXL.getCellData(sheetname, j, i);
-                                PCThreadCache.getInstance().setProperty("methodName", methodName);
+                                ThreadCache.getInstance().setProperty("methodName", methodName);
                                 if (!methodName.isEmpty()) {
                                     if (methodName.contains("_")) {
                                         String[] methodName2 = methodName.split("_");
                                         String sMultipleComponentTCID = TCID.concat("_" + methodName2[1]);
-                                        // PCThreadCache.getInstance().setProperty("methodName",methodName2[0]);
-                                        PCThreadCache.getInstance().setProperty("TCID", sMultipleComponentTCID);
+                                        // ThreadCache.getInstance().setProperty("methodName",methodName2[0]);
+                                        ThreadCache.getInstance().setProperty("TCID", sMultipleComponentTCID);
                                         logger.info("Thread ID = " + Thread.currentThread().getId() + "---------------Started Executing " + methodName + " function---------------");
                                         HTML.fnInsertResult(testcasename, methodName2[1], "Component execution should start", "Started Executing " + methodName + " Component", "PASS");
                                         System.out.println("It is comeout::::");
@@ -1475,7 +1440,7 @@ public class Common {
                                         Object obj = cls.newInstance();
                                         Method method = cls.getDeclaredMethod("SCR" + methodName2[0], noparams);
                                         status = (Boolean) method.invoke(obj);
-                                        PCThreadCache.getInstance().setProperty("TCID", TCID);
+                                        ThreadCache.getInstance().setProperty("TCID", TCID);
                                     } else {
                                         logger.info("Thread ID = " + Thread.currentThread().getId() + "---------------Started Executing " + methodName + " function---------------");
                                         HTML.fnInsertResult(testcasename, methodName, "Component execution should start", "Started Executing " + methodName + " Component", "PASS");
@@ -1514,7 +1479,7 @@ public class Common {
                         logger.info("Thread ID = " + Thread.currentThread().getId() + " ---------------Error in executing " + methodName + " function---------------");
                         logger.info("Thread ID = " + Thread.currentThread().getId() + " 'TestCaseID:' " + TCID + " 'Component:' " + methodName + "");
                         HTML.fnInsertResult(testcasename, methodName, "Component should run properly", "Error in executing: '" + methodName + "'", "FAIL");
-                        //sXL.failuresReader("Component should run properly", "Error in executing: '" + PCThreadCache.getInstance().getProperty("methodName") + "'", "", "", "", writer);
+                        //sXL.failuresReader("Component should run properly", "Error in executing: '" + ThreadCache.getInstance().getProperty("methodName") + "'", "", "", "", writer);
                         HTML.fnSummaryInsertTestCase();
                         status = handleUnknownAlert();
                         CommonManager.getInstance().getCommon().Terminate();
@@ -1539,7 +1504,7 @@ public class Common {
             Date dd = new Date();
             //System.out.println("End Time--------------------------------------------" + dd);
             // E2E Framework integration start
-            PCThreadCache.getInstance().resetProperties();
+            ThreadCache.getInstance().resetProperties();
 
             /*
              * XlsxReader xr = new XlsxReader(); XSSFWorkbook workbook =xr.workbook;
@@ -1586,7 +1551,7 @@ public class Common {
             for (int i = 2; i <= rowcount; i++) {
                 String value = sXL.getCellData(strSheetName, 0, i);
                 if (!value.isEmpty()) {
-                    if (PCThreadCache.getInstance().getProperty("TCID").equals(value)) {
+                    if (ThreadCache.getInstance().getProperty("TCID").equals(value)) {
                         int colcount = sXL.getColumnCount(strSheetName);
                         for (int j = 2; j <= colcount; j++) {
                             String ColName = sXL.getCellData(strSheetName, j, 1);
@@ -1644,24 +1609,24 @@ public class Common {
         if (SearchString) {
             // logger.info("Search String available in the table. '" +
             // strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "PASS");
             if (ActionObject) {
                 // logger.info("Search and click on object in the table cell and object name is
                 // '"
                 // + actionObjetName + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "PASS");
                 Status = true;
             } else {
                 // logger.info("Search and click on object in the table cell and object name is
                 // '"
                 // + actionObjetName + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + actionObjetName + "'", "System searched object in the table and clicked on object. object name is '" + actionObjetName + "'", "FAIL");
                 Status = false;
             }
         } else {
             // logger.info("Search String not available in the table. '" +
             // strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + actionObjetName + "'", "FAIL");
             Status = false;
         }
         return Status;
@@ -1691,11 +1656,11 @@ public class Common {
         if (Status) {
             // logger.info("Clicked on '" + option +
             // "' element or button or link and element '"+ option + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should click on '" + option + "' element or button or link", "Clicked on '" + option + "' element or button or link", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should click on '" + option + "' element or button or link", "Clicked on '" + option + "' element or button or link", "PASS");
         } else {
             // logger.info("Object not enabled or displayed or not clickable '"+
             // option + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display '" + option + "' in screen", "'" + option + "' not displayed in screen", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display '" + option + "' in screen", "'" + option + "' not displayed in screen", "FAIL");
         }
 
         return Status;
@@ -1756,24 +1721,24 @@ public class Common {
         if (SearchString) {
             // logger.info("Search String available in the table. '" +
             // strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + readText + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + readText + "'", "PASS");
             if (ActionObject) {
                 // logger.info("Search and click on object in the table cell and object name is
                 // '"
                 // + NoOfSubmissions + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + NoOfSubmissions + "'", "System searched object in the table and clicked on object. object name is '" + NoOfSubmissions + "'", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + NoOfSubmissions + "'", "System searched object in the table and clicked on object. object name is '" + NoOfSubmissions + "'", "PASS");
                 Status = true;
             } else {
                 // logger.info("Search and click on object in the table cell and object name is
                 // '"
                 // + NoOfSubmissions + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + NoOfSubmissions + "'", "System searched object in the table is not available. object name is '" + NoOfSubmissions + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + NoOfSubmissions + "'", "System searched object in the table is not available. object name is '" + NoOfSubmissions + "'", "FAIL");
                 Status = false;
             }
         } else {
             // logger.info("Search String not available in the table. '" +
             // strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + NoOfSubmissions + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + NoOfSubmissions + "'", "FAIL");
             Status = false;
         }
         return Status;
@@ -1789,11 +1754,11 @@ public class Common {
         if (readText.contains(strReadString)) {
             SearchString = true;
             logger.info("Search String available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and search string is  '" + strReadString + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and search string is  '" + strReadString + "'", "PASS");
 
         } else {
             logger.info("Search String not available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and search string is  '" + strReadString + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and search string is  '" + strReadString + "'", "FAIL");
         }
 
         return SearchString;
@@ -1822,13 +1787,13 @@ public class Common {
         XlsxReader sXL = XlsxReader.getInstance();
         HashMap<String, Object> whereConstraint = new HashMap<String, Object>();
         HashMap<String, Object> updateColumnNameValues = new HashMap<String, Object>();
-        String tcID = PCThreadCache.getInstance().getProperty("TCID");
+        String tcID = ThreadCache.getInstance().getProperty("TCID");
         updateColumnNameValues.clear();
         whereConstraint.clear();
-        updateColumnNameValues.put(PCConstants.FlatFileName, PCThreadCache.getInstance().getProperty(PCConstants.FlatFile));
+        updateColumnNameValues.put(PCConstants.FlatFileName, ThreadCache.getInstance().getProperty(PCConstants.FlatFile));
         whereConstraint.put(PCConstants.ID, tcID);
-        PCThreadCache.getInstance().setProperty("FlatFileName", PCThreadCache.getInstance().getProperty(PCConstants.FlatFile));
-        //status = sXL.executeUpdateQuery(PCConstants.PCThreadCache.getInstance().getProperty(PCConstants.FlatFile), updateColumnNameValues, whereConstraint);
+        ThreadCache.getInstance().setProperty("FlatFileName", ThreadCache.getInstance().getProperty(PCConstants.FlatFile));
+        //status = sXL.executeUpdateQuery(PCConstants.ThreadCache.getInstance().getProperty(PCConstants.FlatFile), updateColumnNameValues, whereConstraint);
         return status;
     }
 
@@ -1849,10 +1814,10 @@ public class Common {
             rowcount = sXL.getRowCount(sheetName);
             Outer:
             for (int i = 2; i <= rowcount; i++) {
-                TCID = PCThreadCache.getInstance().getProperty("TCID");
+                TCID = ThreadCache.getInstance().getProperty("TCID");
                 TCIDAdd = sXL.getCellData(sheetName, "ID", i);
                 sIteration = sXL.getCellData(sheetName, "Iteration", i);
-                if (TCIDAdd.equals(TCID) && sIteration.equalsIgnoreCase(PCThreadCache.getInstance().getProperty(PCConstants.Iteration))) {
+                if (TCIDAdd.equals(TCID) && sIteration.equalsIgnoreCase(ThreadCache.getInstance().getProperty(PCConstants.Iteration))) {
                     tcAvailable = true;
                     int colcount = sXL.getColumnCount(sheetName);
                     sCategory = sXL.getCellData(sheetName, "Category", i);
@@ -1879,7 +1844,7 @@ public class Common {
             }
             if (!tcAvailable) {
                 //logger.info("" + TCID + " is not available in the " + sheetName + " Sheet");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "" + TCID + " should avilable in the " + sheetName + "", "" + TCID + " is not avilable in the " + sheetName + "", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "" + TCID + " should avilable in the " + sheetName + "", "" + TCID + " is not avilable in the " + sheetName + "", "FAIL");
             } else if (!status) {
                 //logger.info("Problem in filling the " + sCategory + " Coverage");
             }
@@ -1935,7 +1900,7 @@ public class Common {
         }
         if (!SearchString || !Status) {
             //logger.info("" + sCateGoryName + " is not available in the rating table");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "'" + sCateGoryName + "' should available in the Schedule Mod Justification", "'" + sCateGoryName + "' is not available in the Schedule Mod Justification", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "'" + sCateGoryName + "' should available in the Schedule Mod Justification", "'" + sCateGoryName + "' is not available in the Schedule Mod Justification", "FAIL");
         }
         return Status;
     }
@@ -1987,19 +1952,19 @@ public class Common {
         }
         if (SearchString) {
             logger.info("Search String available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "PASS");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "PASS");
             if (ActionObject) {
                 logger.info("Search and click on object in the table cell and object name is '" + strReadString + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "PASS");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "PASS");
                 Status = true;
             } else {
                 logger.info("Search and click on object in the table cell and object name is '" + strReadString + "'");
-                HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "FAIL");
+                HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search object in the table cell and click on object. Object name is '" + strReadString + "'", "System searched object in the table and clicked on object. object name is '" + strReadString + "'", "FAIL");
                 Status = false;
             }
         } else {
             logger.info("Search String not available in the table. '" + strReadString + "'");
-            HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "FAIL");
+            HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should search string in table and Search string is '" + strReadString + "'", "System searched string in table and srarch string is  '" + strReadString + "'", "FAIL");
             Status = false;
         }
         return Status;

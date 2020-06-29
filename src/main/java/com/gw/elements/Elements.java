@@ -3,7 +3,7 @@ package com.gw.elements;
 import java.util.HashMap;
 import org.openqa.selenium.By;
 import com.gw.driver.LoggerClass;
-import com.gw.utilities.PCThreadCache;
+import com.gw.utilities.ThreadCache;
 
 public class Elements {
 	public static String sheetname = "Elements";
@@ -5650,9 +5650,8 @@ public class Elements {
 	}
 	public By getObject(String ff) 
 	{
-		logger = LoggerClass.getThreadLogger("Thread" + Thread
-				.currentThread().getName(),PCThreadCache.getInstance().getProperty("TCID"));
-		//System.out.println("In Elements::::"+PCThreadCache.getInstance().getProperty("TCID"));
+		logger = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(),ThreadCache.getInstance().getProperty("TCID"));
+		//System.out.println("In Elements::::"+ThreadCache.getInstance().getProperty("TCID"));
 		By retuValue = null;
 		if (hm.containsKey(ff)) {
 			retuValue = hm.get(ff);

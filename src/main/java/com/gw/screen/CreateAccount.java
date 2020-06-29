@@ -8,13 +8,13 @@ import com.gw.utilities.Common;
 import com.gw.utilities.CommonManager;
 import com.gw.utilities.FlatFile;
 import com.gw.utilities.HTML;
-import com.gw.utilities.PCThreadCache;
+import com.gw.utilities.ThreadCache;
 import com.gw.utilities.XlsxReader;
 
 public class CreateAccount {
 
 	public static String sheetname = "CreateAccount";
-	private org.apache.log4j.Logger logger  = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(),PCThreadCache.getInstance().getProperty("TCID"));
+	private org.apache.log4j.Logger logger  = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(),ThreadCache.getInstance().getProperty("TCID"));
 	public String accountNumber;
 	public String accountName;
 	private XSSFWorkbook workbook;
@@ -38,21 +38,21 @@ public class CreateAccount {
 			if (common.WaitUntilClickable(Common.o.getObject("eleCreateNewAccountNumber"), Integer.valueOf(HTML.properties.getProperty("VERYLONGWAIT")))) {
 				XlsxReader sXL = XlsxReader.getInstance();
 				accountNumber = common.ReadElement(Common.o.getObject("eleCreateNewAccountNumber"), 30);
-				PCThreadCache.getInstance().setProperty(PCConstants.CACHE_ACCOUNT_NUMBER, accountNumber);
-				PCThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
-				PCThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
+				ThreadCache.getInstance().setProperty(PCConstants.CACHE_ACCOUNT_NUMBER, accountNumber);
+				ThreadCache.getInstance().setProperty("AccountNumber", accountNumber);
+				ThreadCache.getInstance().setProperty("edtaccountNumber", accountNumber);
 				logger.info("System displayed Account Summary Page with Account Number: " + accountNumber);
-				HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display Account Summary Page with Account Number", "System displayed Account Summary Page with Account Number: '" + accountNumber + "'", "PASS");
+				HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display Account Summary Page with Account Number", "System displayed Account Summary Page with Account Number: '" + accountNumber + "'", "PASS");
 				if (HTML.properties.getProperty("EXECUTIONAPP").contains("ODS")) {
 					FlatFile sReadWrite = FlatFile.getInstance();
 					SCRCommon scrCommon = new SCRCommon();
-					String FlatFileName =  PCThreadCache.getInstance().getProperty("FlatFileName");
-					status = sReadWrite.write(PCThreadCache.getInstance().getProperty("TCID"), PCThreadCache.getInstance().getProperty("methodName"), "AccountNumber", accountNumber, "OUTPUT", FlatFileName);
+					String FlatFileName =  ThreadCache.getInstance().getProperty("FlatFileName");
+					status = sReadWrite.write(ThreadCache.getInstance().getProperty("TCID"), ThreadCache.getInstance().getProperty("methodName"), "AccountNumber", accountNumber, "OUTPUT", FlatFileName);
 				}
 				status = true;
 			} else {
 				logger.info("System not displayed Account Summary Page");
-				HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display Account Summary Page with Account Number", "System not displayed Account Summary Page","FAIL");
+				HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display Account Summary Page with Account Number", "System not displayed Account Summary Page","FAIL");
 				status = false;
 			}
 			return status;

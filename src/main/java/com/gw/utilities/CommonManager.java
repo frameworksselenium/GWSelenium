@@ -1,8 +1,6 @@
-
 package com.gw.utilities;
 
-public class CommonManager 
-{	
+public class CommonManager{
 	   private static CommonManager instance = new CommonManager();
 	   ThreadLocal<Common> common = new ThreadLocal<Common>();
 	   
@@ -17,7 +15,8 @@ public class CommonManager
 	   }
 	   
 	   public void setCommon(Common com){
-		   common.set(com);
+
+	   	common.set(com);
 	   }
 
 }

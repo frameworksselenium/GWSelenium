@@ -23,7 +23,7 @@ public class DBConnectionManager {
 	//String password = "password456";
 	//static Logger log = Logger.getLogger(DBConnectionManager.class);
 	private static org.apache.log4j.Logger loggers;
-	private org.apache.log4j.Logger log  = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(),PCThreadCache.getInstance().getProperty("TCID"));
+	private org.apache.log4j.Logger log  = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(),ThreadCache.getInstance().getProperty("TCID"));
 	final int MAX_POOL_SIZE = 15;
 
 	Vector<Connection> connectionPool = new Vector<Connection>();

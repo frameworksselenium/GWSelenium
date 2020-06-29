@@ -9,14 +9,14 @@ import com.gw.driver.LoggerClass;
 import com.gw.utilities.Common;
 import com.gw.utilities.CommonManager;
 import com.gw.utilities.HTML;
-import com.gw.utilities.PCThreadCache;
+import com.gw.utilities.ThreadCache;
 import com.gw.utilities.XlsxReader;
 
 public class SearchNewAccount {
 
 	public static String sheetname = "SearchNewAccount";
 	Common common = CommonManager.getInstance().getCommon();
-	private org.apache.log4j.Logger logger  = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(),PCThreadCache.getInstance().getProperty("TCID"));
+	private org.apache.log4j.Logger logger  = LoggerClass.getThreadLogger("Thread" + Thread.currentThread().getName(),ThreadCache.getInstance().getProperty("TCID"));
 
 	public Boolean SCRSearchNewAccount() throws Exception {
 
@@ -27,11 +27,11 @@ public class SearchNewAccount {
 		}
 		if (common.WaitUntilClickable(Common.o.getObject("edtAddress1"), Integer.valueOf(HTML.properties.getProperty("VERYLONGWAIT")))) {
 			logger.info("System displayed Create New Account Page");
-			HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display Create New Account Page", "System displayed Create New Account Page", "PASS");
+			HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display Create New Account Page", "System displayed Create New Account Page", "PASS");
 			status = true;
 		} else {
 			logger.info("System not displayed Create New Account Page");
-			HTML.fnInsertResult(PCThreadCache.getInstance().getProperty("testcasename"), PCThreadCache.getInstance().getProperty("methodName"), "System should display Create New Account Page", "System not displayed Create New Account Page", "FAIL");
+			HTML.fnInsertResult(ThreadCache.getInstance().getProperty("testcasename"), ThreadCache.getInstance().getProperty("methodName"), "System should display Create New Account Page", "System not displayed Create New Account Page", "FAIL");
 			status = false;
 		}
 		return status;
@@ -49,9 +49,9 @@ public class SearchNewAccount {
 		Name = "SampleNGS" + "_" + date + "_" + d.getHours() + d.getMinutes() + d.getSeconds() + Thread.currentThread().getId();
 		System.out.print("Dynamic Company name : " + Name);
 		status = common.SafeAction(Common.o.getObject("edtCompanyName"), Name, "edtCompanyName");
-		whereConstraint.put(PCConstants.ID, PCThreadCache.getInstance().getProperty("TCID"));
+		whereConstraint.put(PCConstants.ID, ThreadCache.getInstance().getProperty("TCID"));
 		updateColumnNameValues.put("DynamicAccountName", Name);
-		PCThreadCache.getInstance().setProperty("DynamicAccountName", Name);
+		ThreadCache.getInstance().setProperty("DynamicAccountName", Name);
 		return status;
 	}
 
